@@ -1,0 +1,64 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+int main(int argn, char** args)
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Event event;
+    SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Texture* texture[2];
+    texture[0] = IMG_LoadTexture(renderer, "../Images/Addis_Ababa_University_logo.png");
+    SDL_Init(SDL_INIT_AUDIO);
+    Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
+    TTF_Init();
+    Mix_Chunk* chunk = Mix_LoadWAV("../Audio/Addis_ababa_bete.wav");
+    Mix_AllocateChannels(4);
+    Mix_PlayChannel(0, chunk, 0);
+    TTF_Font* fontdata = TTF_OpenFont("../Fonts/ROCKB.ttf", 20);
+    SDL_Color col;
+    col.r = 255;
+    col.b = 0;
+    col.g = 0;
+    col.a = 255;
+    SDL_Rect src1, dest1;
+    SDL_QueryTexture(texture[0], NULL, NULL, &dest1.w, &dest1.h);
+    SDL_Rect src, dest;
+    TTF_SizeText(fontdata, "Press ESC to exit loop", &src.w, &src.h);
+    dest1.w/=4;
+    dest1.h/=4;
+    dest.x = 0;
+    dest.y = 0;
+    src.x = 0;
+    src.y = 0;
+    for(float i = 0; ; i += 0.01)
+    {
+        SDL_Surface* surface = TTF_RenderText_Blended(fontdata, "Press ESC to exit loop", col);
+        texture[1] = SDL_CreateTextureFromSurface(renderer, surface);
+        dest.w = src.w;
+        dest.h = src.h;
+        SDL_PollEvent(&event);
+        if(event.key.keysym.scancode == SDL_SCANCODE_UP)dest.y-=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_DOWN)dest.y+=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_RIGHT)dest.x+=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_LEFT)dest.x-=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)break;
+        if(event.key.keysym.scancode == SDL_SCANCODE_W)dest1.y-=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_A)dest1.x-=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_S)dest1.y+=10;
+        if(event.key.keysym.scancode == SDL_SCANCODE_D)dest1.x+=10;
+        dest1.w += 1 * i;
+        dest1.h += 1 * i;
+        dest1.x = 320 - (dest1.w/2);
+        dest1.y = 240 - (dest1.h/2);
+        SDL_RenderCopy(renderer, texture[0], NULL, &dest1);
+        SDL_RenderCopy(renderer, texture[1], &src, &dest);
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+        SDL_Delay(10);
+    }
+    TTF_CloseFont(fontdata);
+    TTF_Quit();
+    SDL_Quit();
+}

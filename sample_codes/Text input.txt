@@ -1,0 +1,35 @@
+#include "../Files/Headers/BSDLF.h"
+#include <iostream>
+#include <string>
+using namespace std;
+int main(int argn, char** args)
+{
+    SDL_Init(SDL_INIT_EVERYTHING);
+    WINDOW windows("text_input_window");
+    TEXTURE text_input;
+    FONT font("../Fonts/ROCK.ttf", 30, 255, 0, 0, 255);
+    text_input.crtren(windows.crtwin());
+    SDL_StartTextInput();
+    SDL_Event event;
+    string text;
+    while(event.type != SDL_QUIT)
+    {
+        SDL_PollEvent(&event);
+        if(event.type == SDL_TEXTINPUT)
+        {
+            text += event.text.text;
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_BACKSPACE)
+        {
+            text.pop_back();
+        }
+        if(text.length())
+        {
+            text_input.surfcpy(font.blended_render(text.c_str()));
+            text_input.draw();
+        }
+        else cout<<"write sth"<<endl;
+        SDL_Delay(10);
+    }
+    SDL_Quit();
+}

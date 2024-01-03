@@ -1,0 +1,10 @@
+all:
+g++ -I../src/Include -L../src/Lib -o main.exe main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o Polygon_drawer.exe Polygon_drawer.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o point_joiner.exe point_joiner.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o center_finder_SDL.exe center_finder_SDL.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o polygon_point.exe polygon_point.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o rotator.exe rotator.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o class_making.exe class_making.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o Polygon_collision1.exe Polygon_collision1.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o collision_detection.exe collision_detection.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

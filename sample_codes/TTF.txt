@@ -1,0 +1,72 @@
+#include <iostream>
+#include "SDL2_namespace.h"
+using namespace std;
+using namespace SDL2;
+int main(int num, char** args)
+{
+	INIT(SDL_INIT_EVERYTHING);
+	SDL_Window* window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_RESIZABLE);
+	SDL_Renderer* renderer = render_window(window, -1, SDL_RENDERER_ACCELERATED);
+	if(!TTF_WasInit())TTF_Init();
+	TTF_Font * fontdata = TTF_OpenFont("Fonts/palabi.ttf", 22);
+	if(!fontdata)cout<<" Font loading error: "<<TTF_GetError()<<" & "<<SDL_GetError()<<endl;
+	SDL_Rect src, dest;
+	if(TTF_SizeText(fontdata, "fuck you", &src.w, &src.h) < 0)cout<<" Writing failed\n";
+	cout<<" width: "<<src.w<<endl;
+	cout<<" height: "<<src.h<<endl;
+	SDL_Surface** surfaces;
+	surfaces = new SDL_Surface* [24];
+	SDL_Color col, col2;
+	col.r = 0;
+	col.g = 255;
+	col.b = 0;
+	col.a = 255;
+	col2.r = 0;
+	col2.g = 0;
+	col2.b = 255;
+	col2.a = 255;
+	surfaces[0] = TTF_RenderText_Solid(fontdata, "1. Text_Solid", col);
+	surfaces[1] = TTF_RenderUTF8_Solid(fontdata, "2. UTF8_Solid", col);
+	surfaces[2] = TTF_RenderUNICODE_Solid(fontdata, (Uint16*)"3. UNICODE_Solid", col);
+	surfaces[3] = TTF_RenderText_Solid_Wrapped(fontdata, "4. Text_Solid_W", col, src.w);
+	surfaces[4] = TTF_RenderUTF8_Solid_Wrapped(fontdata, "5. UTF8_Solid_W", col, src.w);
+	surfaces[5] = TTF_RenderUNICODE_Solid_Wrapped(fontdata, (Uint16*)"6. UNICODE_Solid_W", col, src.w);
+	surfaces[6] = TTF_RenderText_Shaded(fontdata, "7. Text_Shaded", col, col2);
+	surfaces[7] = TTF_RenderUTF8_Shaded(fontdata, "8. UTF8_Shaded", col, col2);
+	surfaces[8] = TTF_RenderUNICODE_Shaded(fontdata, (Uint16*)"9. UNICODE_Shaded", col, col2);
+	surfaces[9] = TTF_RenderText_Shaded_Wrapped(fontdata, "10. Text_Shaded_W", col, col2, src.w);
+	surfaces[10] = TTF_RenderUTF8_Shaded_Wrapped(fontdata, "11. UTF8_Shaded_W", col, col2, src.w);
+	surfaces[11] = TTF_RenderUNICODE_Shaded_Wrapped(fontdata, (Uint16*)"12. UNICODE_Shaded_W", col, col2, src.w);
+	surfaces[12] = TTF_RenderText_Blended(fontdata, "13. Text_Blended", col);
+	surfaces[13] = TTF_RenderUTF8_Blended(fontdata, "14. UTF8_Blended", col);
+	surfaces[14] = TTF_RenderUNICODE_Blended(fontdata, (Uint16*)"15. UNICODE_Blended", col);
+	surfaces[15] = TTF_RenderText_Blended_Wrapped(fontdata, "16. Text_Blended_W", col, src.w);
+	surfaces[16] = TTF_RenderUTF8_Blended_Wrapped(fontdata, "17. UTF8_Blended_W", col, src.w);
+	surfaces[17] = TTF_RenderUNICODE_Blended_Wrapped(fontdata, (Uint16*)"18. UNICODE_Blended_W", col, src.w);
+	surfaces[18] = TTF_RenderText_LCD(fontdata, "19. Text_LCD", col, col2);
+	surfaces[19] = TTF_RenderUTF8_LCD(fontdata, "20. UTF8_LCD", col, col2);
+	surfaces[20] = TTF_RenderUNICODE_LCD(fontdata, (Uint16*)"21. UNICODE_LCD", col, col2);
+	surfaces[21] = TTF_RenderText_LCD_Wrapped(fontdata, "22. Text_LCD_W", col, col2, src.w);
+	surfaces[22] = TTF_RenderUTF8_LCD_Wrapped(fontdata, "23. UTF8_LCD_W", col, col2, src.w);
+	surfaces[23] = TTF_RenderUNICODE_LCD_Wrapped(fontdata, (Uint16*)"24. UNICODE_LCD_W", col, col2, src.w);
+	for(int i = 0; i < 24; i++)
+	{
+		texture = SDL_CreateTextureFromSurface(renderer, surfaces[i]);
+		if(!texture)
+		{
+			cout<<" Texture loading error: "<<IMG_GetError()<<endl;
+		}
+		SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+		src.x = 0;
+		src.y = 0;
+		dest.x = 320;
+		dest.y = 200;
+		SDL_RenderCopy(renderer, texture, NULL, &dest);
+		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
+		SDL_Delay(2000);
+	}
+	TTF_CloseFont(fontdata);
+	TTF_Quit();
+	QUIT();
+}
