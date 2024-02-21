@@ -33,7 +33,7 @@
   - does a simple semi-automatic gun animation (shooting, reloading and empty magazine).
 8. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/intersection_sim.cpp">`intersection_sim.cpp`</a>
   - tests the intersection between lines on the 2D plane.
-9. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/ipolygon_rotator.cpp">`ipolygon_rotator.cpp`</a>
+9. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Ipolygon_rotator.cpp">`Ipolygon_rotator.cpp`</a>
   - tests the rotation of a polygon on the 2D plane.
 10. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/main.cpp">`main.cpp`</a>
   - tests the detection of mouth inside a polygon on the 2D plane.
