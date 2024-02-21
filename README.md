@@ -13,13 +13,13 @@
 ### This project teaches a lesson about the inequality and incompatibility of energy and attitude between group members as well as the fruit of balance and keeping things simple especially if it's not that worth it.
 ## Introduction
 ### The project contains 5 core headers:
-- <a href = "">`Basic.h`</a>
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/Basic.h">`Basic.h`</a>
   - This contains namespaces for the most basic data manipulations like character and integer data conversions.
-- <a href = "">`BSDLF.h`</a>
-  - This is for using functions from <a href = "">`SDL2_namespace.h`</a> to do important GUI tasks like opening a window or drawing an image on it.
-- <a href = "">`physics.h`</a>
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/BSDLF.h">`BSDLF.h`</a>
+  - This is for using functions from <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/SDL2_namespace.h">`SDL2_namespace.h`</a> to do important GUI tasks like opening a window or drawing an image on it.
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/physics.h">`physics.h`</a>
   - This is for implementation of simple 2D mechanics like gravity, movement and collisions.
-- <a href = "">`SDL2_namespace.h`</a>
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/SDL2_namespace.h">`SDL2_namespace.h`</a>
   - This contains namespaces to hold various functions from SDL2 library in order to make them more memorable and easy.
-- <a href = "">`vector2D.h`</a>
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/vector2D.h">`vector2D.h`</a>
   - This contains 2D math implementations like line and polygon construction, intersection and collision detection and rotation.
