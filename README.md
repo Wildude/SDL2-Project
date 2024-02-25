@@ -1,9 +1,8 @@
-
 # SDL2-Project
 ## Preface
 ### <i>PREVIEW</i>
-![AAU_intro](https://github.com/Wildude/SDL2-Project/assets/122345410/baf29ffd-ea7b-40f5-a661-062968881e2a) 
-![CS_intro](https://github.com/Wildude/SDL2-Project/assets/122345410/5efb8332-d69b-4ac3-883a-1d85cb3d9727)
+![AAU_intro](https://github.com/Wildude/SDL2-Project/blob/main/Images/AAU_intro.gif)
+![CS_intro](https://github.com/Wildude/SDL2-Project/blob/main/Images/CS_intro.gif)
 <br>
 <bold>source code: <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/AAU_intro.cpp">`AAU_intro.cpp`</a> </bold> <br> 
 ## <underline>
