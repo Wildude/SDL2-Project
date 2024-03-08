@@ -68,6 +68,7 @@
 22. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/SDL2_main.cpp">`SDL2_main.cpp`</a>
   - simple SDL2 test.
 ### Of all 21 source codes, only 13, 15 and 17 were submitted in the form of control flow in a single CPP code.
+The shortcuts of the executables are found in the repo's home directory/page.
 here are the executables: <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer.exe%20-%20Shortcut.lnk">`Polygon_drawer`</a> <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer2_0.exe%20-%20Shortcut.lnk">`Polygon_drawer2_0`</a> <br>
