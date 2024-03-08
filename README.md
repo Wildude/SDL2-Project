@@ -74,7 +74,10 @@ here are the executables: <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer2_0.exe%20-%20Shortcut.lnk">`Polygon_drawer2_0`</a> <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/point_joiner.exe%20-%20Shortcut.lnk">`point_joiner`</a> <br>
 Here's a demo for two of them: <br>
+Compiling code using terminal 😢💀: <br>
 https://github.com/Wildude/SDL2-Project/assets/122345410/63028f1f-ad0f-4e7c-b880-19e0c5259f5a <br>
+point_joiner.exe: <br>
 https://github.com/Wildude/SDL2-Project/assets/122345410/5a22740b-db12-451f-865e-baf25415adc1 <br>
+Polygon_drawer2_0.exe: <br>
 https://github.com/Wildude/SDL2-Project/assets/122345410/da971d40-32d6-47e9-ab47-d2f9719ef8ca <br>
 ### this repository is out of date and will be updated as soon as this project is continued.
