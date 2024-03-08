@@ -69,6 +69,7 @@
   - simple SDL2 test.
 ### Of all 21 source codes, only 13, 15 and 17 were submitted in the form of control flow in a single CPP code.
 here are the executables:
-
-<a href = "https://github.com/Wildude/SDL2-Project/blob/main/">
+<a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer.exe%20-%20Shortcut.lnk">`Polygon_drawer`</a> <br>
+<a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer2_0.exe%20-%20Shortcut.lnk">`Polygon_drawer2_0`</a> <br>
+<a href = "https://github.com/Wildude/SDL2-Project/blob/main/point_joiner.exe%20-%20Shortcut.lnk">`point_joiner`</a> <br>
 ### this repository is out of date and will be updated as soon as this project is continued.
