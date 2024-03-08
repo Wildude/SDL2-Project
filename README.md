@@ -68,4 +68,7 @@
 22. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/SDL2_main.cpp">`SDL2_main.cpp`</a>
   - simple SDL2 test.
 ### Of all 21 source codes, only 13, 15 and 17 were submitted in the form of control flow in a single CPP code.
+here are the executables:
+
+<a href = "https://github.com/Wildude/SDL2-Project/blob/main/">
 ### this repository is out of date and will be updated as soon as this project is continued.
