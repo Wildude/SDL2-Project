@@ -1,7 +1,3 @@
-
-https://github.com/Wildude/SDL2-Project/assets/122345410/ba35cbc5-ea31-4a3c-b252-7b7fd02d63d7
-
-https://github.com/Wildude/SDL2-Project/assets/122345410/a5705a01-e7b7-438c-a661-c54bfa6f24d7
 # SDL2-Project
 ## Preface
 ### <i>PREVIEW</i>
