@@ -67,5 +67,5 @@
   - control the length and angle of a line.
 22. <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/SDL2_main.cpp">`SDL2_main.cpp`</a>
   - simple SDL2 test.
-### Of all 21 source codes, only 7, 13, 15, 17 and 21 were submitted in the form of control flow in a single CPP code.
+### Of all 21 source codes, only 13, 15 and 17 were submitted in the form of control flow in a single CPP code.
 ### this repository is out of date and will be updated as soon as this project is continued.
