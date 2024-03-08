@@ -1,3 +1,7 @@
+
+https://github.com/Wildude/SDL2-Project/assets/122345410/ba35cbc5-ea31-4a3c-b252-7b7fd02d63d7
+
+https://github.com/Wildude/SDL2-Project/assets/122345410/a5705a01-e7b7-438c-a661-c54bfa6f24d7
 # SDL2-Project
 ## Preface
 ### <i>PREVIEW</i>
@@ -73,4 +77,8 @@ here are the executables: <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer.exe%20-%20Shortcut.lnk">`Polygon_drawer`</a> <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Polygon_drawer2_0.exe%20-%20Shortcut.lnk">`Polygon_drawer2_0`</a> <br>
 <a href = "https://github.com/Wildude/SDL2-Project/blob/main/point_joiner.exe%20-%20Shortcut.lnk">`point_joiner`</a> <br>
+Here's a demo for two of them: <br>
+https://github.com/Wildude/SDL2-Project/assets/122345410/63028f1f-ad0f-4e7c-b880-19e0c5259f5a <br>
+https://github.com/Wildude/SDL2-Project/assets/122345410/5a22740b-db12-451f-865e-baf25415adc1 <br>
+https://github.com/Wildude/SDL2-Project/assets/122345410/da971d40-32d6-47e9-ab47-d2f9719ef8ca <br>
 ### this repository is out of date and will be updated as soon as this project is continued.
