@@ -1,13 +1,6 @@
-//
-#include <cstring>
-#include "SDL2_namespace.h"
-//
-#include <iostream>
-#include <fstream>
-#ifndef BASIC_H_
-#include "Basic.h"
-#endif
-using namespace std;
+#include "Basic.hpp"
+#include "SDL2_namespace.hpp"
+using namespace SDL2;
 //
 class EVENT
 {
@@ -283,7 +276,7 @@ class TEXTURE
     }
     SDL_Renderer* crtren(SDL_Window* win = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED)
     {
-        renderer = SDL2::crtren(win, index, flag);
+        renderer = crtren(win, index, flag);
         return renderer;
     }
     SDL_Renderer* getren() const
@@ -484,7 +477,7 @@ class TEXTURE
     int drawO(SDL_Renderer* rend = NULL)
     {
     	if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
-        SDL2::pst(rend ? rend : renderer);
+        pst(rend ? rend : renderer);
         return 1;
     }
     int drawI(const char* filepath, bool clrer = 1, SDL_Renderer* rend = NULL)
@@ -496,8 +489,8 @@ class TEXTURE
         set_dstdim();
         setcenter();
         if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
-        SDL2::pst(rend);
-        if(clrer)if(SDL2::clr(rend) < 0) return -4;
+        pst(rend);
+        if(clrer)if(clr(rend) < 0) return -4;
         return 1;
     }
     int draw(SDL_Renderer* rend = NULL, bool clrer = 1)
@@ -508,8 +501,8 @@ class TEXTURE
         set_dstdim();
         setcenter();
         if(rencpy(NULL, &dst, flip, &center, &src, (rend ? rend : renderer)) < 0)return -2;
-        SDL2::pst(rend ? rend : renderer);
-        if(clrer)if(SDL2::clr((rend ? rend : renderer)) < 0) return -3;
+        pst(rend ? rend : renderer);
+        if(clrer)if(clr((rend ? rend : renderer)) < 0) return -3;
         return 1;
     }
 };
@@ -647,8 +640,7 @@ class FONT
         TTF_CloseFont(fontdata);
     }
 };
-class PROGRAM
+class AUDIO
 {
-    WINDOW PROGRAM_WINDOW;
-    RENDERER PROGRAM_RENDERER;
+
 };
