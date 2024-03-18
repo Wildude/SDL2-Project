@@ -93,7 +93,6 @@ int main(int argn, char** args)
             }
             default: break;
         }
-        rotate_rC(ver, angle, &mousepos);
         for(int i = 0; i < ver.size(); i++)
         {
         	if(i >= 0) //control condition (to be updated later)
