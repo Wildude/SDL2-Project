@@ -17,4 +17,4 @@
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/vector2D.h">`vector2D.h`</a>
   - This contains 2D math implementations like line and polygon construction, intersection and collision detection and rotation.
 ### this repository is out of date and will be updated as soon as this project is continued.
-> preparing for SDL3 update
+> This repo is dead and outdated as there is SDL3 now, it's put for documentary purposes.
