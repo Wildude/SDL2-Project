@@ -16,5 +16,6 @@
   - This contains namespaces to hold various functions from SDL2 library in order to make them more memorable and easy.
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Files/Headers/vector2D.h">`vector2D.h`</a>
   - This contains 2D math implementations like line and polygon construction, intersection and collision detection and rotation.
-### this repository is out of date and will be updated as soon as this project is continued.
-> This repo is dead and outdated as there is SDL3 now, it's put for documentary purposes.
+### Project's source codes (Updated)
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/UnicodeTrial.cpp">`UnicodeTrial.cpp`</a>
+  - This is the source code that tests for the display of unicode characters using SDL_TTF.
