@@ -233,8 +233,8 @@ class TEXTURE
     SDL_Texture* texture;
     SDL_Surface* surface;
     SDL_Renderer* renderer;
-    SDL_Rect src;
-    SDL_FRect dst;
+    SDL_Rect src = {0, 0, 0, 0};
+    SDL_FRect dst = {0, 0, 0, 0};
     SDL_FPoint center;
     SDL_RendererFlip flip;
     SDL_Color col = {0, 0, 0, 0};
@@ -469,6 +469,12 @@ class TEXTURE
         setcenter(); 
         return 1;
     }
+    int queryC(){
+        if(queryR() < 0){return -2;}
+        set_dstdim();
+        setcenter();
+        return 1;
+    }
     int drawC(SDL_Renderer* rend = NULL)
     {
         if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
@@ -628,6 +634,12 @@ class FONT
     SDL_Surface* LCD_render(const char* _text = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
         return TTF_RenderText_LCD(fontdata, (_text ? _text : (const char*)text), (cola ? *cola : col1), (colb ? *colb : col2));
+    }
+    SDL_Surface* blended_render_utf8(const char* _text = NULL, SDL_Color* col = NULL){
+        return TTF_RenderUTF8_Blended(fontdata, (_text ? _text : text), (col ? *col : col1));
+    }
+    SDL_Surface* blended_render_unicode(const char* _text = NULL, SDL_Color* col = NULL){
+        return TTF_RenderUNICODE_Blended(fontdata, (const Uint16*)(_text ? _text : text), (col ? *col : col1));
     }
     char* settext(const char* text_ = NULL)
     {
