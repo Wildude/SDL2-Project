@@ -235,7 +235,7 @@ class TEXTURE
     SDL_Renderer* renderer;
     SDL_Rect src = {0, 0, 0, 0};
     SDL_FRect dst = {0, 0, 0, 0};
-    SDL_FPoint center;
+    SDL_FPoint center = {0, 0};
     SDL_RendererFlip flip;
     SDL_Color col = {0, 0, 0, 0};
     char* path;
@@ -404,6 +404,22 @@ class TEXTURE
         dst.h = (h ? h : src.h);
         return dst;
     }
+    SDL_Rect set_src(int w, int h, float x = -1, float y = -1)
+    {
+        src.w = w;
+        src.h = h;
+        if(x > -1)src.x = x;
+        if(y > -1)src.y = y;
+        return src;
+    }
+    SDL_FRect set_dst(int w, int h, float x = -1, float y = -1)
+    {
+        dst.w = w;
+        dst.h = h;
+        if(x > -1)dst.x = x;
+        if(y > -1)dst.y = y;
+        return dst;
+    }
     SDL_Rect set_src(SDL_Rect& src_)
     {
         src = src_;
@@ -414,11 +430,11 @@ class TEXTURE
         dst = dst_;
         return dst;
     }
-    SDL_FRect getdst() const
+    SDL_FRect& getdst() // const
     {
         return dst;
     }
-    SDL_Rect getsrc() const
+    SDL_Rect& getsrc() // const
     {
         return src;
     }
@@ -474,6 +490,9 @@ class TEXTURE
         set_dstdim();
         setcenter();
         return 1;
+    }
+    int queryN(){
+        return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
     int drawC(SDL_Renderer* rend = NULL)
     {
