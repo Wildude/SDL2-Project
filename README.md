@@ -21,8 +21,14 @@ open up executables folder and run the programs.
 ### Project's source codes (Updated)
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/UnicodeTrial.cpp">`UnicodeTrial.cpp`</a>
   - This is the source code that tests for the display of unicode characters using SDL_TTF.
+  - https://github.com/Wildude/SDL2-Project/assets/122345410/7c89478f-d892-4ce8-ad3e-901efd9367fb
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/SurfaceDrawingTrial.cpp">`SurfaceDrawingTrial.cpp`</a>
   - This is the source code that tests if a surface can be manipulated.
-  - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/GraphDrawer.cpp">`GraphDrawer.cpp`</a>
+  - ![SurfaceEditor](https://github.com/Wildude/SDL2-Project/assets/122345410/5ea825ad-2712-4e34-8d5c-147fc4284d35)
+  - ![SurfaceEditor2](https://github.com/Wildude/SDL2-Project/assets/122345410/aee43dfa-0174-47b6-8657-ea557a854b83)
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/GraphDrawer.cpp">`GraphDrawer.cpp`</a>
   - This is the source code that draws the graphs of different mathematical functions.
-  - - It also draws the area.
+  - It also draws the area.
+  - https://github.com/Wildude/SDL2-Project/assets/122345410/bdbc4fd8-3f98-4e41-bca0-65f3370c0ae7
+
+
