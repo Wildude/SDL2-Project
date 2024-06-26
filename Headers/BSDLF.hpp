@@ -242,7 +242,14 @@ class TEXTURE
     char TYPE;
     double angle = 0;
     public:
-    TEXTURE(const char* filepath = "../Images/point.jpg")
+    TEXTURE(){
+        texture = NULL;
+        renderer = NULL;
+        surface = NULL;
+        path = NULL;
+        INIT();
+    }
+    TEXTURE(const char* filepath)
     {
         //cout<<" contructor called for textures\n";
         texture = NULL;
@@ -268,6 +275,15 @@ class TEXTURE
         TYPE = t.TYPE;
         angle = t.angle;
         return *this;
+    }
+    TEXTURE(SDL_Surface* surf, SDL_Renderer* rend){
+        texture = NULL;
+        renderer = NULL;
+        surface = NULL;
+        path = NULL;
+        INIT();
+        setren(rend);
+        surfcpy(surf);
     }
     SDL_Renderer* setren(SDL_Renderer* rend = NULL)
     {
@@ -460,6 +476,7 @@ class TEXTURE
     }
     int queryR(SDL_Rect* src_ = NULL)
     {
+        setcenter();
         return query((src_ ? &(src_->w) : &src.w), (src_ ? &(src_->h) : &src.h));
     }
     SDL_Texture* load(const char* filepath = NULL, SDL_Renderer* rend = NULL)

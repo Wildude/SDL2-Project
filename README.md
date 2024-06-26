@@ -21,3 +21,6 @@
   - This is the source code that tests for the display of unicode characters using SDL_TTF.
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/SurfaceDrawingTrial.cpp">`SurfaceDrawingTrial.cpp`</a>
   - This is the source code that tests if a surface can be manipulated.
+  - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/GraphDrawer.cpp">`GraphDrawer.cpp`</a>
+  - This is the source code that draws the graphs of different mathematical functions.
+  - - It also draws the area.
