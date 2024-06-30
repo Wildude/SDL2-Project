@@ -1,7 +1,4 @@
-#include "Basic.hpp"
-#include "SDL2_namespace.hpp"
 using namespace SDL2;
-//
 class EVENT
 {
     SDL_Event event;
@@ -22,6 +19,23 @@ class EVENT
     {
         return (event.button.button == index - 1);
     }
+    /*
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
+    // arrows
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]);
+    // WASD
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_A]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]);
+    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_D]);
+    // mouse button click
+    if(event.button.button == 1); // left click
+    if(event.button.button == 2); // middle click
+    if(event.button.button == 3); // right click
+    */
 };
 class WINDOW
 {

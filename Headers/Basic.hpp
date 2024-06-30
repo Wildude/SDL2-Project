@@ -4,6 +4,9 @@
 #include <cmath>
 #include <limits>
 #include <string>
+#include <vector>
+#include <typeinfo>
+using namespace std;
 using namespace std;
 namespace nummap
 {

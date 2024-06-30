@@ -1,0 +1,52 @@
+#include "../Headers/inclusions.hpp"
+int main(int argn, char** args)
+{
+    WINDOW win("Math test");
+    win.crtB();
+    win.pstcol(255, 255, 255, 255);
+    TEXTURE ppl[4];
+    int w = 5;
+    SDL_Surface* surf = SDL_CreateRGBSurface(0, w, w, 8, 0, 0, 0, 0);
+    for(int i = 0; i < 3; i++){
+        if(!i)SDL_SetSurfaceColorMod(surf, 255, 0, 0);
+        else if(i == 1)SDL_SetSurfaceColorMod(surf, 0, 255, 0);
+        else if(i == 2)SDL_SetSurfaceColorMod(surf, 0, 0, 255);
+        else SDL_SetSurfaceColorMod(surf, 0, 0, 0);
+        ppl[i].setren(win.getren());
+        ppl[i].surfcpy(surf);
+        ppl[i].queryF();
+    }
+    float angle = 45;
+    SDL_Event event;
+    Vflt2 tarpos;
+    Vflt2 linepos = Vflt2(win.getw()/2, win.geth()/2);
+    float bigMag = 450;
+    int sides = 3;
+    float sidelength = 100;
+    float pangle = 0;
+    while(event.type != SDL_QUIT){
+        SDL_PollEvent(&event);
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        // WASD
+        Vflt2 mousepos = Vflt2(x, y);
+        if(event.button.button == 1)
+        tarpos = mousepos;
+        if(event.button.button == 3)
+        linepos = mousepos;
+        TEXTURE* polygon = new TEXTURE[sides];
+        ppl[0].set_dst(w, w, tarpos.getx(), tarpos.gety());
+        ppl[1].set_dst(w, w, linepos.getx() - bigMag * cos(torad(angle)), linepos.gety() + bigMag * sin(torad(angle)));
+        ppl[2].set_dst(w, w, linepos.getx(), linepos.gety());
+        ppl[3].set_dst(w, w, tarpos.getx(), tarpos.gety());
+        ppl[0].set_dstdim(p_l_mag<float>(tarpos, linepos, angle), w);
+        ppl[0].setangle(-angle + 90);
+        ppl[1].set_dstdim(bigMag * 2, w);
+        ppl[1].setangle(-angle);
+        for(int i = 0; i < 4; i++)ppl[i].drawC();
+        win.pst();
+        win.clr();
+        SDL_Delay(50);
+    }
+    return 0;
+}

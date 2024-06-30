@@ -1,8 +1,3 @@
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <typeinfo>
-using namespace std;
 float PI = 3.14;
 int todeg(double rad)
 {
@@ -22,6 +17,10 @@ class VECTOR2
             x = xcomp;
             y = ycomp;
             //cout<<" contructor called for points\n";
+        }
+        VECTOR2(bool noth, float mag, float angle){
+            x = mag * cos(torad(angle));
+            y = mag * sin(torad(angle));
         }
         T& getx() {return x;}
         T& gety() {return y;}
@@ -138,7 +137,11 @@ template <class T> double angler(VECTOR2<T> v1, VECTOR2<T> v2)
     else if(yl){rang += 360; return rang;}
     else return rang;
 }
-template <class T> VECTOR2<T>* n_gonr(VECTOR2<T> v, int sides, int sidelength)
+template <class T> T p_l_mag(VECTOR2<T> p, VECTOR2<T> lpos1, float angle)
+{
+    return (p - intersector(p, p + VECTOR2<T>(100 * cos(torad(angle - 90)), -100 * sin(torad(angle - 90))), lpos1, lpos1 + VECTOR2<T>(100 * cos(torad(angle)), -100 * sin(torad(angle))))).getmag();
+}
+template <class T> VECTOR2<T>* n_gonr(VECTOR2<T> v, int sides, float sidelength)
 {
     VECTOR2<T>* vertices = new VECTOR2<T>[sides];
     T PI = 3.14;
@@ -441,7 +444,9 @@ template <class T> bool in_polyB(VECTOR2<T>* vecs, VECTOR2<T> point, VECTOR2<T> 
             //cout<<" vec["<<i<<"] & vec["<<(i != size-1 ? i + 1 : 0)<<"]: "<<intersector(point, term, vecs[i], vecs[i != size-1 ? i + 1: 0])<<endl;
             //cout<<" checking intersection point similarities of:\n";
             //cout<<" vertices: "<<i<<(i != size-1 ? i + 1 : 0)<<intersector(point, term, vecs[i], vecs[i != size-1 ? i + 1: 0])<<" and "<<(i != size-1? i + 1 : 0)<<(i < size-2 ? i + 2: (i == size-2 ? 0 : 1))<<intersector(point, term, vecs[i != size-1 ? i + 1: 0], vecs[i < size-2 ? i + 2: (i == size-2 ? 0 : 1)])<<endl;
-            if((intersector(point, term, vecs[i], vecs[i != size-1 ? i + 1: 0]) - intersector(point, term, vecs[i != size-1 ? i + 1: 0], vecs[i < size-2 ? i + 2: (i == size-2 ? 0 : 1)])).getmag() > 10)
+            if(
+                (intersector(point, term, vecs[i], vecs[i != size-1 ? i + 1: 0]) - intersector(point, term, vecs[i != size-1 ? i + 1: 0], vecs[i < size-2 ? i + 2: (i == size-2 ? 0 : 1)])).getmag() > 10
+            )
             {
                 //cout<<" approved\n";
                 count++;
@@ -621,4 +626,18 @@ template <class T> int INTERSECT(VECTOR2<T>* vecs1, VECTOR2<T>* vecs2, int size1
 template <class T> void printout(VECTOR2<T>* vecs, int size)
 {
     for(int i = 0; i < size; i++)cout<<vecs[i]<<endl;
+}
+template <class T> int most_close_vertex(VECTOR2<T>* vecs, float angle, int size)
+{
+    float* mags = new float[size];
+    for(int i = 0; i < size; i++)mags[i] = p_l_mag<T>(vecs[i], VECTOR2<T>(2000 * cos(torad(angle)), 2000 * sin(torad(angle))), angle + 90);
+    int index = -1;
+    float smag = numeric_limits<float>::max();
+    for(int i = 0; i < size; i++){
+        if(smag > mags[i]){
+            index = i;
+            smag = mags[i];
+        }
+    }
+    return index;
 }
