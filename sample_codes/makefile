@@ -12,3 +12,4 @@ g++ -I../src/Include -L../src/Lib -o ../Executables/UnicodeTrial.exe UnicodeTria
 g++ -I../src/Include -L../src/Lib -o ../Executables/GraphDrawer.exe GraphDrawer.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/PhysicsTest.exe PhysicsTest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/MathTest.exe MathTest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/SpiralTest.exe SpiralTest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

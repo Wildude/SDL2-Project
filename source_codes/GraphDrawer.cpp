@@ -1,6 +1,4 @@
-#include "../Headers/BSDLF.hpp"
-#include <vector>
-#include "../Headers/vector2D.hpp"
+#include "../Headers/inclusions.hpp"
 int main(int argn, char** args){
     WINDOW win("Graph drawer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480);
     win.crtB();
@@ -60,7 +58,6 @@ int main(int argn, char** args){
         points.at(points.size() - 1).drawC();
         verticals.at(verticals.size() - 1).drawC();
         win.pst();
-        // win.clr();
         SDL_Delay(50);
         x += dx * w;
     }
