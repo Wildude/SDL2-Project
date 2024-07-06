@@ -17,6 +17,12 @@ class physx
             Velocity = vel;
             Acceleration = acc;
         }
+        void app(){
+            app_acc();
+            app_vel();
+            app_ang_acc();
+            app_ang_vel();
+        }
         void app_acc(){
             Velocity.getx() += Acceleration.getx() * delta;
             Velocity.gety() += Acceleration.gety() * delta;
@@ -75,4 +81,35 @@ class physx_surface
     float magnitude = 0;
     Vflt2 pos1 = Vflt2_0;
     Vflt2 pos2 = Vflt2_0;
+};
+class physx_body : public physx
+{
+    public:
+        TEXTURE image;
+        physx_body(){}
+        physx_body(TEXTURE img)
+        {
+            image.copy(img);
+        }
+        void query(){
+            image.queryF();
+        }
+        void setdims(){
+            Dimension = Vflt2(image.getdst().w, image.getdst().h);
+        }
+        void queryset(){
+            query();
+            setdims();
+        }
+        void setphysx(){
+            app();
+            image.set_dstdim(Dimension.getx(), Dimension.gety());
+            image.setcenter(Center_of_mass.getx(), Center_of_mass.gety());
+            image.set_cenpos(Position.getx(), Position.gety());
+            image.setangle(-angle);
+        }
+        void draw(){
+            setphysx();
+            image.drawC();
+        }
 };

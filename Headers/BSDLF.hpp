@@ -263,16 +263,24 @@ class TEXTURE
         path = NULL;
         INIT();
     }
-    TEXTURE(const char* filepath)
+    void copy(const TEXTURE& t){
+        setren(t.renderer);
+        setpath(t.path);
+        checkTYPE();
+        load();
+    }
+    TEXTURE(const char* filepath, SDL_Renderer* ren)
     {
         //cout<<" contructor called for textures\n";
         texture = NULL;
         renderer = NULL;
         surface = NULL;
         path = NULL;
+        setren(ren);
         INIT();
         setpath(filepath);
         checkTYPE();
+        load();
     }
     TEXTURE& operator=(const TEXTURE& t)
     {
@@ -423,6 +431,10 @@ class TEXTURE
         dst.x = x;
         dst.y = y;
         return dst;
+    }
+    SDL_FPoint get_cenpos(){
+        SDL_FPoint point = {dst.x + center.x, dst.y + center.y};
+        return point;
     }
     SDL_FRect set_cenpos(float x = 0, float y = 0)
     {

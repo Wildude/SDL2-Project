@@ -30,5 +30,9 @@ open up executables folder and run the programs.
   - This is the source code that draws the graphs of different mathematical functions.
   - It also draws the area.
   - https://github.com/Wildude/SDL2-Project/assets/122345410/bdbc4fd8-3f98-4e41-bca0-65f3370c0ae7
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Rigid_body.cpp">`Rigid_body.cpp`</a>
+  - This source code contains a 2D rag doll animation.
+  - The model is trying to do some gym exercise reps.
+  - 
 
 
