@@ -33,6 +33,8 @@ open up executables folder and run the programs.
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Rigid_body.cpp">`Rigid_body.cpp`</a>
   - This source code contains a 2D rag doll animation.
   - The model is trying to do some gym exercise reps.
-  - 
+  - https://github.com/Wildude/SDL2-Project/assets/122345410/be4b48cd-6889-419d-a8f2-cc731574e23f
+
+
 
 
