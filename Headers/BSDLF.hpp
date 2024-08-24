@@ -282,21 +282,23 @@ class TEXTURE
         checkTYPE();
         load();
     }
-    TEXTURE& operator=(const TEXTURE& t)
+    const TEXTURE& operator=(const TEXTURE& t)
     {
         //cout<<" assignment called for font\n";
-        texture = t.texture;
-        surface = t.surface;
-        renderer = t.renderer;
-        src = t.src;
-        dst = t.dst;
-        center = t.center;
-        flip = t.flip;
-        col = t.col;
-        strcpy(path, t.path);
-        TYPE = t.TYPE;
-        angle = t.angle;
-        return *this;
+        if(this != &t){
+            texture = t.texture;
+            surface = t.surface;
+            renderer = t.renderer;
+            src = t.src;
+            dst = t.dst;
+            center = t.center;
+            flip = t.flip;
+            col = t.col;
+            strcpy(path, t.path);
+            TYPE = t.TYPE;
+            angle = t.angle;
+            return *this;
+        }
     }
     TEXTURE(SDL_Surface* surf, SDL_Renderer* rend){
         texture = NULL;
@@ -712,6 +714,8 @@ class FONT
     ~FONT()
     {
         TTF_CloseFont(fontdata);
+        if(path)delete path;
+        if(text)delete text;
     }
 };
 class AUDIO

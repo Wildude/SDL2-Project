@@ -25,7 +25,7 @@ class VECTOR2
         T& getx() {return x;}
         T& gety() {return y;}
         T getmag() {return sqrt(x * x + y * y);}
-        VECTOR2 operator*=(T num)
+        const VECTOR2& operator*=(T num)
         {
             x *= num;
             y *= num;
@@ -40,7 +40,7 @@ class VECTOR2
             return (this->getx() == vec.getx() && this->gety() == vec.gety());
         }
         VECTOR2 getU2() {return VECTOR2(x/getmag(), y/getmag());}      
-        void operator=(VECTOR2 v)
+        const VECTOR2& operator=(VECTOR2 v)
         {
             x = v.x;
             y = v.y;
@@ -57,19 +57,19 @@ class VECTOR2
         {
             return VECTOR2(this->x - v.x, this->y - v.y);
         }
-        VECTOR2 operator+=(VECTOR2 v)
+        const VECTOR2& operator+=(VECTOR2 v)
         {
             x += v.x;
             y += v.y;
             return *this;
         }
-        VECTOR2 operator-=(VECTOR2 v)
+        const VECTOR2& operator-=(VECTOR2 v)
         {
             x -= v.x;
             y -= v.y;
             return *this;
         }
-        template <class Y>VECTOR2<Y> friend operator*(T, VECTOR2<Y>);
+        template <class Y> VECTOR2<Y> friend operator*(T, VECTOR2<Y>);
         template <class Y> friend ostream& operator<<(ostream&, VECTOR2<Y>);
         friend istream& operator>>(istream&, VECTOR2<int>&);
         friend istream& operator>>(istream&, VECTOR2<float>&);

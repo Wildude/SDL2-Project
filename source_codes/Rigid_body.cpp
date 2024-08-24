@@ -26,7 +26,7 @@ int main(int argn, char** args)
             iterator = speed;
         }
         // cout << angle << endl;
-        samp.body[5].angle = 90 + angler(samp.body[5].Position, mousepos);
+        samp.body[4].angle = 90 + angler(samp.body[5].Position, mousepos);
         samp.body[3].angle = angle;
         samp.body[2].angle = angle2;
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP])speed++;
