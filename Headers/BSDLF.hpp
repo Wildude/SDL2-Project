@@ -250,7 +250,7 @@ class TEXTURE
     SDL_Rect src = {0, 0, 0, 0};
     SDL_FRect dst = {0, 0, 0, 0};
     SDL_FPoint center = {0, 0};
-    SDL_RendererFlip flip;
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
     SDL_Color col = {0, 0, 0, 0};
     char* path;
     char TYPE;
@@ -447,6 +447,11 @@ class TEXTURE
         dst.w = (w ? w : src.w);
         dst.h = (h ? h : src.h);
         return dst;
+    }
+    void magnify(float w = 1, float h = -1){
+        h = (h <= 0 ? w : h);
+        dst.w *= w;
+        dst.h *= h;
     }
     SDL_Rect set_src(int w, int h, float x = -1, float y = -1)
     {
