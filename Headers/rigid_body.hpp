@@ -58,10 +58,14 @@ class doll
         float feet = 70;
        }
        void setbody(){
-        tighten();
-        for(int i = 0; i < 8; i++)body[i].setphysx();
+        // tighten();
+        for(int i = 0; i < 13; i++)
+        {
+            body[i].Position = Vflt2(100 + (50* (i)), 50 * (i + 1));
+            body[i].setphysx();
+        }
        }
        void draw(){
-        for(int i = 0; i < 8; i++)body[i].draw();
+        for(int i = 0; i < 13; i++)body[i].draw();
        }
 };
