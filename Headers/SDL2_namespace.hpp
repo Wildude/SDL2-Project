@@ -502,6 +502,7 @@ namespace SDL2
 	int allocate_channels(int num)
 	{
 		return Mix_AllocateChannels(num);
+		// returns the new number of allocated channels
 	}
 	int Expire_Chann(int chann_no, int ticks)
 	{
@@ -868,9 +869,9 @@ namespace SDL2
 		return Mix_OpenAudio(freq, format, channels, chunksize);
 		//returns 0 on success, -1 on error.
 	}
-	int Open_AUD_Device(int freq, Uint16 format, int channels, int chunksize, const char* device)
+	int Open_AUD_Device(int freq, Uint16 format, int channels, int chunksize, const char* device, int changes)
 	{
-		//return Mix_OpenAudioDevice(freq, format, channels, chunksize, device);
+		return Mix_OpenAudioDevice(freq, format, channels, chunksize, device, changes);
 		//returns 0 on success, -1 on error.
 	}
 	void Pause_AUD(int pause_on)

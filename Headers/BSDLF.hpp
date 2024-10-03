@@ -725,5 +725,44 @@ class FONT
 };
 class AUDIO
 {
-
+    private:
+    Mix_Chunk* chunk = NULL;
+    public:
+    AUDIO(int freq, Uint16 format, int channels, int chunksize){
+        INIT(SDL_INIT_AUDIO);
+        Open_AUD(freq, format, channels, chunksize);
+    }
+    AUDIO(){
+        INIT(SDL_INIT_AUDIO);
+        Open_AUD(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
+    }
+    AUDIO(string path){
+        INIT(SDL_INIT_AUDIO);
+        Open_AUD(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
+        load(path);
+        //allocate_channels(4);
+    }
+    void load(const char* path){
+        chunk = Load_WAV(path);
+        if(!chunk)cout << SDL_GetError() << "\a\n";
+    }
+    void load(string path){
+        load(path.c_str());
+    }
+    int setvol(int vol){
+        return Set_chunkVOL(chunk, vol);
+    }
+    int play(int chann, int loops = 1){
+        return Mix_PlayChannel(chann, chunk, loops);
+    }
+    int playt(int chann, int time, int loops = 1){
+        return Play_chann(chann, chunk, loops, time);
+    }
+    int halt(int chann){
+        return haltchann(chann);
+    }
+    ~AUDIO(){
+        FreeChunk(chunk);
+        closeAUD();
+    }
 };
