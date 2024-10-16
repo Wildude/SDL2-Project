@@ -369,19 +369,19 @@ class TEXTURE
         out<<" col(r, g, b, a): "<<(int)col.r<<','<<(int)col.g<<','<<(int)col.b<<','<<(int)col.a<<endl;
         out<<" flipstate: "<<flip<<endl;
     }
-    void display()
+    void display(ostream& os = cout)
     {
-        cout<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
-        cout<<" Surface condition: "<<(surface?  "alive\n": "dead\n");
-        cout<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
-        cout<<" angle: "<<angle<<endl;
-        cout<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
-        cout<<" src_dim(w, h): "<<src.w<<','<<src.h<<endl;
-        cout<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
-        cout<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
-        cout<<" center(x, y): "<<center.x<<','<<center.y<<endl;
-        cout<<" col(r, g, b, a): "<<(int)col.r<<','<<(int)col.g<<','<<(int)col.b<<','<<(int)col.a<<endl;
-        cout<<" flipstate: "<<flip<<endl;
+        os<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
+        os<<" Surface condition: "<<(surface?  "alive\n": "dead\n");
+        os<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
+        os<<" angle: "<<angle<<endl;
+        os<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
+        os<<" src_dim(w, h): "<<src.w<<','<<src.h<<endl;
+        os<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
+        os<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
+        os<<" center(x, y): "<<center.x<<','<<center.y<<endl;
+        os<<" col(r, g, b, a): "<<(int)col.r<<','<<(int)col.g<<','<<(int)col.b<<','<<(int)col.a<<endl;
+        os<<" flipstate: "<<flip<<endl;
     }
     const SDL_FPoint& getcenter()
     {
@@ -452,6 +452,7 @@ class TEXTURE
         h = (h <= 0 ? w : h);
         dst.w *= w;
         dst.h *= h;
+        setcenter(center.x * w, center.y * h);
     }
     SDL_Rect set_src(int w, int h, float x = -1, float y = -1)
     {
@@ -532,7 +533,7 @@ class TEXTURE
         set_srcpos();
         set_dstpos();
         set_dstdim();
-        setcenter(); 
+        setcenter();
         return 1;
     }
     int queryC(){

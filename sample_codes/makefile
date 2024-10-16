@@ -15,3 +15,7 @@ g++ -I../src/Include -L../src/Lib -o ../Executables/MathTest.exe MathTest.cpp -l
 g++ -I../src/Include -L../src/Lib -o ../Executables/SpiralTest.exe SpiralTest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/Rigid_body.exe Rigid_body.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/AK47test.exe AK47test.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/Guntest.exe Guntest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/surface_landing.exe surface_landing.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/surface_landing.exe surface_landing.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/surfacer.exe surfacer.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

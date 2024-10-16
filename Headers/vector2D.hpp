@@ -19,8 +19,8 @@ class VECTOR2
             //cout<<" contructor called for points\n";
         }
         VECTOR2(bool noth, float mag, float angle){
-            x = mag * cos(torad(angle));
-            y = mag * sin(torad(angle));
+            x = ((angle && !((int)angle % 90)) ? 0 : mag * cos(torad(angle)));
+            y = (!((int)angle % 180) ? 0 : mag * sin(torad(angle)));
         }
         T& getx() {return x;}
         T& gety() {return y;}

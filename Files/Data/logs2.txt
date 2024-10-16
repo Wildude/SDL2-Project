@@ -1,0 +1,20 @@
+ Dimension = (65,26)
+ Position = (322,211)
+ Velocity = (0,0)
+ Acceleration = (0,0)
+ Angular_velocity = 0
+ Angular_acceleration = 0
+ mass = 0
+ angle = 35.0481
+ Center_of_mass = (9,6)
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: -35.0481
+ src_pos(x, y): 0,0
+ src_dim(w, h): 0,26
+ dst_pos(x, y): 313,205
+ dst_dim(w, h): 65,26
+ center(x, y): 9,6
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
