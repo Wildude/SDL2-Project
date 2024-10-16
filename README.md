@@ -34,6 +34,13 @@ open up executables folder and run the programs.
   - This source code contains a 2D rag doll animation.
   - The model is trying to do some gym exercise reps.
   - https://github.com/Wildude/SDL2-Project/assets/122345410/be4b48cd-6889-419d-a8f2-cc731574e23f
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/AK47test.cpp">`AK47test.cpp`</a>
+  - This source code is for an automatic rifle shooting animation.
+  - it contains shooting sound so be not surprized.
+  - press "Enter" to reposition the rifle, use mouse for aim and left click for shoot.
+  - Your shots won't keep going if you don't move your mouse (still trying to fix that).
+  - You can also use "space" for a more smooth shooting but you can't aim if you hold it (also trying to fix that).
+  - use this executable to test it <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Executables/AK47test.exe">`AK47test.exe`</a>
 
 
 
