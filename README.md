@@ -30,10 +30,6 @@ open up executables folder and run the programs.
   - This is the source code that draws the graphs of different mathematical functions.
   - It also draws the area.
   - https://github.com/Wildude/SDL2-Project/assets/122345410/bdbc4fd8-3f98-4e41-bca0-65f3370c0ae7
-- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Rigid_body.cpp">`Rigid_body.cpp`</a>
-  - This source code contains a 2D rag doll animation.
-  - The model is trying to do some gym exercise reps.
-  - https://github.com/Wildude/SDL2-Project/assets/122345410/be4b48cd-6889-419d-a8f2-cc731574e23f
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/AK47test.cpp">`AK47test.cpp`</a>
   - This source code is for an automatic rifle shooting animation.
   - it contains shooting sound so be not surprized.
@@ -41,7 +37,14 @@ open up executables folder and run the programs.
   - Your shots won't keep going if you don't move your mouse (still trying to fix that).
   - You can also use "space" for a more smooth shooting but you can't aim if you hold it (also trying to fix that).
   - use this executable to test it <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Executables/AK47test.exe">`AK47test.exe`</a>
-
-
-
+- <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Rigid_body.cpp">`Rigid_body.cpp`</a>
+  - This source code contains a 2D rag doll animation.
+  - It's an improved version that shows the body from a slightly angled front (rather than the side as in older version).
+  - The algorithm used is a little more complex than before.
+  - And while it works for when the body is static, it shows clear abnormalities for when it's repositioned and/or rotated.
+  - It uses a rectangle polygon whose center is the geometric center and whose vertices are the vertices of the particular image.
+  - Other body parts are repositioned relative to the center by inputing an angle which is a ray casted until the edge of the rectangle.
+  - The angle is compensated for when the image is rotated.
+  - This involves the rather erroneous `rotate_C()` function, which is assumed to be the reason for the abnormality.
+  - https://github.com/user-attachments/assets/248677c9-9a7b-4908-a524-6554671a8c1a
 
