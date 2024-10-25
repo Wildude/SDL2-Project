@@ -37,6 +37,8 @@ open up executables folder and run the programs.
   - Your shots won't keep going if you don't move your mouse (still trying to fix that).
   - You can also use "space" for a more smooth shooting but you can't aim if you hold it (also trying to fix that).
   - use this executable to test it <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Executables/AK47test.exe">`AK47test.exe`</a>
+  - ![AK47test](https://github.com/user-attachments/assets/d0195a88-ee2f-4e77-bd4a-e18709065052)
+  - https://github.com/user-attachments/assets/19aff586-493d-43e2-bd65-8a3b980b9f53
 - <a href = "https://github.com/Wildude/SDL2-Project/blob/main/source_codes/Rigid_body.cpp">`Rigid_body.cpp`</a>
   - This source code contains a 2D rag doll animation.
   - It's an improved version that shows the body from a slightly angled front (rather than the side as in older version).
