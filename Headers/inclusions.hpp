@@ -5,3 +5,4 @@
 #include "physics.hpp"
 #include "rigid_body.hpp"
 #include "Weapons.hpp"
+#include "stage.hpp"

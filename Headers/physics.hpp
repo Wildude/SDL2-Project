@@ -245,7 +245,7 @@ class physx_body : public physx
                 }
                 else{
                     // cout << "yd = 0" << endl;
-                    // cout << "error" << endl;
+                    cout << "error" << endl;
                     return Vflt2(numeric_limits<float>::min(), numeric_limits<float>::min());
                 }
             }
@@ -270,6 +270,9 @@ class physx_body : public physx
             physx_body();
             load(path, rend);
         }
+        void setcm(){
+            Center_of_mass = Vflt2(image.getcenter().x, image.getcenter().y);
+        }
         void load(const char* path, SDL_Renderer* rend){
             image.setren(rend);
             image.load(path);
@@ -281,6 +284,11 @@ class physx_body : public physx
         }
         void setdims(){
             Dimension = Vflt2(image.getdst().w, image.getdst().h);
+        }
+        void magnify(float x, float y = -1){
+            y = (y <= 0 ? x : y);
+            image.magnify(x, y);
+            setdims();
         }
         void queryset(float x = -1, float y = -1){
             image.queryF();
@@ -302,5 +310,13 @@ class physx_body : public physx
         void draw(){
             setphysx();
             image.drawC();
+        }
+        void display(ostream& os = cout){
+            physx::display(os);
+            image.display(os);
+        }
+        void displayf(ofstream& ofs){
+            physx::display(ofs);
+            image.display(ofs);
         }
 };

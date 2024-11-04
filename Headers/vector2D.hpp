@@ -22,6 +22,10 @@ class VECTOR2
             x = ((angle && !((int)angle % 90)) ? 0 : mag * cos(torad(angle)));
             y = (!((int)angle % 180) ? 0 : mag * sin(torad(angle)));
         }
+        string tostring(){
+            string str = "(" + strmap::to_str((int)x) + "," + strmap::to_str((int)y) + ")";
+            return str;
+        }
         T& getx() {return x;}
         T& gety() {return y;}
         T getmag() {return sqrt(x * x + y * y);}
@@ -40,33 +44,44 @@ class VECTOR2
             return (this->getx() == vec.getx() && this->gety() == vec.gety());
         }
         VECTOR2 getU2() {return VECTOR2(x/getmag(), y/getmag());}      
-        const VECTOR2& operator=(VECTOR2 v)
+        const VECTOR2& operator=(const VECTOR2& v)
         {
             x = v.x;
             y = v.y;
+            return *this;
         }
         VECTOR2 operator*(T num)
         {
             return VECTOR2(num * this->getx(), num * this->gety());
         }
-        VECTOR2 operator+(VECTOR2 v)
+        VECTOR2 operator+(const VECTOR2& v)
         {
             return VECTOR2(this->x + v.x, this->y + v.y);
         }
-        VECTOR2 operator-(VECTOR2 v)
+        VECTOR2 operator*(const VECTOR2& v)
+        {
+            return VECTOR2(this->x * v.x, this->y * v.y);
+        }
+        VECTOR2 operator-(const VECTOR2& v)
         {
             return VECTOR2(this->x - v.x, this->y - v.y);
         }
-        const VECTOR2& operator+=(VECTOR2 v)
+        const VECTOR2& operator+=(const VECTOR2& v)
         {
             x += v.x;
             y += v.y;
             return *this;
         }
-        const VECTOR2& operator-=(VECTOR2 v)
+        const VECTOR2& operator-=(const VECTOR2& v)
         {
             x -= v.x;
             y -= v.y;
+            return *this;
+        }
+        const VECTOR2& operator*=(const VECTOR2& v)
+        {
+            x *= v.x;
+            y *= v.y;
             return *this;
         }
         template <class Y> VECTOR2<Y> friend operator*(T, VECTOR2<Y>);

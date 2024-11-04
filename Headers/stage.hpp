@@ -1,0 +1,3 @@
+class stage : public TEXTURE{
+    
+};

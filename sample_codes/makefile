@@ -19,3 +19,5 @@ g++ -I../src/Include -L../src/Lib -o ../Executables/Guntest.exe Guntest.cpp -lmi
 g++ -I../src/Include -L../src/Lib -o ../Executables/surface_landing.exe surface_landing.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/surface_landing.exe surface_landing.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/surfacer.exe surfacer.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/environment.exe environment.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/Armed_man.exe Armed_man.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

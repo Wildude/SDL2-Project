@@ -529,7 +529,7 @@ class TEXTURE
     }
     int queryF()
     {
-        if(queryR() < 0){return -2;}
+        if(query() < 0){return -2;}
         set_srcpos();
         set_dstpos();
         set_dstdim();
@@ -584,9 +584,13 @@ class TEXTURE
 };
 class FONT
 {
+    #define DEF_FONT "../Fonts/ROCKB.ttf"
+    #define CHANGE_DEF_FONT(FONT_X) DEF_FONT = FONT_X
+    //static const string DEFONT = "../Fonts/nyala.ttf";
+    protected:
     TTF_Font* fontdata = NULL;
     int ptsize;
-    char* text = NULL;
+    string text;
     char* path = NULL;
     SDL_Color col1 = {255, 255, 255, 255}, col2 = {0,0,0,0};
     public:
@@ -614,7 +618,7 @@ class FONT
     {
         return fontdata;
     }
-    char* gettext() const
+    string gettext() const
     {
         return text;
     }
@@ -624,10 +628,10 @@ class FONT
     }
     int TEXT_size(int* w, int *h)
     {
-        return TTF_SizeText(getfont(), (const char*)gettext(), w, h);
+        return TTF_SizeText(getfont(), gettext().c_str(), w, h);
     }
     int setptsize(int pt_size = 12) {ptsize = pt_size;}
-    FONT(const char* fontpath = "../Fonts/nyala.ttf", int pt_size = 12, Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a = 255)
+    FONT(const char* fontpath = DEF_FONT, int pt_size = 20, Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0)
     {
         //cout<<" constructor called for font\n";
         INIT();
@@ -641,7 +645,7 @@ class FONT
     {
         return (TTF_WasInit() ? TTF_WasInit() : TTF_Init());
     }
-    SDL_Color setcol1(Uint8 r = 255, Uint8 g = 255, Uint8 b = 255, Uint8 a = 255)
+    SDL_Color setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0)
     {
         //cout<<" setting col1: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
         col1.r = r;
@@ -691,37 +695,60 @@ class FONT
     }
     SDL_Surface* solid_render(const char* _text = NULL, SDL_Color* col = NULL)
     {
-        return TTF_RenderText_Solid(fontdata, (_text ? _text : text), (col ? *col : col1));
+        return TTF_RenderText_Solid(fontdata, (_text ? _text : text.c_str()), (col ? *col : col1));
     }
     SDL_Surface* shaded_render(const char* _text = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
-        return TTF_RenderText_Shaded(fontdata, (_text ? _text : text), (cola ? *cola : col1), (colb ? *colb : col2));
+        return TTF_RenderText_Shaded(fontdata, (_text ? _text : text.c_str()), (cola ? *cola : col1), (colb ? *colb : col2));
     }
     SDL_Surface* blended_render(const char* _text = NULL, SDL_Color* col = NULL)
     {
-        return TTF_RenderText_Blended(fontdata, (_text ? _text : (const char*)text), (col ? *col : col1));
+        return TTF_RenderText_Blended(fontdata, (_text ? _text : text.c_str()), (col ? *col : col1));
     }
     SDL_Surface* LCD_render(const char* _text = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
-        return TTF_RenderText_LCD(fontdata, (_text ? _text : (const char*)text), (cola ? *cola : col1), (colb ? *colb : col2));
+        return TTF_RenderText_LCD(fontdata, (_text ? _text : text.c_str()), (cola ? *cola : col1), (colb ? *colb : col2));
     }
     SDL_Surface* blended_render_utf8(const char* _text = NULL, SDL_Color* col = NULL){
-        return TTF_RenderUTF8_Blended(fontdata, (_text ? _text : text), (col ? *col : col1));
+        return TTF_RenderUTF8_Blended(fontdata, (_text ? _text : text.c_str()), (col ? *col : col1));
     }
     SDL_Surface* blended_render_unicode(const char* _text = NULL, SDL_Color* col = NULL){
-        return TTF_RenderUNICODE_Blended(fontdata, (const Uint16*)(_text ? _text : text), (col ? *col : col1));
+        return TTF_RenderUNICODE_Blended(fontdata, (const Uint16*)(_text ? _text : text.c_str()), (col ? *col : col1));
     }
-    char* settext(const char* text_ = NULL)
+    string settext(string text_)
     {
-        text = (text ? text : (text_ ? new char[strlen(text_)] : text));
-        if(text_)strcpy(text, text_);
+        text = text_;
         return text;
     }
     ~FONT()
     {
         TTF_CloseFont(fontdata);
         if(path)delete path;
-        if(text)delete text;
+    }
+};
+class TXT: protected FONT{
+    public:
+    TEXTURE board;
+    string gettext(){
+        return gettext();
+    }
+    TXT(){
+        FONT();
+    }
+    void queryB(int *w = NULL, int *h = NULL){
+        w = (!w ? &board.getsrc().w : w);
+        h = (!h ? &board.getsrc().h : h);
+        TEXT_size(w, h);
+    }
+    bool checkfont(){
+        return (fontdata ? true : false);
+    }
+    TXT(const char* text, SDL_Renderer* rend, int pts = 20, Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0, const char* fontpath = DEF_FONT){
+        FONT(DEF_FONT, pts, r, g, b, a);
+        board.setren(rend);
+        queryB();
+        board.surfcpy(blended_render(text, &col1));
+        if(board.queryF() < 0)cout << " err: " << SDL_GetError() << endl;
     }
 };
 class AUDIO
