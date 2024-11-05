@@ -1,4 +1,5 @@
 # SDL2-Project
+## Recent changes
 ## How to use?
 open up executables folder and run the programs.
 ## Preface
