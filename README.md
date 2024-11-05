@@ -1,5 +1,7 @@
 # SDL2-Project
 ## Recent changes
+![environment](https://github.com/user-attachments/assets/7eb32976-d0de-4c2e-ab44-e02aff645b03)
+![armed_man](https://github.com/user-attachments/assets/7c7f268f-0b4c-4edb-8327-253146f96e1a)
 ## How to use?
 open up executables folder and run the programs.
 ## Preface
