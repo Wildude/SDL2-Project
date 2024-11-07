@@ -14,21 +14,25 @@ int main(int argn, char** args)
     wep.Position = Vflt2(win.getw()/2, win.geth()/2);
     wep.setbool(true);
     wep.magnify(0.5, 1);
+    wep.magnify(2);
+    man.magnify(2);
     SDL_Event event;
+    //wep.setmaincenter(Vflt2(-10, wep.image.getdst().h/2));
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
         int x, y;
         SDL_GetMouseState(&x, &y);
         Vflt2 mousepos(x, y);
-        double anglm = angler(man.body[Head].Position, mousepos);
+        double anglm = angle_bn(man.body[Head].Position, mousepos);
         bool movement = true;
         if(event.button.button == 1)man.body[Upper_bod].Position = mousepos;
+        bool reverted = (wep.Position.getx() > mousepos.getx());
         Vflt2 gunbarrel(
-            wep.Position.getx() + 20 * cos(torad(wep.angle)),
-            wep.Position.gety() - 20 * sin(torad(wep.angle))
+            wep.Position.getx() + 20 * cos(torad(wep.angle - (reverted ? 0 : 0))),
+            wep.Position.gety() - 20 * sin(torad(wep.angle - (reverted ? 0 : 0)))
         );
-        double anglegun = angler(man.body[Lower_armR].Position, gunbarrel);
+        double anglegun = angle_bn(man.body[Lower_armR].Position, gunbarrel);
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){man.animate2();}
         else if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){man.animate();}
         else if(event.type != SDL_KEYDOWN){
@@ -36,11 +40,13 @@ int main(int argn, char** args)
                 movement = false;
         }
         TXT txt("Pos", win.getren(), 15, 255, 0, 0, 255);
-        txt.board.set_dstpos(gunbarrel.getx(), gunbarrel.gety());
-        man.body[Lower_armL].angle = anglm + 90;
+        txt.board.set_dstpos(wep.Position.getx(), wep.Position.gety());
+        man.body[Upper_armL].angle = anglm + 90;
+        // man.body[Upper_armR].angle = anglm + 90;
+        man.body[Lower_armL].angle = man.body[Upper_armL].angle + 45;
         man.body[Lower_armR].angle = anglegun + 90;
         wep.set_target(mousepos);
-        wep.Position = man.body[HandL].Position;
+        //wep.Position = man.body[HandL].Position;
         wep.aim();
         man.draw();
         wep.draw();

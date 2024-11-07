@@ -13,7 +13,7 @@ class weapon : public physx_body{
         target = tar;
     }
     void aim(){
-        angle = angler(Vflt2(image.get_cenpos().x, image.get_cenpos().y), target);
+        angle = angle_bn(Vflt2(image.get_cenpos().x, image.get_cenpos().y), target);
         image.set_srcpos(0, 0);
         Center_of_mass = maincenter;
         if(twoside){
@@ -49,5 +49,11 @@ class weapon : public physx_body{
     void setbool(bool bul = false){
         twoside = bul;
         if(twoside)setwidth(65);
+    }
+    void magnify(float x, float y = -1){
+        y = (y < 0 ? x : y);
+        physx_body::magnify(x, y);
+        maincenter.getx() *= x;
+        maincenter.gety() *= y;
     }
 };

@@ -7,7 +7,6 @@
 #include <vector>
 #include <typeinfo>
 using namespace std;
-using namespace std;
 namespace nummap
 {
 	#define INTMAX numeric_limits<int>::max()

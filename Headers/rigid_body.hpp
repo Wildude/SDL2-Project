@@ -160,7 +160,7 @@ class simpledoll{
         body[FeetL].image.magnify(1.3, 0.7);
         body[FeetR].image.magnify(1.3, 0.7);
     }
-    void setdims(){
+    inline void setdims(){
         for(int i = 0; i < 15; i++)body[i].setdims();
     }
     void queryset(){

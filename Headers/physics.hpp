@@ -7,12 +7,13 @@
 * 3. Mechanics
 *
 */
+// requires copy constructor, destructor and a few operators
 class physx
 {
     static constexpr float delta = 0.1;
     public:
         physx(){}
-        physx(Vflt2 pos, Vflt2 vel = Vflt2_0, Vflt2 acc = Vflt2_0){
+        physx(const Vflt2& pos, const Vflt2& vel = Vflt2_0, const Vflt2& acc = Vflt2_0){
             Position = pos;
             Velocity = vel;
             Acceleration = acc;
@@ -23,26 +24,26 @@ class physx
             app_ang_acc();
             app_ang_vel();
         }
-        void app_acc(){
+        inline void app_acc(){
             Velocity.getx() += Acceleration.getx() * delta;
             Velocity.gety() += Acceleration.gety() * delta;
         }
-        void app_vel(){
+        inline void app_vel(){
             Position.getx() += Velocity.getx() * delta;
             Position.gety() -= Velocity.gety() * delta;
         }
-        void app_ang_acc(){
+        inline void app_ang_acc(){
             Angular_velocity += Angular_acceleration;
         }
-        void app_ang_vel(){
+        inline void app_ang_vel(){
             angle += Angular_velocity * delta;
         }
-        void set_center_of_mass(Vflt2 cen = Vflt2(-1, -1))
+        inline void set_center_of_mass(Vflt2 cen = Vflt2(-1, -1))
         {
-            Center_of_mass.getx() = (cen.getx() < 0 ? Dimension.getx() / 2 : cen.getx());
-            Center_of_mass.gety() = (cen.gety() < 0 ? Dimension.gety() / 2 : cen.gety());
+            Center_of_mass.getx() = (cen.getx() == -1 ? Dimension.getx() / 2 : cen.getx());
+            Center_of_mass.gety() = (cen.gety() == -1 ? Dimension.gety() / 2 : cen.gety());
         }
-        void set_mass(float m = -1){
+        inline void set_mass(float m = -1){
             mass = (m < 0 ? Dimension.getx() * Dimension.gety() : m);
         }
         void display(ostream& os = cout){
@@ -86,20 +87,20 @@ class physx_surface
     float coff = 0.1;
     physx_surface(){}
     physx_surface(SDL_Renderer* rend){image.setren(rend);}
-    physx_surface(Vflt2 pos_1, Vflt2 pos_2)
+    physx_surface(const Vflt2& pos_1, const Vflt2& pos_2)
     {
         pos1 = pos_1;
         pos2 = pos_2;
         set();
     }
-    void set(){
-        angle = angler(pos1, pos2);
+    inline void set(){
+        angle = angle_bn(pos1, pos2, true);
         magnitude = (pos1 - pos2).getmag();
     }
-    void setmag(float magn){
+    inline void setmag(float magn){
         mag = (magn <= 1 ? mag : magn);
     }
-    void setcolor(Uint8 r = -1, Uint8 g = -1, Uint8 b = -1){
+    inline void setcolor(Uint8 r = -1, Uint8 g = -1, Uint8 b = -1){
         col.r = r;
         col.g = g;
         col.b = b;
@@ -118,10 +119,10 @@ class physx_surface
         image.set_dstdim(magnitude, image.getdst().h);
         image.setangle(-angle);
     }
-    void draw(){
+    inline void draw(){
         image.drawC();
     }
-    physx_surface(Vflt2 pos_1, float mag, float ang){}
+    physx_surface(const Vflt2& pos_1, float mag, float ang){}
     void touch(physx& obj){
         if(obj.Position.getx() < pos1.getx() || obj.Position.getx() > pos2.getx())return;
         if(!((int)angle % 90) && angle){
@@ -148,9 +149,7 @@ class physx_surface
             obj.Acceleration += normA;
             obj.Velocity += normV;
         }
-        //float rangle = angler(pos1, obj.Position);
-        
-        
+        //float rangle = angle_bn(pos1, obj.Position);
     }
     float angle = 0;
     float magnitude = 0;
@@ -161,7 +160,7 @@ class physx_body : public physx
 {
     public:
         TEXTURE image;
-        Vflt2* rects;
+        Vflt2 rects[4];
         Vflt2 portion(double angle){
             rectdef();
             double angletet = -(angle + physx::angle);
@@ -177,28 +176,28 @@ class physx_body : public physx
                     // cout << "yd < 0" << endl;
                     if(intersector_B(actcen, termray, rects[0], rects[1])){
                         // cout << "0 and 1" << endl;
-                        return intersector(actcen, termray, rects[0], rects[1]);
+                        return intersection(actcen, termray, rects[0], rects[1]);
                     }
                     else if(intersector_B(actcen, termray, rects[0], rects[3])){
                         // cout << "0 and 3" << endl;
-                        return intersector(actcen, termray, rects[0], rects[3]);
+                        return intersection(actcen, termray, rects[0], rects[3]);
                     }
                 }
                 if(yd > 0){
                     // cout << "yd > 0" << endl;
                     if(intersector_B(actcen, termray, rects[3], rects[2])){
                         // cout << "3 and 2" << endl;
-                        return intersector(actcen, termray, rects[3], rects[2]);
+                        return intersection(actcen, termray, rects[3], rects[2]);
                     }
                     else if(intersector_B(actcen, termray, rects[0], rects[3])){
                         // cout << "0 and 3" << endl;
-                        return intersector(actcen, termray, rects[0], rects[3]);
+                        return intersection(actcen, termray, rects[0], rects[3]);
                     }
                 }
                 else{
                     // cout << "yd = 0" << endl;
                     // cout << "0 and 3" << endl;
-                    return intersector(actcen, termray, rects[0], rects[3]);
+                    return intersection(actcen, termray, rects[0], rects[3]);
                 }
             }
             else if(xd > 0){
@@ -207,28 +206,28 @@ class physx_body : public physx
                     // cout << "yd > 0" << endl;
                     if(intersector_B(actcen, termray, rects[1], rects[2])){
                         // cout << "1 and 2" << endl;
-                        return intersector(actcen, termray, rects[1], rects[2]);
+                        return intersection(actcen, termray, rects[1], rects[2]);
                     }
                     else if(intersector_B(actcen, termray, rects[2], rects[3])){
                         // cout << "2 and 3" << endl;
-                        return intersector(actcen, termray, rects[2], rects[3]);
+                        return intersection(actcen, termray, rects[2], rects[3]);
                     }
                 }
                 else if(yd < 0){
                     // cout << "yd < 0" << endl;
                     if(intersector_B(actcen, termray, rects[0], rects[1])){
                         // cout << "0 and 1" << endl;
-                        return intersector(actcen, termray, rects[0], rects[1]);
+                        return intersection(actcen, termray, rects[0], rects[1]);
                     }
                     else if(intersector_B(actcen, termray, rects[1], rects[2])){
                         // cout << "1 and 2" << endl;
-                        return intersector(actcen, termray, rects[1], rects[2]);
+                        return intersection(actcen, termray, rects[1], rects[2]);
                     }
                 }
                 else{
                     // cout << "yd = 0" << endl;
                     // cout << "1 and 2" << endl;
-                    return intersector(actcen, termray, rects[1], rects[2]);
+                    return intersection(actcen, termray, rects[1], rects[2]);
                 }
             }
             else{
@@ -236,12 +235,12 @@ class physx_body : public physx
                 if(yd < 0){
                     // cout << "yd < 0" << endl;
                     // cout << "0 and 1" << endl;
-                    return intersector(actcen, termray, rects[0], rects[1]);
+                    return intersection(actcen, termray, rects[0], rects[1]);
                 }
                 else if(yd > 0){
                     // cout << "yd > 0" << endl;
                     // cout << "3 and 2" << endl;
-                    return intersector(actcen, termray, rects[3], rects[2]);
+                    return intersection(actcen, termray, rects[3], rects[2]);
                 }
                 else{
                     // cout << "yd = 0" << endl;
@@ -251,7 +250,7 @@ class physx_body : public physx
             }
         }
         physx_body(){
-            rects = new Vflt2[4];
+
         }
         void rectset(){
             rects[0] = Vflt2(image.getdst().x, image.getdst().y);
@@ -259,7 +258,7 @@ class physx_body : public physx
             rects[2] = Vflt2(image.getdst().x + image.getdst().w, image.getdst().y + image.getdst().h);
             rects[3] = Vflt2(image.getdst().x, image.getdst().y + image.getdst().h);
         }
-        physx_body(TEXTURE img)
+        physx_body(const TEXTURE& img)
         {
             physx_body();
             image.copy(img);
@@ -307,7 +306,7 @@ class physx_body : public physx
             rectset();
             rotate_rC(rects, -image.getangle(),  4);
         }
-        void draw(){
+        inline void draw(){
             setphysx();
             image.drawC();
         }

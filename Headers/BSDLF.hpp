@@ -41,7 +41,7 @@ class WINDOW
 {
     SDL_Window* window;
     SDL_Renderer* renderer;
-    char* title = NULL;
+    string title;
     int x;
     int y;
     int w;
@@ -62,7 +62,6 @@ class WINDOW
     {
         SDL_DestroyWindow(window);
         if(renderer)SDL_DestroyRenderer(renderer);
-        if(title)delete title;
     }
     WINDOW(const char* title_ = NULL, int x_ = SDL_WINDOWPOS_CENTERED, int y_ = SDL_WINDOWPOS_CENTERED, int w_ = 640, int h_ = 480, Uint32 flag_ = SDL_WINDOW_SHOWN)
     {
@@ -74,12 +73,12 @@ class WINDOW
     int gety() {return y;}
     int getw() {return w;}
     int geth() {return h;}
-    char* gettitle() {return title;}
-    void pst()
+    string gettitle() {return title;}
+    inline void pst()
     {
         return SDL2::pst(renderer);
     }
-    int clr()
+    inline int clr()
     {
         return SDL2::clr(renderer);
     }
@@ -104,7 +103,7 @@ class WINDOW
         pst();
         return ret;
     }
-    SDL_Renderer* setcol(SDL_Color& color)
+    SDL_Renderer* setcol(const SDL_Color& color)
     {
         setRGB(color.r, color.g, color.b, color.a);
         return renderer;
@@ -125,7 +124,7 @@ class WINDOW
     }
     void setwin(const char* title_ = NULL, int x_ = SDL_WINDOWPOS_CENTERED, int y_ = SDL_WINDOWPOS_CENTERED, int w_ = 640, int h_ = 480, Uint32 flag_ = SDL_WINDOW_SHOWN)
     {
-        title = (title ? (title_ ? (char*)title_ : title) : (char*)title_);
+        title = title_;
         x = x_;
         y = y_;
         w = w_;
@@ -134,7 +133,7 @@ class WINDOW
     }
     int crtB()
     {
-        crtwin(title, x, y, w, h, flag);
+        crtwin(title.c_str(), x, y, w, h, flag);
         crtren();
         if(!window || !renderer)return 0;
         else return 1;
@@ -148,7 +147,7 @@ class WINDOW
     }
     SDL_Window* crtwin(const char* title_ = NULL, int x_ = SDL_WINDOWPOS_CENTERED, int y_ = SDL_WINDOWPOS_CENTERED, int w_ = 640, int h_ = 480, Uint32 flag_ = SDL_WINDOW_SHOWN)
     {
-        window = SDL_CreateWindow((const char*)(title_ ? title_ : title), x_, y_, w_, h_, flag_);
+        window = SDL_CreateWindow((const char*)(title_ ? title_ : title.c_str()), x_, y_, w_, h_, flag_);
         return window;
     }
     void setdim(int w_ = 640, int h_ = 480)
@@ -252,7 +251,7 @@ class TEXTURE
     SDL_FPoint center = {0, 0};
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     SDL_Color col = {0, 0, 0, 0};
-    char* path;
+    string path;
     char TYPE;
     double angle = 0;
     public:
@@ -260,12 +259,11 @@ class TEXTURE
         texture = NULL;
         renderer = NULL;
         surface = NULL;
-        path = NULL;
         INIT();
     }
     void copy(const TEXTURE& t){
         setren(t.renderer);
-        setpath(t.path);
+        setpath(t.path.c_str());
         checkTYPE();
         load();
     }
@@ -275,7 +273,6 @@ class TEXTURE
         texture = NULL;
         renderer = NULL;
         surface = NULL;
-        path = NULL;
         setren(ren);
         INIT();
         setpath(filepath);
@@ -294,7 +291,7 @@ class TEXTURE
             center = t.center;
             flip = t.flip;
             col = t.col;
-            strcpy(path, t.path);
+            path = t.path;
             TYPE = t.TYPE;
             angle = t.angle;
             return *this;
@@ -304,7 +301,6 @@ class TEXTURE
         texture = NULL;
         renderer = NULL;
         surface = NULL;
-        path = NULL;
         INIT();
         setren(rend);
         surfcpy(surf);
@@ -335,14 +331,14 @@ class TEXTURE
     const char checkTYPE()
     {
         //cout<<" checking type: \n";
-        if(strmap::strcheck(path, ".ttf"))setTYPE('F');
+        if(strmap::strcheck(path.c_str(), ".ttf"))setTYPE('F');
         if
         (
-            strmap::strcheck(path, ".png")
+            strmap::strcheck(path.c_str(), ".png")
             ||
-            strmap::strcheck(path, ".jpg")
+            strmap::strcheck(path.c_str(), ".jpg")
             ||
-            strmap::strcheck(path, ".bmp")
+            strmap::strcheck(path.c_str(), ".bmp")
         )setTYPE('I');
         else setTYPE('\0');
         return getTYPE();
@@ -395,20 +391,19 @@ class TEXTURE
     {
         if(surface)SDL_FreeSurface(surface);
         if(texture)SDL_DestroyTexture(texture);
-        if(path)delete path;
     }
     void setflip(SDL_RendererFlip flag_)
     {
         flip = flag_;
     }
-    char* setpath(const char* filepath)
+    string setpath(const char* filepath)
     {
         //cout<<" setting path: "<<filepath<<endl;
         path = new char[strlen(filepath)];
-        strcpy(path, filepath);
+        path = filepath;
         return path;
     }
-    const char* getpath()
+    string getpath()
     {
         return path;
     }
@@ -416,19 +411,19 @@ class TEXTURE
     {
         return (SDL_WasInit(SDL_INIT_VIDEO) ? SDL_WasInit(SDL_INIT_VIDEO) : SDL_Init(SDL_INIT_VIDEO));
     }
-    SDL_Rect set_srcpos(int x = 0, int y = 0)
+    const SDL_Rect& set_srcpos(int x = 0, int y = 0)
     {
         src.x = x;
         src.y = y;
         return src;
     }
-    SDL_Rect set_srcdim(int w, int h)
+    const SDL_Rect& set_srcdim(int w, int h)
     {
         src.w = w;
         src.h = h;
         return src;
     }
-    SDL_FRect set_dstpos(float x = 0, float y = 0)
+    const SDL_FRect& set_dstpos(float x = 0, float y = 0)
     {
         dst.x = x;
         dst.y = y;
@@ -438,11 +433,11 @@ class TEXTURE
         SDL_FPoint point = {dst.x + center.x, dst.y + center.y};
         return point;
     }
-    SDL_FRect set_cenpos(float x = 0, float y = 0)
+    const SDL_FRect& set_cenpos(float x = 0, float y = 0)
     {
         return set_dstpos(x - center.x, y - center.y);
     }
-    SDL_FRect set_dstdim(int w = 0, int h = 0)
+    const SDL_FRect& set_dstdim(int w = 0, int h = 0)
     {
         dst.w = (w ? w : src.w);
         dst.h = (h ? h : src.h);
@@ -454,7 +449,7 @@ class TEXTURE
         dst.h *= h;
         setcenter(center.x * w, center.y * h);
     }
-    SDL_Rect set_src(int w, int h, float x = -1, float y = -1)
+    const SDL_Rect& set_src(int w, int h, float x = -1, float y = -1)
     {
         src.w = w;
         src.h = h;
@@ -462,7 +457,7 @@ class TEXTURE
         if(y > -1)src.y = y;
         return src;
     }
-    SDL_FRect set_dst(int w, int h, float x = -1, float y = -1)
+    const SDL_FRect& set_dst(int w, int h, float x = -1, float y = -1)
     {
         dst.w = w;
         dst.h = h;
@@ -470,12 +465,12 @@ class TEXTURE
         if(y > -1)dst.y = y;
         return dst;
     }
-    SDL_Rect set_src(SDL_Rect& src_)
+    const SDL_Rect& set_src(const SDL_Rect& src_)
     {
         src = src_;
         return src;
     }
-    SDL_FRect set_dst(SDL_FRect& dst_)
+    const SDL_FRect& set_dst(const SDL_FRect& dst_)
     {
         dst = dst_;
         return dst;
@@ -488,19 +483,27 @@ class TEXTURE
     {
         return src;
     }
+    const SDL_FRect& getdst() const
+    {
+        return dst;
+    }
+    const SDL_Rect& getsrc() const
+    {
+        return src;
+    }
     SDL_Rect retquery()
     {
         SDL_Rect ret;
         queryR(&ret);
         return ret;
     }
-    SDL_FPoint setcenter(float x, float y)
+    const SDL_FPoint& setcenter(float x, float y)
     {
         center.x = x;
         center.y = y;
         return center;
     }
-    SDL_FPoint setcenter()
+    const SDL_FPoint& setcenter()
     {
         return setcenter(dst.w/2, dst.h/2);
     }
@@ -515,7 +518,7 @@ class TEXTURE
     }
     SDL_Texture* load(const char* filepath = NULL, SDL_Renderer* rend = NULL)
     {
-        texture = IMG_LoadTexture((rend ? rend : renderer), filepath ? filepath : (const char*)path);
+        texture = IMG_LoadTexture((rend ? rend : renderer), filepath ? filepath : path.c_str());
         return texture;
     }
     SDL_Texture* surfcpy(SDL_Surface* surf = NULL, SDL_Renderer* rend = NULL)
@@ -591,15 +594,15 @@ class FONT
     TTF_Font* fontdata = NULL;
     int ptsize;
     string text;
-    char* path = NULL;
+    string path;
     SDL_Color col1 = {255, 255, 255, 255}, col2 = {0,0,0,0};
     public:
-    FONT& operator=(const FONT& f)
+    const FONT& operator=(const FONT& f)
     {
         //cout<<" assignment called for font\n";
         ptsize = f.ptsize;
         //cout<<" ptsize assigned\n";
-        setpath(f.path);
+        setpath(f.path.c_str());
         //cout<<" filepath set\n";
         settext(f.text);
         //cout<<" text set\n";
@@ -618,7 +621,7 @@ class FONT
     {
         return fontdata;
     }
-    string gettext() const
+    const string& gettext() const //
     {
         return text;
     }
@@ -638,14 +641,14 @@ class FONT
         setpath(fontpath);
         setptsize(pt_size);
         setfontD();
-        setcol1(r,g,b,a);
-        setcol2(255-r, 255-g, 255-b, 255-a);
+        setcol1(r, g, b, a);
+        setcol2(255 - r, 255 - g, 255 - b, 255 - a);
     }
     static int INIT()
     {
         return (TTF_WasInit() ? TTF_WasInit() : TTF_Init());
     }
-    SDL_Color setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0)
+    const SDL_Color& setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
     {
         //cout<<" setting col1: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
         col1.r = r;
@@ -654,7 +657,7 @@ class FONT
         col1.a = a;
         return col1;
     }
-    SDL_Color setcol2(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0)
+    const SDL_Color& setcol2(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
     {
         //cout<<" setting col2: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
         col2.r = r;
@@ -663,22 +666,21 @@ class FONT
         col2.a = a;
         return col2;
     }
-    SDL_Color getcol1()
+    const SDL_Color& getcol1() // 
     {
         return col1;
     }
-    SDL_Color getcol2()
+    const SDL_Color& getcol2() // 
     {
         return col2;
     }
-    char* getpath() const
+    const string& getpath() const //
     {
         return path;
     }
-    char* setpath(const char* fontpath = "../Fonts/nyala.ttf")
+    const string& setpath(const char* fontpath = "../Fonts/nyala.ttf") //
     {
-        path = (path ? path : new char[strlen(fontpath)]);
-        strcpy(path, fontpath);
+        path = fontpath;
         return path;
     }
     TTF_Font* setfont(const char* fontpath = "../Fonts/nyala.ttf", int pt_size = 12)
@@ -690,7 +692,7 @@ class FONT
     }
     TTF_Font* setfontD()
     {
-        fontdata = setfont(path, ptsize);
+        fontdata = setfont(path.c_str(), ptsize);
         return fontdata;
     }
     SDL_Surface* solid_render(const char* _text = NULL, SDL_Color* col = NULL)
@@ -715,7 +717,7 @@ class FONT
     SDL_Surface* blended_render_unicode(const char* _text = NULL, SDL_Color* col = NULL){
         return TTF_RenderUNICODE_Blended(fontdata, (const Uint16*)(_text ? _text : text.c_str()), (col ? *col : col1));
     }
-    string settext(string text_)
+    const string settext(const string& text_)
     {
         text = text_;
         return text;
@@ -723,13 +725,12 @@ class FONT
     ~FONT()
     {
         TTF_CloseFont(fontdata);
-        if(path)delete path;
     }
 };
 class TXT: protected FONT{
     public:
     TEXTURE board;
-    string gettext(){
+    const string& gettext() const{
         return gettext();
     }
     TXT(){
@@ -748,7 +749,7 @@ class TXT: protected FONT{
         board.setren(rend);
         queryB();
         board.surfcpy(blended_render(text, &col1));
-        if(board.queryF() < 0)cout << " err: " << SDL_GetError() << endl;
+        board.queryF();
     }
 };
 class AUDIO
@@ -764,7 +765,7 @@ class AUDIO
         INIT(SDL_INIT_AUDIO);
         Open_AUD(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
     }
-    AUDIO(string path){
+    AUDIO(const string& path){
         INIT(SDL_INIT_AUDIO);
         Open_AUD(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096);
         load(path);
@@ -774,7 +775,7 @@ class AUDIO
         chunk = Load_WAV(path);
         if(!chunk)cout << SDL_GetError() << "\a\n";
     }
-    void load(string path){
+    void load(const string& path){
         load(path.c_str());
     }
     int setvol(int vol){

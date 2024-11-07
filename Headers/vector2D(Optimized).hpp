@@ -149,6 +149,7 @@ template <class T> T p_l_mag(const VECTOR2<T>& p, const VECTOR2<T>& lpos1, float
 template <class T> VECTOR2<T>* n_gonr(const VECTOR2<T>& v, int sides, float sidelength)
 {
     VECTOR2<T>* vertices = new VECTOR2<T>[sides];
+    T PI = 3.14;
     T radius = sidelength * 0.5 * (sin(PI / sides));
     double central_angle = (2 * PI) / sides;
     for(int i = 0; i < sides; i++)
@@ -276,12 +277,10 @@ template <class T> bool in_RECT(VECTOR2<T>* vecs, const VECTOR2<T>& point, int s
 }
 template <class T> VECTOR2<T> intersection(const VECTOR2<T>& vec11, const VECTOR2<T>& vec12, const VECTOR2<T>& vec21, const VECTOR2<T>& vec22, bool yi = true)
 {
-    double xd1 = dx(vec11, vec12), xd2 = dx(vec21, vec22);
-    double yd1 = dy(vec11, vec12), yd2 = dy(vec21, vec22);
-    double m1 = (yi ? -yd1 : yd1) / xd1;
-    double m2 = (yi ? -yd2 : yd2) / xd2;
-    T x1 = vec11.getx(), x2 = vec21.getx(), y1 = vec11.gety(), y2 = vec21.gety();
-    T x, y;
+    double m1 = (double)((double)((yi ? -1 : 1) * dy(vec11, vec12)) / (double)dx(vec11, vec12));
+    double m2 = (double)((double)((yi ? -1 : 1) * dy(vec21, vec22)) / (double)dx(vec21, vec22));
+    int x1 = vec11.getx(), x2 = vec21.getx(), y1 = vec11.gety(), y2 = vec21.gety();
+    int x, y;
     if(!dx(vec11, vec12) || !dx(vec21, vec22))
     {
         if(!dx(vec11, vec12) && dx(vec21, vec22))
@@ -301,7 +300,7 @@ template <class T> VECTOR2<T> intersection(const VECTOR2<T>& vec11, const VECTOR
     }
     else
     {
-        x = ((yi ? -1 : 1) * (m1 * x1 - m2 * x2) + y2 - y1)/((yi ? -1 : 1) * (m1 - m2));
+        x = (((yi ? -1 : 1) * (m1 * x1 - m2 * x2)) + y2 - y1)/(m1 - m2);
         y = (yi ? -1 : 1) * m1 * (x - x1) + y1;
     }
     return VECTOR2<T>(x, y);
