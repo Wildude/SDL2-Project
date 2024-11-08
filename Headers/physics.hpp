@@ -10,8 +10,8 @@
 // requires copy constructor, destructor and a few operators
 class physx
 {
-    static constexpr float delta = 0.1;
     public:
+    static constexpr float delta = 0.1;
         physx(){}
         physx(const Vflt2& pos, const Vflt2& vel = Vflt2_0, const Vflt2& acc = Vflt2_0){
             Position = pos;

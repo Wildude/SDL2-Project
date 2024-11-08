@@ -731,7 +731,7 @@ class TXT: protected FONT{
     public:
     TEXTURE board;
     const string& gettext() const{
-        return gettext();
+        return FONT::gettext();
     }
     TXT(){
         FONT();

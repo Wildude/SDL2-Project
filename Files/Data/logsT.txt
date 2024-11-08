@@ -1,0 +1,50 @@
+ ============================================================= 
+ BEFORE: 
+ ============================================================= 
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: 0
+ src_pos(x, y): 0,0
+ src_dim(w, h): 10,10
+ dst_pos(x, y): 155,235
+ dst_dim(w, h): 10,10
+ center(x, y): 5,5
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: 0
+ src_pos(x, y): 0,0
+ src_dim(w, h): 10,10
+ dst_pos(x, y): 475,235
+ dst_dim(w, h): 10,10
+ center(x, y): 5,5
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
+ ============================================================= 
+ AFTER: 
+ ============================================================= 
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: 0
+ src_pos(x, y): 0,0
+ src_dim(w, h): 10,10
+ dst_pos(x, y): 475,235
+ dst_dim(w, h): 10,10
+ center(x, y): 5,5
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: 0
+ src_pos(x, y): 0,0
+ src_dim(w, h): 10,10
+ dst_pos(x, y): 155,235
+ dst_dim(w, h): 10,10
+ center(x, y): 5,5
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0

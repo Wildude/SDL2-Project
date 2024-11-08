@@ -56,6 +56,9 @@ class simpledoll{
             body[i].Velocity = velocity;
         }
     }
+    void stabilizeV(){
+        for(int i = 0; i < 15; i++){body[i].Velocity = Vflt2_0;}
+    }
     void stabilize(){
         for(int i = 0; i < 15; i++){if(i != FeetL && i != FeetR && i != Upper_bod)body[i].angle = 0; body[i].Velocity = Vflt2_0;}
     }
