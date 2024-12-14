@@ -2,6 +2,15 @@
 #include "../Headers/inclusions.hpp"
 int main(int argn, char** args)
 {
+    cout << " size_of(SDL_Window*): " << sizeof(SDL_Window*) << endl;
+    cout << " size_of(SDL_Renderer*): " << sizeof(SDL_Renderer*) << endl;
+    cout << " size_of(SDL_Texture*): " << sizeof(SDL_Texture*) << endl;
+    cout << " size_of(SDL_Surface*): " << sizeof(SDL_Surface*) << endl;
+    cout << " size_of(SDL_Rect): " << sizeof(SDL_Rect) << endl;
+    cout << " size_of(SDL_FRect): " << sizeof(SDL_FRect) << endl;
+    cout << " size_of(SDL_FPoint): " << sizeof(SDL_FPoint) << endl;
+    cout << " size_of(SDL_RendererFlip): " << sizeof(SDL_RendererFlip) << endl;
+
     cout << " size_of(Vector2<int>): " << sizeof(Vint2) << endl;
     cout << " size_of(Vector2<float>): " << sizeof(Vflt2) << endl;
     cout << " size_of(Vector2<double>): " << sizeof(Vdb2) << endl;
@@ -12,4 +21,9 @@ int main(int argn, char** args)
     cout << " size_of(FONT): " << sizeof(FONT) << endl;
     cout << " size_of(TXT): " << sizeof(TXT) << endl;
     cout << " size_of(AUDIO): " << sizeof(AUDIO) << endl;
+    cout << " size_of(physx): " << sizeof(physx) << endl;
+    cout << " size_of(physx_body): " << sizeof(physx_body) << endl;
+    cout << " size_of(physx_surface): " << sizeof(physx_surface) << endl;
+    cout << " size_of(simpledoll): " << sizeof(simpledoll) << endl;
+    cout << " size_of(doll): " << sizeof(doll) << endl;
 }

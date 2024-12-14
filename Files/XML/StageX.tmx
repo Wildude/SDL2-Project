@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="../Files/XML/Stage1_BKOT.tsx"/>
+ <layer id="2" name="below" width="60" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzt1d0KgCAMhuHZBGf3f8EpOBpDO+gg8mMHLwSyJxj9ZCLKk1LrWJy96S9enztHdr60BNDrc3UkCy9N7qexO0Pw+GH3MuJNPX12rFcWuyt0v0e7enrtvTrZo7UQPf99YFd4OJ7/T6B7fi688ML73ouwuwB1WxQd
+  </data>
+ </layer>
+ <layer id="1" name="above" width="60" height="15">
+  <data encoding="base64" compression="zlib">
+   eJztzLEJAAAIwDBB9P+TfUM0ga6NAADYLZ/92K2fVTrdAMGrA8o=
+  </data>
+ </layer>
+</map>

@@ -1,0 +1,48 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "trialmap.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#trial_stage": {
+            "dynamicWrapping": false
+        },
+        "C:/Users/Rebel Rock/Documents/Programs/CP Project/First Year/SDL2 Project/Images/Stages/Images/Stages/Tilesets/Trialset.tsx": {
+            "scaleInDock": 1
+        },
+        "Trialset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "trialmap.tmx": {
+            "scale": 0.42057291666666663,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 479.10835913312695,
+                "y": 240.14860681114556
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/Rebel Rock/Documents/Programs/CP Project/First Year/SDL2 Project/Images/Stages/Tilesets",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": "3",
+    "openFiles": [
+        "trialmap.tmx",
+        "Trialset.tsx"
+    ],
+    "project": "trial_project.tiled-project",
+    "recentFiles": [
+        "Trialset.tsx",
+        "trialmap.tmx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

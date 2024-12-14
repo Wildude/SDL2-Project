@@ -4,7 +4,7 @@ int main(int argn, char** args)
 {
     WINDOW win("Armed man");
     win.crtB();
-    win.pstcol(255, 255, 255, 255);
+    win.pstcol(150, 100, 55, 255);
     simpledoll man(win.getren());
     man.body[Upper_bod].Position = Vflt2(win.getw()/2, win.geth()/2);
     man.magnify(3.33, 3.75);
@@ -33,11 +33,19 @@ int main(int argn, char** args)
         if(event.button.button == 1)man.body[Upper_bod].Position = mousepos;
         bool reverted = (wep.Position.getx() > mousepos.getx());
         Vflt2 gunbarrel(
-            wep.Position.getx() + wep.Dimension.getx() / 1.3 * cos(torad(wep.angle)),
-            wep.Position.gety() - wep.Dimension.getx() / 1.3 * sin(torad(wep.angle))
+            wep.Position.getx() + wep.Dimension.getx() / 1.3 * cos(torad(wep.angle - (reverted ? 180 : 0))),
+            wep.Position.gety() - wep.Dimension.getx() / 1.3 * sin(torad(wep.angle - (reverted ? 180 : 0)))
         );
-        wep.Position = man.body[Lower_armL].Position + Vflt2(man.body[Lower_armL].Dimension.gety() / 4 * cos(torad(anglm)), -man.body[Lower_armL].Dimension.gety() / 4 * sin(torad(anglm)));
-        double anglegun = angle_bn(man.body[Lower_armR].Position, gunbarrel);
+        wep.Position 
+        = 
+        man.body[reverted ? Lower_armR : Lower_armL].Position 
+        + 
+        Vflt2
+        (
+            man.body[reverted ? Lower_armR : Lower_armL].Dimension.gety() / 4 * cos(torad(anglm)), 
+            -man.body[reverted ? Lower_armR : Lower_armL].Dimension.gety() / 4 * sin(torad(anglm))
+        );
+        double anglegun = angle_bn(man.body[reverted ? Lower_armR : Lower_armL].Position, gunbarrel);
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){man.animate2();}
         else if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){man.animate();}
         else if(event.type != SDL_KEYDOWN){
@@ -48,10 +56,10 @@ int main(int argn, char** args)
         txt.board.set_dstpos(gunbarrel.getx(), gunbarrel.gety());
         point.set_dstpos(gunbarrel.getx(), gunbarrel.gety());
         man.body[Head].angle = anglm;
-        man.body[Upper_armL].angle = anglm;
-        man.body[Upper_armR].angle = anglm + 45;
-        man.body[Lower_armL].angle = man.body[Upper_armL].angle + 90;
-        man.body[Lower_armR].angle = anglegun + 90;
+        man.body[Upper_armL].angle = (reverted ? anglm + 135  : anglm);
+        man.body[Upper_armR].angle = (reverted ? anglm + 180 : anglm + 45);
+        man.body[Lower_armL].angle = (reverted ? anglegun + 90 : man.body[Upper_armL].angle + 90);
+        man.body[Lower_armR].angle = (!reverted ? anglegun + 90 : man.body[Upper_armR].angle - 90);
         wep.set_target(mousepos);
         //wep.Position = man.body[HandL].Position;
         wep.aim();

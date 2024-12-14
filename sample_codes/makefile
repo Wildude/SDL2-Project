@@ -23,3 +23,7 @@ g++ -I../src/Include -L../src/Lib -o ../Executables/environment.exe environment.
 g++ -I../src/Include -L../src/Lib -o ../Executables/Armed_man.exe Armed_man.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/Pointer_check_For_TEXTURE.exe Pointer_check_For_TEXTURE.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/Memory_Check.exe Memory_Check.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/xmltest.exe xmltest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/Tilemaptest.exe Tilemaptest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/circ_rect_anim.exe circ_rect_anim.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/NetworkTrial.exe NetworkTrial.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

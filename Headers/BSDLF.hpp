@@ -243,22 +243,19 @@ class RENDERER
 };
 class TEXTURE
 {
-    SDL_Texture* texture;
-    SDL_Surface* surface;
-    SDL_Renderer* renderer;
-    SDL_Rect src = {0, 0, 0, 0};
-    SDL_FRect dst = {0, 0, 0, 0};
-    SDL_FPoint center = {0, 0};
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
-    SDL_Color col = {0, 0, 0, 0};
-    string path;
-    char TYPE;
-    double angle = 0;
+    SDL_Texture* texture; // 4 bytes (pointer)
+    SDL_Renderer* renderer; // 4 bytes (pointer)
+    SDL_Rect src = {0, 0, 0, 0}; // 16 bytes (4 * 4 int)
+    SDL_FRect dst = {0, 0, 0, 0}; // 16 bytes (4 * 4 float)
+    SDL_FPoint center = {0, 0}; // 8 bytes (4 + 4 float)
+    SDL_RendererFlip flip = SDL_FLIP_NONE; // 4 bytes
+    string path; // 8 - 24 bytes
+    char TYPE; // 1 byte
+    double angle = 0; // 8 bytes
     public:
     TEXTURE(){
         texture = NULL;
         renderer = NULL;
-        surface = NULL;
         INIT();
     }
     void copy(const TEXTURE& t){
@@ -272,7 +269,6 @@ class TEXTURE
         //cout<<" contructor called for textures\n";
         texture = NULL;
         renderer = NULL;
-        surface = NULL;
         setren(ren);
         INIT();
         setpath(filepath);
@@ -284,13 +280,11 @@ class TEXTURE
         //cout<<" assignment called for font\n";
         if(this != &t){
             texture = t.texture;
-            surface = t.surface;
             renderer = t.renderer;
             src = t.src;
             dst = t.dst;
             center = t.center;
             flip = t.flip;
-            col = t.col;
             path = t.path;
             TYPE = t.TYPE;
             angle = t.angle;
@@ -300,7 +294,6 @@ class TEXTURE
     TEXTURE(SDL_Surface* surf, SDL_Renderer* rend){
         texture = NULL;
         renderer = NULL;
-        surface = NULL;
         INIT();
         setren(rend);
         surfcpy(surf);
@@ -354,7 +347,6 @@ class TEXTURE
     void displayf(ofstream& out)
     {
         out<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
-        out<<" Surface condition: "<<(surface?  "alive\n": "dead\n");
         out<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
         out<<" angle: "<<angle<<endl;
         out<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
@@ -362,13 +354,11 @@ class TEXTURE
         out<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
         out<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
         out<<" center(x, y): "<<center.x<<','<<center.y<<endl;
-        out<<" col(r, g, b, a): "<<(int)col.r<<','<<(int)col.g<<','<<(int)col.b<<','<<(int)col.a<<endl;
         out<<" flipstate: "<<flip<<endl;
     }
     void display(ostream& os = cout)
     {
         os<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
-        os<<" Surface condition: "<<(surface?  "alive\n": "dead\n");
         os<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
         os<<" angle: "<<angle<<endl;
         os<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
@@ -376,7 +366,6 @@ class TEXTURE
         os<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
         os<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
         os<<" center(x, y): "<<center.x<<','<<center.y<<endl;
-        os<<" col(r, g, b, a): "<<(int)col.r<<','<<(int)col.g<<','<<(int)col.b<<','<<(int)col.a<<endl;
         os<<" flipstate: "<<flip<<endl;
     }
     const SDL_FPoint& getcenter()
@@ -389,10 +378,9 @@ class TEXTURE
     }
     ~TEXTURE()
     {
-        if(surface)SDL_FreeSurface(surface);
         if(texture)SDL_DestroyTexture(texture);
     }
-    void setflip(SDL_RendererFlip flag_)
+    void setflip(const SDL_RendererFlip& flag_)
     {
         flip = flag_;
     }
@@ -403,7 +391,7 @@ class TEXTURE
         path = filepath;
         return path;
     }
-    string getpath()
+    const string& getpath()
     {
         return path;
     }
@@ -429,7 +417,7 @@ class TEXTURE
         dst.y = y;
         return dst;
     }
-    SDL_FPoint get_cenpos(){
+    SDL_FPoint get_cenpos(){ // no optimization
         SDL_FPoint point = {dst.x + center.x, dst.y + center.y};
         return point;
     }
@@ -439,8 +427,8 @@ class TEXTURE
     }
     const SDL_FRect& set_dstdim(int w = 0, int h = 0)
     {
-        dst.w = (w ? w : src.w);
-        dst.h = (h ? h : src.h);
+        dst.w = (w ? w : dst.w);
+        dst.h = (h ? h : dst.h);
         return dst;
     }
     void magnify(float w = 1, float h = -1){
@@ -491,7 +479,7 @@ class TEXTURE
     {
         return src;
     }
-    SDL_Rect retquery()
+    SDL_Rect retquery() // no optimization
     {
         SDL_Rect ret;
         queryR(&ret);
@@ -519,11 +507,12 @@ class TEXTURE
     SDL_Texture* load(const char* filepath = NULL, SDL_Renderer* rend = NULL)
     {
         texture = IMG_LoadTexture((rend ? rend : renderer), filepath ? filepath : path.c_str());
+        if(!texture)cout << " Error loading texture: " << SDL_GetError() << endl;
         return texture;
     }
     SDL_Texture* surfcpy(SDL_Surface* surf = NULL, SDL_Renderer* rend = NULL)
     {
-        texture = SDL_CreateTextureFromSurface((rend ? rend : renderer), (surf ? surf : surface));
+        texture = SDL_CreateTextureFromSurface((rend ? rend : renderer), surf);
         return texture;
     }
     int rencpy(double* angle_ = NULL, SDL_FRect* dst_ = NULL, SDL_RendererFlip flag = SDL_FLIP_NONE, SDL_FPoint* center_ = NULL, SDL_Rect* src_ = NULL, SDL_Renderer* rend = NULL)
@@ -535,7 +524,7 @@ class TEXTURE
         if(query() < 0){return -2;}
         set_srcpos();
         set_dstpos();
-        set_dstdim();
+        set_dstdim(src.w, src.h);
         setcenter();
         return 1;
     }
@@ -584,18 +573,27 @@ class TEXTURE
         if(clrer)if(clr((rend ? rend : renderer)) < 0) return -3;
         return 1;
     }
+    void drawTile(int margin, int 
+    spacing, int x, int y, int width, int height, int currentRow, 
+    int currentFrame, SDL_Renderer *pRenderer)
+    {
+        SDL_Rect srcRect;
+        SDL_Rect destRect;
+        srcRect.x = margin + (spacing + width) * currentFrame;
+        srcRect.y = margin + (spacing + height) * currentRow;
+        srcRect.w = destRect.w = width;
+        srcRect.h = destRect.h = height;
+        destRect.x = x;
+        destRect.y = y;
+        SDL_RenderCopyEx(pRenderer, texture, &srcRect,
+        &destRect, 0, 0, SDL_FLIP_NONE);
+    }
 };
 class FONT
 {
     #define DEF_FONT "../Fonts/ROCKB.ttf"
     #define CHANGE_DEF_FONT(FONT_X) DEF_FONT = FONT_X
     //static const string DEFONT = "../Fonts/nyala.ttf";
-    protected:
-    TTF_Font* fontdata = NULL;
-    int ptsize;
-    string text;
-    string path;
-    SDL_Color col1 = {255, 255, 255, 255}, col2 = {0,0,0,0};
     public:
     const FONT& operator=(const FONT& f)
     {
@@ -648,14 +646,14 @@ class FONT
     {
         return (TTF_WasInit() ? TTF_WasInit() : TTF_Init());
     }
-    const SDL_Color& setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
+    void setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
     {
         //cout<<" setting col1: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
         col1.r = r;
         col1.g = g;
         col1.b = b;
         col1.a = a;
-        return col1;
+        //return col1;
     }
     const SDL_Color& setcol2(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
     {
@@ -726,12 +724,52 @@ class FONT
     {
         TTF_CloseFont(fontdata);
     }
+    protected:
+    TTF_Font* fontdata = NULL;
+    int ptsize;
+    string text;
+    string path;
+    SDL_Color col1 = {255, 255, 255, 255}, col2 = {0,0,0,0};
 };
 class TXT: protected FONT{
     public:
     TEXTURE board;
+    void setcol1(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
+    {
+        //cout<<" setting col1: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
+        col1.r = r;
+        col1.g = g;
+        col1.b = b;
+        col1.a = a;
+        //return col1;
+    }
+    const SDL_Color& setcol2(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0) //
+    {
+        //cout<<" setting col2: "<<(int)r<<','<<(int)g<<','<<(int)b<<','<<(int)a<<endl;
+        col2.r = r;
+        col2.g = g;
+        col2.b = b;
+        col2.a = a;
+        return col2;
+    }
+    const SDL_Color& getcol1() // 
+    {
+        return col1;
+    }
+    const SDL_Color& getcol2() // 
+    {
+        return col2;
+    }
     const string& gettext() const{
         return FONT::gettext();
+    }
+    const TXT& operator=(const TXT& txt){
+        if(this != &txt){
+            board = txt.board;
+            queryB();
+            board.surfcpy(blended_render(text.c_str(), &col1));
+            board.queryF();
+        }
     }
     TXT(){
         FONT();
@@ -794,4 +832,67 @@ class AUDIO
         FreeChunk(chunk);
         closeAUD();
     }
+};
+class NetworkManager {
+public:
+    NetworkManager() {
+        if (SDLNet_Init() < 0) {
+            std::cerr << "SDLNet_Init failed: " << SDLNet_GetError() << std::endl;
+            throw std::runtime_error("Failed to initialize SDL_net");
+        }
+    }
+
+    ~NetworkManager() {
+        SDLNet_Quit();
+    }
+
+    bool connectToHost(const std::string& host, Uint16 port) {
+        IPaddress ip;
+        if (SDLNet_ResolveHost(&ip, host.c_str(), port) < 0) {
+            std::cerr << "Failed to resolve host: " << SDLNet_GetError() << std::endl;
+            return false;
+        }
+        socket = SDLNet_TCP_Open(&ip);
+        if (!socket) {
+            std::cerr << "Failed to open socket: " << SDLNet_GetError() << std::endl;
+            return false;
+        }
+        return true;
+    }
+    bool waitForConnection(Uint16 port) {
+        IPaddress ip;
+        if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
+            std::cerr << "Failed to resolve host for server: " << SDLNet_GetError() << std::endl;
+            return false;
+        }
+        serverSocket = SDLNet_TCP_Open(&ip);
+        if (!serverSocket) {
+            std::cerr << "Failed to open server socket: " << SDLNet_GetError() << std::endl;
+            return false;
+        }
+        std::cout << "Waiting for client connection..." << std::endl;
+        socket = SDLNet_TCP_Accept(serverSocket);
+        if (!socket) {
+            std::cerr << "No client connected." << std::endl;
+            return false;
+        }
+        return true;
+    }
+
+    std::string getIP(TCPsocket sock) {
+        IPaddress* remoteIP = SDLNet_TCP_GetPeerAddress(sock);
+        if (!remoteIP) {
+            std::cerr << "Failed to get peer address: " << SDLNet_GetError() << std::endl;
+            return "";
+        }
+        Uint32 ip = SDL_SwapBE32(remoteIP->host);
+        return std::to_string((ip >> 24) & 0xFF) + "." +
+               std::to_string((ip >> 16) & 0xFF) + "." +
+               std::to_string((ip >> 8) & 0xFF) + "." +
+               std::to_string(ip & 0xFF);
+    }
+
+private:
+    TCPsocket socket = nullptr;
+    TCPsocket serverSocket = nullptr;
 };

@@ -1,0 +1,3600 @@
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 6, count = 6 )
+prevID = 0
+tile changed(k = 7, count = 1 )
+prevID = 1
+tile changed(k = 8, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 26, count = 18 )
+prevID = 0
+tile changed(k = 27, count = 1 )
+prevID = 1
+tile changed(k = 28, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 46, count = 18 )
+prevID = 0
+tile changed(k = 47, count = 1 )
+prevID = 1
+tile changed(k = 48, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 0, count = 12 )
+prevID = 0
+tile changed(k = 1, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 3, count = 2 )
+prevID = 1
+tile changed(k = 4, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 20, count = 12 )
+prevID = 0
+tile changed(k = 21, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 23, count = 2 )
+prevID = 1
+tile changed(k = 24, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 40, count = 12 )
+prevID = 0
+tile changed(k = 41, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 43, count = 2 )
+prevID = 1
+tile changed(k = 44, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 0, count = 12 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 0
+tile changed(k = 10, count = 1 )
+prevID = 9
+tile changed(k = 11, count = 1 )
+prevID = 1
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 16, count = 4 )
+prevID = 2
+tile changed(k = 17, count = 1 )
+prevID = 9
+tile changed(k = 18, count = 1 )
+prevID = 1
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 0
+tile changed(k = 30, count = 1 )
+prevID = 9
+tile changed(k = 31, count = 1 )
+prevID = 1
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 36, count = 4 )
+prevID = 2
+tile changed(k = 37, count = 1 )
+prevID = 9
+tile changed(k = 38, count = 1 )
+prevID = 1
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 0
+tile changed(k = 50, count = 1 )
+prevID = 9
+tile changed(k = 51, count = 1 )
+prevID = 1
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 56, count = 4 )
+prevID = 2
+tile changed(k = 57, count = 1 )
+prevID = 9
+tile changed(k = 58, count = 1 )
+prevID = 1
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 2
+tile changed(k = 10, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 15, count = 5 )
+prevID = 0
+tile changed(k = 16, count = 1 )
+prevID = 7
+skipped
+prevID = 7
+tile changed(k = 18, count = 2 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 2
+tile changed(k = 30, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 35, count = 5 )
+prevID = 0
+tile changed(k = 36, count = 1 )
+prevID = 7
+skipped
+prevID = 7
+tile changed(k = 38, count = 2 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 2
+tile changed(k = 50, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 55, count = 5 )
+prevID = 0
+tile changed(k = 56, count = 1 )
+prevID = 7
+skipped
+prevID = 7
+tile changed(k = 58, count = 2 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 1
+tile changed(k = 11, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 15, count = 4 )
+prevID = 6
+tile changed(k = 16, count = 1 )
+prevID = 0
+tile changed(k = 17, count = 1 )
+prevID = 1
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 1
+tile changed(k = 31, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 35, count = 4 )
+prevID = 6
+tile changed(k = 36, count = 1 )
+prevID = 0
+tile changed(k = 37, count = 1 )
+prevID = 1
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 1
+tile changed(k = 51, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 55, count = 4 )
+prevID = 6
+tile changed(k = 56, count = 1 )
+prevID = 0
+tile changed(k = 57, count = 1 )
+prevID = 1
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 2
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 15, count = 3 )
+prevID = 0
+tile changed(k = 16, count = 1 )
+prevID = 1
+tile changed(k = 17, count = 1 )
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 19, count = 2 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 2
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 35, count = 3 )
+prevID = 0
+tile changed(k = 36, count = 1 )
+prevID = 1
+tile changed(k = 37, count = 1 )
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 39, count = 2 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 2
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 55, count = 3 )
+prevID = 0
+tile changed(k = 56, count = 1 )
+prevID = 1
+tile changed(k = 57, count = 1 )
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 59, count = 2 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 15, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 19, count = 4 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 35, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 39, count = 4 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 55, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 59, count = 4 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 15, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 19, count = 4 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 35, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 39, count = 4 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 55, count = 3 )
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+skipped
+prevID = 2
+tile changed(k = 59, count = 4 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 14, count = 2 )
+prevID = 0
+tile changed(k = 15, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 17, count = 2 )
+prevID = 1
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 34, count = 2 )
+prevID = 0
+tile changed(k = 35, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 37, count = 2 )
+prevID = 1
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 54, count = 2 )
+prevID = 0
+tile changed(k = 55, count = 1 )
+prevID = 9
+skipped
+prevID = 9
+tile changed(k = 57, count = 2 )
+prevID = 1
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 14, count = 2 )
+prevID = 6
+tile changed(k = 15, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 17, count = 2 )
+prevID = 7
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 34, count = 2 )
+prevID = 6
+tile changed(k = 35, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 37, count = 2 )
+prevID = 7
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 54, count = 2 )
+prevID = 6
+tile changed(k = 55, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 57, count = 2 )
+prevID = 7
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 14, count = 2 )
+prevID = 6
+tile changed(k = 15, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 17, count = 2 )
+prevID = 7
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 34, count = 2 )
+prevID = 6
+tile changed(k = 35, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 37, count = 2 )
+prevID = 7
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 54, count = 2 )
+prevID = 6
+tile changed(k = 55, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 57, count = 2 )
+prevID = 7
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 14, count = 2 )
+prevID = 6
+tile changed(k = 15, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 17, count = 2 )
+prevID = 7
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 34, count = 2 )
+prevID = 6
+tile changed(k = 35, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 37, count = 2 )
+prevID = 7
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 54, count = 2 )
+prevID = 6
+tile changed(k = 55, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 57, count = 2 )
+prevID = 7
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+tile changed(k = 0, count = 1 )
+prevID = 6
+tile changed(k = 1, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 3, count = 2 )
+prevID = 7
+tile changed(k = 4, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 6, count = 2 )
+prevID = 6
+tile changed(k = 7, count = 1 )
+prevID = 7
+tile changed(k = 8, count = 1 )
+prevID = 3
+tile changed(k = 9, count = 1 )
+prevID = 6
+tile changed(k = 10, count = 1 )
+prevID = 8
+tile changed(k = 11, count = 1 )
+prevID = 7
+tile changed(k = 12, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 14, count = 2 )
+prevID = 6
+tile changed(k = 15, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 17, count = 2 )
+prevID = 7
+tile changed(k = 18, count = 1 )
+prevID = 2
+tile changed(k = 19, count = 1 )
+prevID = 3
+tile changed(k = 20, count = 1 )
+prevID = 6
+tile changed(k = 21, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 23, count = 2 )
+prevID = 7
+tile changed(k = 24, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 26, count = 2 )
+prevID = 6
+tile changed(k = 27, count = 1 )
+prevID = 7
+tile changed(k = 28, count = 1 )
+prevID = 3
+tile changed(k = 29, count = 1 )
+prevID = 6
+tile changed(k = 30, count = 1 )
+prevID = 8
+tile changed(k = 31, count = 1 )
+prevID = 7
+tile changed(k = 32, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 34, count = 2 )
+prevID = 6
+tile changed(k = 35, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 37, count = 2 )
+prevID = 7
+tile changed(k = 38, count = 1 )
+prevID = 2
+tile changed(k = 39, count = 1 )
+prevID = 3
+tile changed(k = 40, count = 1 )
+prevID = 6
+tile changed(k = 41, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 43, count = 2 )
+prevID = 7
+tile changed(k = 44, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 46, count = 2 )
+prevID = 6
+tile changed(k = 47, count = 1 )
+prevID = 7
+tile changed(k = 48, count = 1 )
+prevID = 3
+tile changed(k = 49, count = 1 )
+prevID = 6
+tile changed(k = 50, count = 1 )
+prevID = 8
+tile changed(k = 51, count = 1 )
+prevID = 7
+tile changed(k = 52, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 54, count = 2 )
+prevID = 6
+tile changed(k = 55, count = 1 )
+prevID = 8
+skipped
+prevID = 8
+tile changed(k = 57, count = 2 )
+prevID = 7
+tile changed(k = 58, count = 1 )
+prevID = 2
+tile changed(k = 59, count = 1 )
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+skipped
+prevID = 3
+tile changed(k = 0, count = 121 )
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+tile changed(k = 16, count = 556 )
+prevID = 2
+tile changed(k = 17, count = 1 )
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+tile changed(k = 36, count = 19 )
+prevID = 2
+tile changed(k = 37, count = 1 )
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+tile changed(k = 56, count = 19 )
+prevID = 2
+tile changed(k = 57, count = 1 )
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+skipped
+prevID = -1
+tile changed(k = 0, count = 123 )
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+skipped
+prevID = 5
+tile changed(k = 0, count = 60 )
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
+prevID = 4
+skipped
