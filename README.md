@@ -8,7 +8,7 @@
 - The above image is an illustration of this concept.
 - Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
-- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "">rigid_body.h</a>
+- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Headers/rigid_body.hpp">rigid_body.hpp</a>
 ### Running/Walking animation
 ![ProjectionGPT](https://github.com/user-attachments/assets/ee35a0d5-60f9-4c76-beab-d5b42c19cc44)
 ![ProjectionMine](https://github.com/user-attachments/assets/53918aca-7d63-454a-a6cf-933e6f3294f7)
