@@ -22,12 +22,38 @@ int main(int argn, char** args)
     SDL_SetSurfaceColorMod(surf, 0, 155, 200);
     TEXTURE point(surf, win.getren());
     point.queryF();
+    bool keyStates[SDL_NUM_SCANCODES] = {false};
+    bool mouseButtons[5] = {false}; // Left, right, middle, etc.
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
         int x, y;
         SDL_GetMouseState(&x, &y);
         Vflt2 mousepos(x, y);
+        if (event.type == SDL_QUIT) {
+            break;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            keyStates[event.key.keysym.scancode] = true;
+        } 
+        if (event.type == SDL_KEYUP) {
+            keyStates[event.key.keysym.scancode] = false;
+        }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            mouseButtons[event.button.button] = true;
+        } 
+        if (event.type == SDL_MOUSEBUTTONUP) {
+            mouseButtons[event.button.button] = false;
+        }
+        if (event.type == SDL_MOUSEMOTION) {
+            printf("Mouse moved to (%d, %d)\n", event.motion.x, event.motion.y);
+        }
+        if(keyStates[SDL_SCANCODE_RIGHT]){
+            man.animate();
+        }
+        if(keyStates[SDL_SCANCODE_LEFT]){
+            man.animate2();
+        }
         double anglm = angle_bn(man.body[Head].Position, mousepos);
         bool movement = true;
         if(event.button.button == 1)man.body[Upper_bod].Position = mousepos;
@@ -46,12 +72,14 @@ int main(int argn, char** args)
             -man.body[reverted ? Lower_armR : Lower_armL].Dimension.gety() / 4 * sin(torad(anglm))
         );
         double anglegun = angle_bn(man.body[reverted ? Lower_armR : Lower_armL].Position, gunbarrel);
+        /*
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){man.animate2();}
         else if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){man.animate();}
         else if(event.type != SDL_KEYDOWN){
                 man.stabilize();
                 movement = false;
         }
+        */
         TXT txt("Pos", win.getren(), 15, 255, 0, 0, 255);
         txt.board.set_dstpos(gunbarrel.getx(), gunbarrel.gety());
         point.set_dstpos(gunbarrel.getx(), gunbarrel.gety());

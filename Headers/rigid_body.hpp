@@ -49,6 +49,7 @@ enum bodynums{
 class simpledoll{
     #define ANGLINC 10.0
     public:
+    Vflt2 mainVel;
     physx_body body[15];
     simpledoll(){}
     void Vel(const Vflt2& velocity){
@@ -148,7 +149,8 @@ class simpledoll{
         }
     }
     void rescale_body(){
-        body[Upper_bod].image.magnify(3, 4);
+        // remember you magnified the head by 2 so everything here is
+        body[Upper_bod].image.magnify(3, 4); 
         body[Upper_armL].image.magnify(1, 2);
         body[Upper_armR].image.magnify(1, 2);
         body[Lower_armL].image.magnify(0.7, 2);
@@ -162,6 +164,7 @@ class simpledoll{
         body[Lower_legR].image.magnify(0.7, 2);
         body[FeetL].image.magnify(1.3, 0.7);
         body[FeetR].image.magnify(1.3, 0.7);
+        body[Head].image.magnify(2);
     }
     inline void setdims(){
         for(int i = 0; i < 15; i++)body[i].setdims();
@@ -268,10 +271,10 @@ class simpledoll{
         Vflt2(
             body[Upper_bod].Position.getx()
             + 
-            body[Upper_bod].Dimension.gety()/1.7 * cos(torad(body[Upper_bod].angle + 90)), 
+            body[Upper_bod].Dimension.gety() / 1.5 * cos(torad(body[Upper_bod].angle + 90)), 
             body[Upper_bod].Position.gety()
             - 
-            body[Upper_bod].Dimension.gety()/1.7 * sin(torad(body[Upper_bod].angle + 90))
+            body[Upper_bod].Dimension.gety() / 1.5 * sin(torad(body[Upper_bod].angle + 90))
         );
         body[Lower_bod].Position = 
         Vflt2
@@ -386,6 +389,15 @@ class simpledoll{
     }
     void setbody(){
         // tighten();
+    }
+    void drawI(){
+        body[HandR].image.setflip(SDL_FLIP_HORIZONTAL);
+        body[Lower_armR].image.setflip(SDL_FLIP_HORIZONTAL);
+        body[Upper_armR].image.setflip(SDL_FLIP_HORIZONTAL);
+        body[Lower_legR].image.setflip(SDL_FLIP_HORIZONTAL);
+        body[Upper_legR].image.setflip(SDL_FLIP_HORIZONTAL);
+        body[FeetR].image.setflip(SDL_FLIP_HORIZONTAL);
+        draw();
     }
     void draw(){
         tighten();

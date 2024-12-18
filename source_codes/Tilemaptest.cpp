@@ -134,136 +134,134 @@ struct tileData{
 int main(int argn, char** args)
 {
     XMLDocument doc;
-    doc.LoadFile("../Files/XML/Stage1.tmx");
+    doc.LoadFile("../Files/XML/StageX.tmx");
     vector<vector<vector<int>>> Layers;
     Tileset tileset;
     setTileParams(doc, tileset, Layers);
     WINDOW win("Tilemaptest");
     win.crtB();
     win.pstcol(255, 255, 255, 255);
+    float speed = 10;
+    weapon wep;
+    wep.load("../Images/Weapons/AK 47/AK_47.png", win.getren());
+    wep.setmaincenter(Vflt2(9, 6));
+    wep.Position = Vflt2(win.getw()/2, win.geth()/2);
+    wep.setbool(true);
+    wep.magnify(0.3, 0.7);
     SDL_Event event;
     simpledoll man(win.getren());
-    man.body[Upper_bod].Position = Vflt2(win.getw()/2, win.geth()/2);
+    man.body[Upper_bod].Position = Vflt2(win.getw()/2, win.geth() * 0.8);
     man.magnify(2);
     Vflt2 vel(0, 0);
     int layers = Layers.size(), rows = Layers[0].size(), columns = Layers[0][0].size();
     map<int, SDL_Texture*> tex_maps;
-    //ofstream file("../Files/logTilesize.txt");
+    for(int i = 0; i < tileset.tiles.size(); i++){
+        tex_maps[i] = IMG_LoadTexture(win.getren(), tileset.tiles[i].c_str());
+    }
+    man.body[Head].image.load("../Images/Characters/head.png");
+    man.body[Lower_bod].image.load("../Images/Characters/lower_bod.png");
+    man.body[Lower_armL].image.load("../Images/Characters/lower_arm.png");
+    man.body[Upper_armL].image.load("../Images/Characters/upper_arm.png");
+
+    man.body[Lower_armR].image.load("../Images/Characters/lower_arm.png");
+    man.body[Upper_armR].image.load("../Images/Characters/upper_arm.png");
+
+    man.body[Upper_legL].image.load("../Images/Characters/upper_leg.png");
+    man.body[Lower_legL].image.load("../Images/Characters/lower_leg.png");
+
+    man.body[Upper_legR].image.load("../Images/Characters/upper_leg.png");
+    man.body[Lower_legR].image.load("../Images/Characters/lower_leg.png");
+
+    man.body[FeetL].image.load("../Images/Characters/Feet.png");
+    man.body[HandL].image.load("../Images/Characters/hand.png");
+
+    man.body[FeetR].image.load("../Images/Characters/Feet.png");
+    man.body[HandR].image.load("../Images/Characters/hand.png");
+    man.body[Upper_bod].image.load("../Images/Characters/upper_bod.png");
+    man.queryset();
+    
+    ofstream file("../Files/logTilesize.txt");
     for(int i = 0; i < layers; i++)
         for(int j = 0; j < Layers[i].size(); j++){
-            for(int k = 0; k < Layers[i][j].size(); k++);
-              //  file << ' ' << Layers[i][j][k];
-            //file << endl;
+            for(int k = 0; k < Layers[i][j].size(); k++)
+                file << ' ' << Layers[i][j][k];
+            file << endl;
         }
     //
+    wep.magnify(2);
+    man.magnify(2);
     cout << layers << ' ' << rows << ' ' << columns << endl;
-    vector<tileData> drawnTiles;//(Layers.size() * Layers[0].size() * Layers[0][0].size());
-    //ofstream ofs("../Files/Data/LogTiles.txt");
-    for(int i = Layers.size() - 1; i >= 0; i--){
-        for(int j = 0; j < Layers[i].size(); j++){
-            for(int k = 0; k < Layers[i][j].size(); k++){
-                /*
-                drawnTiles[i * Layers[0].size() * Layers[0][0].size() + j * Layers[0][0].size() + k].tileID = Layers[i][j][k] - 1;
-                drawnTiles
-                [
-                    i * Layers[0].size() * Layers[0][0].size() 
-                    + j * Layers[0][0].size() + k
-                ].rect 
-                = 
-                {
-                    (float)k * tileset.tileWidth, 
-                    (float)j * tileset.tileWidth, 
-                    (float)tileset.tileWidth, 
-                    (float)tileset.tileWidth
-                };
-                */
-                ///*
-                static int prevID = Layers[i][j][k] - 1;
-                static int count = 0;
-                int nowID = Layers[i][j][k] - 1;
-                //ofs << "prevID = " << prevID << endl;
-                if(nowID == prevID){
-                    //ofs << "skipped\n";
-                    count++;
-                    continue;
-                }
-                else {
-                    tex_maps[prevID] = IMG_LoadTexture(win.getren(), tileset.tiles[prevID].c_str());
-                    drawnTiles.push_back(tileData{prevID, {(float)(k - count) * tileset.tileWidth, (float)j * tileset.tileWidth, (float)count * tileset.tileWidth, (float)tileset.tileWidth}});
-                    //ofs << "tile changed(k = " << k << ", count = " << count <<" )\n";
-                    prevID = nowID;
-                    count = 1;
-                } 
-                //*/               
-            }
-        }
-    }
-    /*
-    drawnTiles[i * Layers[0].size() * Layers[0][0].size() + j * Layers[0][0].size() + k].tileID = Layers[i][j][k] - 1;
-                drawnTiles
-                [
-                    i * Layers[0].size() * Layers[0][0].size() 
-                    + j * Layers[0][0].size() + k
-                ].rect 
-                = 
-                {
-                    (float)k * tileset.tileWidth, 
-                    (float)j * tileset.tileWidth, 
-                    (float)tileset.tileWidth, 
-                    (float)tileset.tileWidth
-                };
-    */
-    for(int i = 0; i < drawnTiles.size(); i++){
-        if(drawnTiles[i].tileID == 5 || drawnTiles[i].tileID == 4)
-        cout << " rect(" << drawnTiles[i].tileID << "): " << drawnTiles[i].rect.x / 32 << "x " << drawnTiles[i].rect.y / 32 << "x " << drawnTiles[i].rect.w / 32 << "x " << drawnTiles[i].rect.h << endl;
-    }
-    //ofs.close();
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        Vflt2 mousepos(x, y);
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
         //
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){
              man.animate2();
-            vel.getx() -= 10;
+            vel.getx() -= speed ;// * physx::delta;;
         }
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){
            man.animate();
-            vel.getx() += 10;
+            vel.getx() += speed ;// * physx::delta;;
         }
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP]){
             man.animate2();
-            vel.gety() += 10;
+            vel.gety() += speed ;// * physx::delta;;
         }
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN]){
             man.animate();
-            vel.gety() -= 10;
+            vel.gety() -= speed ;// * physx::delta;;
+        }
+        if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]){
+            speed += (speed >= 100 ? 0 : 1);
+        }
+        if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]){
+            speed -= (speed <= 0 ? 0 : 1);
+        }
+        if(event.type == SDL_KEYUP){
+            vel = Vflt2_0;
+            cout << "nothing pressed\n";
         }
         if(vel == Vflt2_0){
            man.stabilize();
         }
-        ///*
-        for(int i = 0; i < drawnTiles.size(); i++){
-            if(drawnTiles[i].tileID >= 0){
-                drawnTiles[i].rect.x -= vel.getx();
-                drawnTiles[i].rect.y += vel.gety();
-                if
-                (
-                    drawnTiles[i].rect.x > win.getw() ||
-                    drawnTiles[i].rect.x + drawnTiles[i].rect.w < 0 ||
-                    drawnTiles[i].rect.y > win.geth() ||
-                    drawnTiles[i].rect.y + drawnTiles[i].rect.h < 0
-                )
-                continue;
-                SDL_RenderCopyF(win.getren(), tex_maps[drawnTiles[i].tileID], NULL, &drawnTiles[i].rect);
-                //
+        for(int i = 0; i < layers; i++){
+            for(int j = 0; j < rows; j++){
+                for(int k = 0; k < columns; k++){
+                    SDL_FRect* rect = new SDL_FRect({(float)k * tileset.tileWidth - (float)vel.getx(), (float)j * tileset.tileWidth + (float)vel.gety(), (float)tileset.tileWidth, (float)tileset.tileWidth});
+                    if(
+                        rect->x <= win.getw() &&
+                        rect->y <= win.geth() &&
+                        rect->x + rect->w > 0 &&
+                        rect->y + rect->h > 0 &&
+                        Layers[i][j][k] > 0
+                    )
+                    SDL_RenderCopyF(win.getren(), tex_maps[Layers[i][j][k] - 1], NULL, rect);
+                    delete rect;
+                }
             }
         }
-        //*/
-        man.draw();
+        wep.set_target(mousepos);
+        wep.Position = man.body[HandL].Position;
+        wep.aim();
+        //wep.draw();
+        float width = 0, height = 0;
+        ofstream ofs("../Files/Data/LogsMANSIZE.txt");
+        for(int i = 0; i < 15; i++){
+            ofs << body_list[i] << " size: " << man.body[i].Dimension << endl;
+            width += man.body[i].image.getdst().w;
+            height += man.body[i].image.getdst().h;
+        }
+        TXT txt(string("speed = " + to_string(vel.getx()) + " , " + to_string(vel.gety())).c_str(), win.getren(), 15, 0, 0, 0, 255);
+        txt.board.set_dstpos(0, 0);
+        txt.board.drawC();
+        man.drawI();
         win.pst();
         win.clr();
         SDL_Delay(10);
-        vel = Vflt2_0;
+        
     }
     return 0;
 }

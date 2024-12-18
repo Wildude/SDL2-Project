@@ -146,7 +146,7 @@ template <class T> T p_l_mag(const VECTOR2<T>& p, const VECTOR2<T>& lpos1, float
 {
     return (p - intersection(p, p + VECTOR2<T>(100 * cos(torad(angle - 90)), -100 * sin(torad(angle - 90))), lpos1, lpos1 + VECTOR2<T>(100 * cos(torad(angle)), -100 * sin(torad(angle))))).getmag();
 }
-template <class T> VECTOR2<T>* n_gonr(const VECTOR2<T>& v, int sides, float sidelength)
+template <class T> VECTOR2<T>* n_gonr(const VECTOR2<T>& v, int sides, float sidelength, double angle = 0)
 {
     VECTOR2<T>* vertices = new VECTOR2<T>[sides];
     T radius = sidelength * 0.5 * (sin(PI / sides));
@@ -157,9 +157,9 @@ template <class T> VECTOR2<T>* n_gonr(const VECTOR2<T>& v, int sides, float side
         = 
         VECTOR2<T>
         (
-            v.getx() + radius * cos(central_angle * i)
+            v.getx() + radius * cos(central_angle * i + angle)
             , 
-            v.gety() - radius * sin(central_angle * i)
+            v.gety() - radius * sin(central_angle * i + angle)
         );
     }
     return vertices;
