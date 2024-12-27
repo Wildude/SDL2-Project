@@ -120,7 +120,7 @@ class physx_surface
         image.setangle(-angle);
     }
     inline void draw(SDL_FRect* rect = NULL){
-        image.drawC(NULL, rect);
+        image.drawOF(rect);
     }
     physx_surface(const Vflt2& pos_1, float mag, float ang){}
     void touch(physx& obj){
@@ -307,11 +307,11 @@ class physx_body : public physx
             rotate_rC(rects, -image.getangle(),  4);
         }
         inline void drawC(SDL_FRect* rect = NULL){
-            image.drawC(NULL, rect);
+            image.drawOF(rect);
         }
         inline void draw(SDL_FRect* rect = NULL){
             setphysx();
-            image.drawC(NULL, rect);
+            image.drawOF(rect);
         }
         void display(ostream& os = cout){
             physx::display(os);

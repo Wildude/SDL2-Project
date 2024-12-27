@@ -46,11 +46,16 @@ enum bodynums{
     HandL,
     HandR
 };
+enum LoR{
+    RIGHT = 0,
+    LEFT
+};
 class simpledoll{
-    #define ANGLINC 10.0
+    #define ANGLINC body[Upper_bod].Velocity.getmag()/5
     public:
     Vflt2 mainVel;
     physx_body body[15];
+    LoR side;
     simpledoll(){}
     void Vel(const Vflt2& velocity){
         for(int i = 0; i < 15; i++){
@@ -64,83 +69,85 @@ class simpledoll{
         for(int i = 0; i < 15; i++){if(i != FeetL && i != FeetR && i != Upper_bod)body[i].angle = 0; body[i].Velocity = Vflt2_0;}
     }
     void animate(){
-            static bool ninreachL = false;
-            static bool ninreachR = false;
-            if(body[Upper_armL].angle >= 90)ninreachL = true;
-            if(body[Upper_armR].angle <= -90)ninreachR = true;
-            // arms
-            body[Upper_armL].angle += (ninreachL ? -ANGLINC : ANGLINC);
-            body[Upper_armR].angle += (ninreachR ? ANGLINC : -ANGLINC);
-            body[Lower_armL].angle = body[Upper_armL].angle + 90;
-            body[Lower_armR].angle = body[Upper_armR].angle + 90;
-            // Legs
-            static bool ninreachL_ = false;
-            static bool ninreachR_ = false;
-            if(body[Upper_legL].angle <= -90)ninreachR_ = true;
-            if(body[Upper_legR].angle >= 90)ninreachL_ = true;
-            body[Upper_legL].angle += (ninreachR_ ? ANGLINC : -ANGLINC);
-            body[Upper_legR].angle += (ninreachL_ ? -ANGLINC : ANGLINC);
-            body[Lower_legL].angle = body[Upper_legL].angle - 90;
-            body[Lower_legR].angle = body[Upper_legR].angle - 90;
-            if(body[Upper_legL].angle >= 90)ninreachR_ = false;
-            if(body[Upper_legR].angle <= -90)ninreachL_ = false;
-            //
-            if(body[Upper_armL].angle < -90)ninreachL = false;
-            if(body[Upper_armR].angle > 90)ninreachR = false;
-            body[FeetL].angle = body[Lower_legL].angle;
-            body[FeetR].angle = body[Lower_legR].angle;
-       }
-       void animate2(){
-            static bool ninreachL = false;
-            static bool ninreachR = false;
-            if(body[Upper_armR].angle >= 90)ninreachL = true;
-            if(body[Upper_armL].angle <= -90)ninreachR = true;
-            // arms
-            body[Upper_armL].angle += (ninreachL ? ANGLINC : -ANGLINC);
-            body[Upper_armR].angle += (ninreachR ? -ANGLINC : ANGLINC);
-            body[Lower_armL].angle = body[Upper_armL].angle - 90;
-            body[Lower_armR].angle = body[Upper_armR].angle - 90;
-            // Legs
-            static bool ninreachL_ = false;
-            static bool ninreachR_ = false;
-            if(body[Upper_legL].angle >= 90)ninreachR_ = true;
-            if(body[Upper_legR].angle <= -90)ninreachL_ = true;
-            body[Upper_legL].angle += (ninreachR_ ? -ANGLINC : ANGLINC);
-            body[Upper_legR].angle += (ninreachL_ ? ANGLINC : -ANGLINC);
-            body[Lower_legL].angle = body[Upper_legL].angle + 90;
-            body[Lower_legR].angle = body[Upper_legR].angle + 90;
-            if(body[Upper_legL].angle <= -90)ninreachR_ = false;
-            if(body[Upper_legR].angle >= 90)ninreachL_ = false;
-            //
-            if(body[Upper_armR].angle < -90)ninreachL = false;
-            if(body[Upper_armL].angle > 90)ninreachR = false;
-            body[FeetL].angle = body[Lower_legL].angle - 180;
-            body[FeetR].angle = body[Lower_legR].angle - 180;
-       }
-       void animate3(){
-            static bool ninreach = false;
-            // Legs
-            if(body[Upper_legL].angle <= -90)ninreach = true;
-            body[Upper_legL].angle += (ninreach ? ANGLINC : -ANGLINC);
-            body[Upper_legR].angle += (ninreach ? ANGLINC : -ANGLINC);
-            body[Lower_legL].angle += (!ninreach && body[Lower_legL].angle >= body[Upper_legL].angle + 90 || ninreach && body[Lower_legL].angle <= body[Upper_legL].angle ? 0 : (ninreach ? -ANGLINC : ANGLINC));
-            body[Lower_legR].angle += (!ninreach && body[Lower_legR].angle >= body[Upper_legR].angle + 90 || ninreach && body[Lower_legR].angle <= body[Upper_legR].angle ? 0 : (ninreach ? -ANGLINC : ANGLINC));
-            if(body[Upper_legL].angle > 0)ninreach = false;
-            body[FeetL].angle = body[Lower_legL].angle - 180;
-            body[FeetR].angle = body[Lower_legR].angle - 180;
-       }
-       void animate4(){
-            static bool ninreach = false;
-            // Legs
-            if(body[Upper_legL].angle >= 90)ninreach = true;
-            body[Upper_legL].angle += (ninreach ? -ANGLINC : ANGLINC);
-            body[Upper_legR].angle += (ninreach ? -ANGLINC : ANGLINC);
-            body[Lower_legL].angle += (!ninreach && body[Lower_legL].angle <= body[Upper_legL].angle - 90 || ninreach && body[Lower_legL].angle >= body[Upper_legL].angle ? 0 : (ninreach ? ANGLINC : -ANGLINC));
-            body[Lower_legR].angle += (!ninreach && body[Lower_legR].angle <= body[Upper_legR].angle - 90 || ninreach && body[Lower_legR].angle >= body[Upper_legR].angle ? 0 : (ninreach ? ANGLINC : -ANGLINC));
-            if(body[Upper_legL].angle < 0)ninreach = false;
-            body[FeetL].angle = body[Lower_legL].angle;
-            body[FeetR].angle = body[Lower_legR].angle;
-       }
+        side = RIGHT;
+        static bool ninreachL = false;
+        static bool ninreachR = false;
+        if(body[Upper_armL].angle >= 90)ninreachL = true;
+        if(body[Upper_armR].angle <= -90)ninreachR = true;
+        // arms
+        body[Upper_armL].angle += (ninreachL ? -ANGLINC : ANGLINC);
+        body[Upper_armR].angle += (ninreachR ? ANGLINC : -ANGLINC);
+        body[Lower_armL].angle = body[Upper_armL].angle + 90;
+        body[Lower_armR].angle = body[Upper_armR].angle + 90;
+        // Legs
+        static bool ninreachL_ = false;
+        static bool ninreachR_ = false;
+        if(body[Upper_legL].angle <= -90)ninreachR_ = true;
+        if(body[Upper_legR].angle >= 90)ninreachL_ = true;
+        body[Upper_legL].angle += (ninreachR_ ? ANGLINC : -ANGLINC);
+        body[Upper_legR].angle += (ninreachL_ ? -ANGLINC : ANGLINC);
+        body[Lower_legL].angle = body[Upper_legL].angle - 90;
+        body[Lower_legR].angle = body[Upper_legR].angle - 90;
+        if(body[Upper_legL].angle >= 90)ninreachR_ = false;
+        if(body[Upper_legR].angle <= -90)ninreachL_ = false;
+        //
+        if(body[Upper_armL].angle < -90)ninreachL = false;
+        if(body[Upper_armR].angle > 90)ninreachR = false;
+        body[FeetL].angle = body[Lower_legL].angle;
+        body[FeetR].angle = body[Lower_legR].angle;
+    }
+    void animate2(){
+        side = LEFT;
+        static bool ninreachL = false;
+        static bool ninreachR = false;
+        if(body[Upper_armR].angle >= 90)ninreachL = true;
+        if(body[Upper_armL].angle <= -90)ninreachR = true;
+        // arms
+        body[Upper_armL].angle += (ninreachL ? ANGLINC : -ANGLINC);
+        body[Upper_armR].angle += (ninreachR ? -ANGLINC : ANGLINC);
+        body[Lower_armL].angle = body[Upper_armL].angle - 90;
+        body[Lower_armR].angle = body[Upper_armR].angle - 90;
+        // Legs
+        static bool ninreachL_ = false;
+        static bool ninreachR_ = false;
+        if(body[Upper_legL].angle >= 90)ninreachR_ = true;
+        if(body[Upper_legR].angle <= -90)ninreachL_ = true;
+        body[Upper_legL].angle += (ninreachR_ ? -ANGLINC : ANGLINC);
+        body[Upper_legR].angle += (ninreachL_ ? ANGLINC : -ANGLINC);
+        body[Lower_legL].angle = body[Upper_legL].angle + 90;
+        body[Lower_legR].angle = body[Upper_legR].angle + 90;
+        if(body[Upper_legL].angle <= -90)ninreachR_ = false;
+        if(body[Upper_legR].angle >= 90)ninreachL_ = false;
+        //
+        if(body[Upper_armR].angle < -90)ninreachL = false;
+        if(body[Upper_armL].angle > 90)ninreachR = false;
+        body[FeetL].angle = body[Lower_legL].angle - 180;
+        body[FeetR].angle = body[Lower_legR].angle - 180;
+    }
+    void animate3(){
+        static bool ninreach = false;
+        // Legs
+        if(body[Upper_legL].angle <= -90)ninreach = true;
+        body[Upper_legL].angle += (ninreach ? ANGLINC : -ANGLINC);
+        body[Upper_legR].angle += (ninreach ? ANGLINC : -ANGLINC);
+        body[Lower_legL].angle += (!ninreach && body[Lower_legL].angle >= body[Upper_legL].angle + 90 || ninreach && body[Lower_legL].angle <= body[Upper_legL].angle ? 0 : (ninreach ? -ANGLINC : ANGLINC));
+        body[Lower_legR].angle += (!ninreach && body[Lower_legR].angle >= body[Upper_legR].angle + 90 || ninreach && body[Lower_legR].angle <= body[Upper_legR].angle ? 0 : (ninreach ? -ANGLINC : ANGLINC));
+        if(body[Upper_legL].angle > 0)ninreach = false;
+        body[FeetL].angle = body[Lower_legL].angle - 180;
+        body[FeetR].angle = body[Lower_legR].angle - 180;
+    }
+    void animate4(){
+        static bool ninreach = false;
+        // Legs
+        if(body[Upper_legL].angle >= 90)ninreach = true;
+        body[Upper_legL].angle += (ninreach ? -ANGLINC : ANGLINC);
+        body[Upper_legR].angle += (ninreach ? -ANGLINC : ANGLINC);
+        body[Lower_legL].angle += (!ninreach && body[Lower_legL].angle <= body[Upper_legL].angle - 90 || ninreach && body[Lower_legL].angle >= body[Upper_legL].angle ? 0 : (ninreach ? ANGLINC : -ANGLINC));
+        body[Lower_legR].angle += (!ninreach && body[Lower_legR].angle <= body[Upper_legR].angle - 90 || ninreach && body[Lower_legR].angle >= body[Upper_legR].angle ? 0 : (ninreach ? ANGLINC : -ANGLINC));
+        if(body[Upper_legL].angle < 0)ninreach = false;
+        body[FeetL].angle = body[Lower_legL].angle;
+        body[FeetR].angle = body[Lower_legR].angle;
+    }
     void refix(){
         if(body[Head].image.getdst().w < 3){
             for(int i = 0; i < 15; i++)body[i].image.set_dstdim(6, 6);
@@ -220,37 +227,38 @@ class simpledoll{
         for(int i = 0; i < 15; i++)body[i].setcm();
     }
     simpledoll(SDL_Renderer* rend){
+        side = RIGHT;
         SDL_Surface* surf = SDL_CreateRGBSurface(0, 3, 3, 8, 0, 0, 0, 0);
         for(int i = 0; i < 15; i++)body[i].image.setren(rend);
         SDL_SetSurfaceColorMod(surf, 0, 0, 0);
         body[Head].image.surfcpy(surf); //);
-        SDL_SetSurfaceColorMod(surf, 0, 0, 100);
+        SDL_SetSurfaceColorMod(surf, 232, 19, 19);
         body[Upper_bod].image.surfcpy(surf); //);
-        SDL_SetSurfaceColorMod(surf, 0, 100, 0);
+        SDL_SetSurfaceColorMod(surf, 228, 232, 19);
         body[Lower_bod].image.surfcpy(surf); //0.5 * body[Lower_bod].image.getdst().w, 0.1 * body[Lower_bod].image.getdst().h)
-        SDL_SetSurfaceColorMod(surf, 100, 50, 0);
+        SDL_SetSurfaceColorMod(surf, 3, 96, 46);
         body[Upper_armL].image.surfcpy(surf); //0.5 * body[Upper_armL].image.getdst().w, 0.3 * body[Upper_armL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 50, 100, 0);
+        SDL_SetSurfaceColorMod(surf, 78, 1, 87);
         body[Upper_armR].image.surfcpy(surf); //0.5 * body[Upper_armR].image.getdst().w, 0.3 * body[Upper_armR].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 150, 50, 0);
+        SDL_SetSurfaceColorMod(surf, 4, 133, 51);
         body[Lower_armL].image.surfcpy(surf); //0.5 * body[Lower_armL].image.getdst().w, 0.3 * body[Lower_armL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 50, 150, 0);
+        SDL_SetSurfaceColorMod(surf, 129, 1, 143);
         body[Lower_armR].image.surfcpy(surf); //0.5 * body[Lower_armR].image.getdst().w, 0.3 * body[Lower_armR].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 0, 100, 50);
+        SDL_SetSurfaceColorMod(surf, 42, 2, 115);
         body[Upper_legL].image.surfcpy(surf); //0.5 * body[Upper_legL].image.getdst().w, 0.3 * body[Upper_legL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 0, 50, 100);
+        SDL_SetSurfaceColorMod(surf, 117, 48, 2);
         body[Upper_legR].image.surfcpy(surf); //0.5 * body[Upper_legR].image.getdst().w, 0.3 * body[Upper_legR].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 50, 0, 150);
+        SDL_SetSurfaceColorMod(surf, 62, 2, 176);
         body[Lower_legL].image.surfcpy(surf); //0.5 * body[Lower_legL].image.getdst().w, 0.3 * body[Lower_legL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 150, 0, 50);
+        SDL_SetSurfaceColorMod(surf, 184, 75, 2);
         body[Lower_legR].image.surfcpy(surf); //0.5 * body[Lower_legR].image.getdst().w, 0.3 * body[Lower_legR].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 50, 200, 0);
+        SDL_SetSurfaceColorMod(surf, 85, 2, 240);
         body[FeetL].image.surfcpy(surf); //0.25 * body[FeetL].image.getdst().w, 0.5 * body[FeetL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 200, 50, 0);
+        SDL_SetSurfaceColorMod(surf, 250, 101, 2);
         body[FeetR].image.surfcpy(surf); //0.25 * body[FeetR].image.getdst().w, 0.5 * body[FeetR].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 0, 50, 200);
+        SDL_SetSurfaceColorMod(surf, 2, 186, 69);
         body[HandL].image.surfcpy(surf); //0.5 * body[HandL].image.getdst().w, 0.1 * body[HandL].image.getdst().h);
-        SDL_SetSurfaceColorMod(surf, 0, 200, 50);
+        SDL_SetSurfaceColorMod(surf, 202, 2, 224);
         body[HandR].image.surfcpy(surf); //0.5 * body[HandR].image.getdst().w, 0.1 * body[HandR].image.getdst().h);
         queryset();
         setdims();
@@ -435,29 +443,41 @@ class simpledoll{
     void draw(SDL_FRect* rect = NULL){
         tighten();
         //for(int i = 0; i < 2; i++)body[i].draw(rect);
-        body[Lower_armR].draw(rect);
-        body[Upper_armR].draw(rect);
-        body[HandR].draw(rect);
-        body[Upper_bod].draw(rect);
-        body[Head].draw(rect);
-        
-        body[Lower_legL].draw(rect);
-        body[Lower_legR].draw(rect);
-        body[Upper_legL].draw(rect);
-        body[Upper_legR].draw(rect);
-        body[Lower_bod].draw(rect);
-        body[Lower_armL].draw(rect);
-        body[Upper_armL].draw(rect);
-        body[HandL].draw(rect);
-        body[FeetL].draw(rect);
-        body[FeetR].draw(rect);
-        
-        /*
-        for(int i = 0; i < 15; i++){
-            body[i].setphysx();    
+        if(side == LEFT){
+            body[Head].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[Lower_armL].draw(rect);
+            body[Upper_armL].draw(rect);
+            body[HandL].draw(rect);
+            body[Upper_bod].draw(rect);
+            body[Head].draw(rect);
+            body[Lower_armR].draw(rect);
+            body[Upper_armR].draw(rect);
+            body[HandR].draw(rect);
+            body[FeetL].draw(rect);
+            body[Lower_legL].draw(rect);
+            body[Upper_legL].draw(rect);
+            body[FeetR].draw(rect);
+            body[Lower_legR].draw(rect);
+            body[Upper_legR].draw(rect);    
         }
-        */
-        
+        else{
+            body[Head].image.setflip(SDL_FLIP_NONE);
+            body[Lower_armR].draw(rect);
+            body[Upper_armR].draw(rect);
+            body[HandR].draw(rect);
+            body[Upper_bod].draw(rect);
+            body[Head].draw(rect);
+            body[Lower_armL].draw(rect);
+            body[Upper_armL].draw(rect);
+            body[HandL].draw(rect);
+            body[FeetR].draw(rect);
+            body[Lower_legR].draw(rect);
+            body[Upper_legR].draw(rect);
+            body[FeetL].draw(rect);
+            body[Lower_legL].draw(rect);
+            body[Upper_legL].draw(rect);
+        }
+        body[Lower_bod].draw(rect);
     }
     void infof(ofstream& ofs){
         ofs << " ===================================================== " << endl;

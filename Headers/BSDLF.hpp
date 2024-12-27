@@ -537,8 +537,8 @@ class TEXTURE
     int queryN(){
         return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
-    int drawOF(const SDL_FRect& rect, SDL_Renderer* rend = NULL){
-        SDL_FRect* drawRect = new SDL_FRect({dst.x - rect.x, dst.y - rect.y, dst.w, dst.h});
+    int drawOF(SDL_FRect* rect = NULL, SDL_Renderer* rend = NULL){
+        SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - rect->x, dst.y - rect->y, dst.w, dst.h}) : NULL);
         return drawC(rend, drawRect);
     }
     int drawC(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
