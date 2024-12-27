@@ -144,13 +144,11 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
     SDL_Event event;
-    TEXTURE box;
-    box.setren(win.getren());
+    simpledoll man(win.getren());
+    man.body[Upper_bod].Position = Vflt2(win.getw()/2, win.geth() * 0.8);
+    man.magnify(2);
     SDL_Surface* surf = SDL_CreateRGBSurface(0, 10, 30, 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
-    box.surfcpy(surf);
-    box.queryF();
-    box.set_cenpos(win.getw()/2, win.geth()/1.1);
     Vflt2 vel(0, 0);
     int layers = Layers.size(), rows = Layers[0].size(), columns = Layers[0][0].size();
     map<int, SDL_Texture*> tex_maps;
@@ -198,9 +196,8 @@ int main(int argn, char** args)
                 speed -= (speed <= 0 ? 0 : 1);
             }
         }
-        box.set_cenpos(box.get_cenpos().x + vel.getx(), box.get_cenpos().y - vel.gety());
-        camera.x = (int)(box.get_cenpos().x <= camera.w / 2 ? 0 : 1) * (box.get_cenpos().x - (camera.w / 2));
-        camera.x = (box.get_cenpos().x >= (mapWidth - camera.w / 2) ? mapWidth - camera.w : camera.x);
+        //camera.x = (int)(box.get_cenpos().x <= camera.w / 2 ? 0 : 1) * (box.get_cenpos().x - (camera.w / 2));
+        //camera.x = (box.get_cenpos().x >= (mapWidth - camera.w / 2) ? mapWidth - camera.w : camera.x);
         for(int i = 0; i < layers; i++){
             for(int j = 0; j < rows; j++){
                 for(int k = 0; k < columns; k++){
@@ -222,7 +219,6 @@ int main(int argn, char** args)
         TXT txt(string("speed = " + to_string(vel.getx()) + " , " + to_string(vel.gety())).c_str(), win.getren(), 15, 0, 0, 0, 255);
         txt.board.set_dstpos(0, 0);
         txt.board.drawC();
-        box.drawOF(camera);
         win.pst();
         win.clr();
         SDL_Delay(10);
