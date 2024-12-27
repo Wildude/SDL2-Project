@@ -1,7 +1,23 @@
 # SDL2-Project
 ## Recent changes
-![armed_man2](https://github.com/user-attachments/assets/d9313c0c-20ed-4279-9fdf-ee4933f118bf)
-![environment3](https://github.com/user-attachments/assets/85514eaf-6bf5-4141-a924-a169c7ca1b5f)
+![Tiledmaptest](https://github.com/user-attachments/assets/7398e04b-d3b7-40fb-9feb-618737d5c7fb)
+![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
+## New concepts
+### Rescaling images
+![image](https://github.com/user-attachments/assets/189e9e9b-c481-4f18-a270-fda506be3a0b)
+- This speeds up image generation process since drawing is not required.
+- The above image is an illustration of this concept.
+- Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
+- They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
+- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Headers/rigid_body.hpp">rigid_body.hpp</a>
+### Running/Walking animation
+![ProjectionGPT](https://github.com/user-attachments/assets/ee35a0d5-60f9-4c76-beab-d5b42c19cc44)
+![ProjectionMine](https://github.com/user-attachments/assets/53918aca-7d63-454a-a6cf-933e6f3294f7)
+- a 3rd update to the walking/running animation based on a concept of math not expected to be used in the game.
+- 3D illusion using 2D projection
+- Using help of GPT, a projection algorithm was obtained and implemented.
+- The green trapezium controlled by a slider is from GPTs code.
+- The other one is from the project's code.
 ## How to use?
 open up executables folder and run the programs.
 ## Preface
@@ -52,4 +68,3 @@ open up executables folder and run the programs.
   - The angle is compensated for when the image is rotated.
   - This involves the rather erroneous `rotate_C()` function, which is assumed to be the reason for the abnormality.
   - https://github.com/user-attachments/assets/248677c9-9a7b-4908-a524-6554671a8c1a
-
