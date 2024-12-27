@@ -390,34 +390,67 @@ class simpledoll{
     void setbody(){
         // tighten();
     }
-    void drawI(){
+    void drawI(SDL_FRect* rect = NULL){
         body[HandR].image.setflip(SDL_FLIP_HORIZONTAL);
         body[Lower_armR].image.setflip(SDL_FLIP_HORIZONTAL);
         body[Upper_armR].image.setflip(SDL_FLIP_HORIZONTAL);
         body[Lower_legR].image.setflip(SDL_FLIP_HORIZONTAL);
         body[Upper_legR].image.setflip(SDL_FLIP_HORIZONTAL);
         body[FeetR].image.setflip(SDL_FLIP_HORIZONTAL);
-        draw();
+        draw(rect);
     }
-    void draw(){
+    void drawCT(bool inv = false){
+        if(inv){
+            body[HandR].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[Lower_armR].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[Upper_armR].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[Lower_legR].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[Upper_legR].image.setflip(SDL_FLIP_HORIZONTAL);
+            body[FeetR].image.setflip(SDL_FLIP_HORIZONTAL);
+        }
         tighten();
-        //for(int i = 0; i < 2; i++)body[i].draw();
-        body[Lower_armR].draw();
-        body[Upper_armR].draw();
-        body[HandR].draw();
-        body[Upper_bod].draw();
-        body[Head].draw();
+        body[Lower_armR].drawC();
+        body[Upper_armR].drawC();
+        body[HandR].drawC();
+        body[Upper_bod].drawC();
+        body[Head].drawC();
         
-        body[Lower_legL].draw();
-        body[Lower_legR].draw();
-        body[Upper_legL].draw();
-        body[Upper_legR].draw();
-        body[Lower_bod].draw();
-        body[Lower_armL].draw();
-        body[Upper_armL].draw();
-        body[HandL].draw();
-        body[FeetL].draw();
-        body[FeetR].draw();
+        body[Lower_legL].drawC();
+        body[Lower_legR].drawC();
+        body[Upper_legL].drawC();
+        body[Upper_legR].drawC();
+        body[Lower_bod].drawC();
+        body[Lower_armL].drawC();
+        body[Upper_armL].drawC();
+        body[HandL].drawC();
+        body[FeetL].drawC();
+        body[FeetR].drawC();
+    }
+    void setphysx(){
+        for(int i = 0; i < 15; i++){
+            body[i].setphysx();    
+        }
+        tighten();
+    }
+    void draw(SDL_FRect* rect = NULL){
+        tighten();
+        //for(int i = 0; i < 2; i++)body[i].draw(rect);
+        body[Lower_armR].draw(rect);
+        body[Upper_armR].draw(rect);
+        body[HandR].draw(rect);
+        body[Upper_bod].draw(rect);
+        body[Head].draw(rect);
+        
+        body[Lower_legL].draw(rect);
+        body[Lower_legR].draw(rect);
+        body[Upper_legL].draw(rect);
+        body[Upper_legR].draw(rect);
+        body[Lower_bod].draw(rect);
+        body[Lower_armL].draw(rect);
+        body[Upper_armL].draw(rect);
+        body[HandL].draw(rect);
+        body[FeetL].draw(rect);
+        body[FeetR].draw(rect);
         
         /*
         for(int i = 0; i < 15; i++){
@@ -639,23 +672,23 @@ class doll
        void setbody(){
         // tighten();
        }
-       void draw(){
+       void draw(SDL_FRect* rect = NULL){
         tighten();
-        //for(int i = 0; i < 2; i++)body[i].draw();
-        body[Upper_armR].draw();
-        body[Lower_armR].draw();
-        body[Upper_bod].draw();
-        body[Lower_bod].draw();
-        body[Head].draw();
-        body[Upper_armL].draw();
-        body[Lower_armL].draw();
-        body[HandL].draw();
-        body[HandR].draw();
-        body[Upper_legL].draw();
-        body[Upper_legR].draw();
-        body[Lower_legL].draw();
-        body[Lower_legR].draw();
-        body[FeetL].draw();
-        body[FeetR].draw();
+        //for(int i = 0; i < 2; i++)body[i].draw(rect);
+        body[Upper_armR].draw(rect);
+        body[Lower_armR].draw(rect);
+        body[Upper_bod].draw(rect);
+        body[Lower_bod].draw(rect);
+        body[Head].draw(rect);
+        body[Upper_armL].draw(rect);
+        body[Lower_armL].draw(rect);
+        body[HandL].draw(rect);
+        body[HandR].draw(rect);
+        body[Upper_legL].draw(rect);
+        body[Upper_legR].draw(rect);
+        body[Lower_legL].draw(rect);
+        body[Lower_legR].draw(rect);
+        body[FeetL].draw(rect);
+        body[FeetR].draw(rect);
        }
 };

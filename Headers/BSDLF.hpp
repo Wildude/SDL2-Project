@@ -537,18 +537,22 @@ class TEXTURE
     int queryN(){
         return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
-    int drawC(SDL_Renderer* rend = NULL)
+    int drawOF(const SDL_FRect& rect, SDL_Renderer* rend = NULL){
+        SDL_FRect* drawRect = new SDL_FRect({dst.x - rect.x, dst.y - rect.y, dst.w, dst.h});
+        return drawC(rend, drawRect);
+    }
+    int drawC(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
     {
-        if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
+        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
         return 1;
     }
-    int drawO(SDL_Renderer* rend = NULL)
+    int drawO(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
     {
-    	if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
+    	if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
         pst(rend ? rend : renderer);
         return 1;
     }
-    int drawI(const char* filepath, bool clrer = 1, SDL_Renderer* rend = NULL)
+    int drawI(const char* filepath, bool clrer = 1, SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
     {
         if(!load(filepath, rend)){return -1;}
         if(queryR() < 0){return -2;}
@@ -556,37 +560,22 @@ class TEXTURE
         set_dstpos();
         set_dstdim();
         setcenter();
-        if(rencpy(NULL, &dst, flip, &center, &src, rend) < 0)return -3;
+        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
         pst(rend);
         if(clrer)if(clr(rend) < 0) return -4;
         return 1;
     }
-    int draw(SDL_Renderer* rend = NULL, bool clrer = 1)
+    int draw(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL, bool clrer = 1)
     {
         if(queryR() < 0){return -1;}
         set_srcpos();
         set_dstpos();
         set_dstdim();
         setcenter();
-        if(rencpy(NULL, &dst, flip, &center, &src, (rend ? rend : renderer)) < 0)return -2;
+        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, (rend ? rend : renderer)) < 0)return -2;
         pst(rend ? rend : renderer);
         if(clrer)if(clr((rend ? rend : renderer)) < 0) return -3;
         return 1;
-    }
-    void drawTile(int margin, int 
-    spacing, int x, int y, int width, int height, int currentRow, 
-    int currentFrame, SDL_Renderer *pRenderer)
-    {
-        SDL_Rect srcRect;
-        SDL_Rect destRect;
-        srcRect.x = margin + (spacing + width) * currentFrame;
-        srcRect.y = margin + (spacing + height) * currentRow;
-        srcRect.w = destRect.w = width;
-        srcRect.h = destRect.h = height;
-        destRect.x = x;
-        destRect.y = y;
-        SDL_RenderCopyEx(pRenderer, texture, &srcRect,
-        &destRect, 0, 0, SDL_FLIP_NONE);
     }
 };
 class FONT

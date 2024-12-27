@@ -7,7 +7,7 @@
  angle: 0
  src_pos(x, y): 0,0
  src_dim(w, h): 10,10
- dst_pos(x, y): 155,235
+ dst_pos(x, y): 107,204
  dst_dim(w, h): 10,10
  center(x, y): 5,5
  col(r, g, b, a): 0,0,0,0
@@ -18,7 +18,7 @@
  angle: 0
  src_pos(x, y): 0,0
  src_dim(w, h): 10,10
- dst_pos(x, y): 475,235
+ dst_pos(x, y): 503,399
  dst_dim(w, h): 10,10
  center(x, y): 5,5
  col(r, g, b, a): 0,0,0,0
@@ -32,7 +32,7 @@
  angle: 0
  src_pos(x, y): 0,0
  src_dim(w, h): 10,10
- dst_pos(x, y): 475,235
+ dst_pos(x, y): 503,399
  dst_dim(w, h): 10,10
  center(x, y): 5,5
  col(r, g, b, a): 0,0,0,0
@@ -43,7 +43,7 @@
  angle: 0
  src_pos(x, y): 0,0
  src_dim(w, h): 10,10
- dst_pos(x, y): 155,235
+ dst_pos(x, y): 107,204
  dst_dim(w, h): 10,10
  center(x, y): 5,5
  col(r, g, b, a): 0,0,0,0

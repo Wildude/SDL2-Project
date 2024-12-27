@@ -14,7 +14,28 @@ int main(int argn, char** args)
     wep.Position = Vflt2(win.getw()/2, win.geth()/2);
     wep.setbool(true);
     wep.magnify(0.5, 1);
-    wep.magnify(2);
+    wep.magnify(1.5);
+    man.body[Head].image.load("../Images/Characters/head.png");
+    man.body[Lower_bod].image.load("../Images/Characters/lower_bod.png");
+    man.body[Lower_armL].image.load("../Images/Characters/lower_arm.png");
+    man.body[Upper_armL].image.load("../Images/Characters/upper_arm.png");
+
+    man.body[Lower_armR].image.load("../Images/Characters/lower_arm.png");
+    man.body[Upper_armR].image.load("../Images/Characters/upper_arm.png");
+
+    man.body[Upper_legL].image.load("../Images/Characters/upper_leg.png");
+    man.body[Lower_legL].image.load("../Images/Characters/lower_leg.png");
+
+    man.body[Upper_legR].image.load("../Images/Characters/upper_leg.png");
+    man.body[Lower_legR].image.load("../Images/Characters/lower_leg.png");
+
+    man.body[FeetL].image.load("../Images/Characters/Feet.png");
+    man.body[HandL].image.load("../Images/Characters/hand.png");
+
+    man.body[FeetR].image.load("../Images/Characters/Feet.png");
+    man.body[HandR].image.load("../Images/Characters/hand.png");
+    man.body[Upper_bod].image.load("../Images/Characters/upper_bod.png");
+    man.queryset();
     man.magnify(2);
     SDL_Event event;
     //wep.setmaincenter(Vflt2(-10, wep.image.getdst().h/2));
@@ -91,7 +112,7 @@ int main(int argn, char** args)
         wep.set_target(mousepos);
         //wep.Position = man.body[HandL].Position;
         wep.aim();
-        man.draw();
+        man.drawI();
         wep.draw();
         point.drawC();
         txt.board.drawC();

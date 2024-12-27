@@ -119,8 +119,8 @@ class physx_surface
         image.set_dstdim(magnitude, image.getdst().h);
         image.setangle(-angle);
     }
-    inline void draw(){
-        image.drawC();
+    inline void draw(SDL_FRect* rect = NULL){
+        image.drawC(NULL, rect);
     }
     physx_surface(const Vflt2& pos_1, float mag, float ang){}
     void touch(physx& obj){
@@ -306,9 +306,12 @@ class physx_body : public physx
             rectset();
             rotate_rC(rects, -image.getangle(),  4);
         }
-        inline void draw(){
+        inline void drawC(SDL_FRect* rect = NULL){
+            image.drawC(NULL, rect);
+        }
+        inline void draw(SDL_FRect* rect = NULL){
             setphysx();
-            image.drawC();
+            image.drawC(NULL, rect);
         }
         void display(ostream& os = cout){
             physx::display(os);
