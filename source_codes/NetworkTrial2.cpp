@@ -32,15 +32,50 @@ void sendData(const char* message, const char* ipAddress, int port) {
     // Copy the message into the packet
     std::strncpy(reinterpret_cast<char*>(packet->data), message, 512);
     packet->len = std::strlen(message) + 1;
-    packet->address.host = ip.host;
-    packet->address.port = ip.port;
 
+    // Send the packet
     if (SDLNet_UDP_Send(socket, -1, packet) == 0) {
         std::cerr << "SDLNet_UDP_Send failed: " << SDLNet_GetError() << std::endl;
-        std::cout << "Packet length: " << packet->len << ", Data: " << packet->data << std::endl;
-        std::cout << "Sending to IP: " << SDLNet_Read32(&ip.host) << ", Port: " << SDLNet_Read16(&ip.port) << std::endl;
     } else {
         std::cout << "Message sent: " << message << std::endl;
+    }
+
+    // Clean up
+    SDLNet_FreePacket(packet);
+    SDLNet_UDP_Close(socket);
+    SDLNet_Quit();
+    SDL_Quit();
+}
+void receiveData(int port) {
+    // Initialize SDL_net
+    if (SDL_Init(0) == -1 || SDLNet_Init() == -1) {
+        std::cerr << "SDLNet_Init failed: " << SDLNet_GetError() << std::endl;
+        return;
+    }
+
+    // Open a UDP socket on the specified port
+    UDPsocket socket = SDLNet_UDP_Open(port);
+    if (!socket) {
+        std::cerr << "SDLNet_UDP_Open failed: " << SDLNet_GetError() << std::endl;
+        return;
+    }
+
+    // Create a packet to receive
+    UDPpacket* packet = SDLNet_AllocPacket(512);  // 512 bytes max
+    if (!packet) {
+        std::cerr << "SDLNet_AllocPacket failed: " << SDLNet_GetError() << std::endl;
+        return;
+    }
+
+    // Wait for and receive a packet
+    while (true) {
+        if (SDLNet_UDP_Recv(socket, packet)) {
+            system("cls");
+            std::cout << "Received message: " << reinterpret_cast<char*>(packet->data) << std::endl;
+            return;
+        } else {
+            std::cerr << "No packet received: " << SDLNet_GetError() << std::endl;
+        }
     }
 
     // Clean up
@@ -52,8 +87,5 @@ void sendData(const char* message, const char* ipAddress, int port) {
 //
 int main(int argn, char** args)
 {
-    cout << " Press any button to snd the message: \n";
-    getch();
-    sendData("Hey you there", "127.0.0.1", 12345);
-    return 0;
+    receiveData(12345);
 }
