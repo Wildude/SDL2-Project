@@ -54,6 +54,6 @@ int main(int argn, char** args)
 {
     cout << " Press any button to snd the message: \n";
     getch();
-    sendData("Hey you there", "127.0.0.1", 12345);
+    sendData("Hey you there", "192.168.1.2", 12345);
     return 0;
 }
