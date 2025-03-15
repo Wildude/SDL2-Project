@@ -7,6 +7,7 @@
 #include <vector>
 #include <typeinfo>
 #include <conio.h>
+#include <map>
 using namespace std;
 namespace nummap
 {

@@ -29,3 +29,4 @@ g++ -I../src/Include -L../src/Lib -o ../Executables/circ_rect_anim.exe circ_rect
 g++ -I../src/Include -L../src/Lib -o ../Executables/NetworkTrial.exe NetworkTrial.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/Projection_attempt.exe Projection_attempt.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 g++ -I../src/Include -L../src/Lib -o ../Executables/NetworkTrial.exe NetworkTrial.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+g++ -I../src/Include -L../src/Lib -o ../Executables/TextureMap.exe TextureMap.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net

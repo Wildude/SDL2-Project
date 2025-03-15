@@ -79,9 +79,12 @@ typedef struct SDL_Rect
 {
     int x, y;
     int w, h;
+    friend ostream& operator<<(ostream&, const SDL_Rect&);
 } SDL_Rect;
-
-
+ostream& operator<<(ostream& os, const SDL_Rect& rect){
+    os << rect.x << ' ' << rect.y << ' ' << rect.w << ' ' << rect.h;
+    return os;
+}
 /**
  * A rectangle, with the origin at the upper left (floating point).
  *

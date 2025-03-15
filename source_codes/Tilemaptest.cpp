@@ -144,35 +144,14 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
     SDL_Event event;
-    simpledoll man(win.getren());
-    man.body[Upper_bod].Position = Vflt2(win.getw()/2, win.geth() * 0.8);
-    
-    man.body[Head].image.load("../Images/Characters/head.png");
-    man.body[Lower_bod].image.load("../Images/Characters/lower_bod.png");
-    man.body[Lower_armL].image.load("../Images/Characters/lower_arm.png");
-    man.body[Upper_armL].image.load("../Images/Characters/upper_arm.png");
-
-    man.body[Lower_armR].image.load("../Images/Characters/lower_arm.png");
-    man.body[Upper_armR].image.load("../Images/Characters/upper_arm.png");
-
-    man.body[Upper_legL].image.load("../Images/Characters/upper_leg.png");
-    man.body[Lower_legL].image.load("../Images/Characters/lower_leg.png");
-
-    man.body[Upper_legR].image.load("../Images/Characters/upper_leg.png");
-    man.body[Lower_legR].image.load("../Images/Characters/lower_leg.png");
-
-    man.body[FeetL].image.load("../Images/Characters/Feet.png");
-    man.body[HandL].image.load("../Images/Characters/hand.png");
-
-    man.body[FeetR].image.load("../Images/Characters/Feet.png");
-    man.body[HandR].image.load("../Images/Characters/hand.png");
-    man.body[Upper_bod].image.load("../Images/Characters/upper_bod.png");
-    man.queryset();
-    
-    man.magnify(2);
-    //
+    TEXTURE man;
     SDL_Surface* surf = SDL_CreateRGBSurface(0, 10, 30, 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
+    man.setren(win.getren());
+    man.surfcpy(surf);
+    man.queryF();
+    man.magnify(2);
+    //
     Vflt2 vel(0, 0);
     int layers = Layers.size(), rows = Layers[0].size(), columns = Layers[0][0].size();
     map<int, SDL_Texture*> tex_maps;
@@ -191,6 +170,8 @@ int main(int argn, char** args)
     Vflt2 velrel = Vflt2(0, 0);
     SDL_FRect camera = {0, 0, (float)win.getw(), (float)win.geth()};
     int FrameStarter = 0;
+    man.set_cenpos(win.getw()/2, win.geth()/2);
+    bool usescale = false;
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         int x, y;
@@ -205,20 +186,16 @@ int main(int argn, char** args)
         else{
             FrameStarter = SDL_GetTicks();
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){
-                man.animate2();
-                vel.getx() -= speed * physx::delta;;
+                vel.getx() -= speed * physx::delta;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){
-                man.animate();
-                vel.getx() += speed * physx::delta;;
+                vel.getx() += speed * physx::delta;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP]){
-                man.animate2();
-                vel.gety() += speed * physx::delta;;
+                vel.gety() += speed * physx::delta;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN]){
-                man.animate();
-                vel.gety() -= speed * physx::delta;;
+                vel.gety() -= speed * physx::delta;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]){
                 speed += (speed >= 100 ? 0 : 1);
@@ -229,33 +206,70 @@ int main(int argn, char** args)
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_SPACE]){
                 vel = Vflt2_0;
             }
+            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_MINUS]){
+                if(camera.w > win.getw() / 10)camera.w-=5;
+                //camera.h--;
+            }
+            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_EQUALS]){
+                if(camera.w < win.getw() * 3)camera.w+=5;
+                //camera.h++;
+            }
+            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_BACKSPACE]){
+                usescale = !usescale;
+            }
         }
-        if(vel == Vflt2_0)man.stabilize();
-        else for(int i = 0; i < 15; i++)man.body[i].Velocity = vel;
-        camera.x = (int)(man.body[Upper_bod].Position.getx() <= camera.w / 2 ? 0 : 1) * (man.body[Upper_bod].Position.getx() - (camera.w / 2));
-        camera.x = (man.body[Upper_bod].Position.getx() >= (mapWidth - camera.w / 2) ? mapWidth - camera.w : camera.x);
+        float scalex = camera.w / win.getw();
+        float xoff = win.getw() * (1 - scalex) / 2;
+        man.getdst().x += vel.getx();
+        man.getdst().y -= vel.gety();
+        camera.x = (int)(man.get_cenpos().x <= win.getw() / 2 ? 0 : 1) * (man.get_cenpos().x - win.getw()/2);
+        camera.x = (man.get_cenpos().x >= (mapWidth - camera.w / 2) ? mapWidth - camera.w : camera.x);
+        int tilewidth = tileset.tileWidth / scalex;
+        int k1 = (int)(xoff/tileset.tileWidth);
+        int playfac = (int)(man.get_cenpos().x / (win.getw() / 2));
+        int camfac = (int)(camera.x / win.getw());
+        float camoff = camera.x + camera.w/2 >= win.getw()/2 ? xoff : camera.x;
+        float cammarg1 = win.getw()/2 - camera.w/2, cammarg2 = win.getw()/2 + camera.w/2;
+        float campoints = man.get_cenpos().x < camera.w/2 ? 0 : win.getw()/2 - camera.w/2;
+        float camend = man.get_cenpos().x < camera.w/2 ? camera.w : win.getw()/2 + camera.w/2;
+        if(man.get_cenpos().x > camera.w/2) camera.x = man.get_cenpos().x - win.getw()/2;
+        camera.x = std::max(0.0f, std::min(camera.x, (float)(mapWidth - win.getw()) * (1 / scalex)));
         for(int i = 0; i < layers; i++){
             for(int j = 0; j < rows; j++){
                 for(int k = 0; k < columns; k++){
-                    SDL_FRect* rect = new SDL_FRect({(float)k * tileset.tileWidth - (float)camera.x, (float)j * tileset.tileWidth, (float)tileset.tileWidth, (float)tileset.tileWidth});
+                    SDL_FRect* rect = new SDL_FRect({((float)k * (usescale ? tilewidth : 32) - (float)camera.x) * (1 / scalex), (float)j * tileset.tileWidth, (float)tileset.tileWidth / scalex, (float)tileset.tileWidth});
                     if(
-                        rect->x <= win.getw() &&
-                        rect->y <= win.geth() &&
-                        rect->x + rect->w > 0 &&
-                        rect->y + rect->h > 0 &&
+                        rect->x <= camend &&
+                        rect->y <= camera.h &&
+                        rect->x + rect->w > campoints &&
+                        rect->y + rect->h > camera.y &&
                         Layers[i][j][k] > 0
-                    ){
+                    )
+                    {
                         SDL_RenderCopyF(win.getren(), tex_maps[Layers[i][j][k] - 1], NULL, rect);
                     }
                     delete rect;
                 }
             }
         }
+        SDL_SetRenderDrawColor(win.getren(), 50, 190, 10, 255); // Set color to red
+        SDL_RenderDrawLine(win.getren(), win.getw()/2 * (camfac + 1), 0, win.getw()/2 * (camfac + 1), win.geth());
         float width = 0, height = 0;
-        TXT txt(string("speed = " + to_string(vel.getx()) + " , " + to_string(vel.gety())).c_str(), win.getren(), 15, 0, 0, 0, 255);
-        txt.board.set_dstpos(0, 0);
-        txt.board.drawC();
-        man.drawI(&camera);
+        //string stats1 = string("camera(x, y, w, h): (" + to_string(camera.x) + ", " + to_string((int)camera.y) + ", " + to_string((int)camera.w) + ", " + to_string((int)camera.h) + ")");
+        //string stats2 = string(" camoff, playfac = " + to_string(camoff) + ", " + to_string(playfac)); 
+        string stats3 = "usemag: " + to_string((int)usescale);
+        SDL_Color red = {255, 0, 0, 255};
+        FONT font(DEF_FONT, 20);
+        TextList list;
+        list.setxpos(0);
+        list.add(stats3.c_str(), &font, &red);
+        //list.add(stats2);
+        //list.add(string("pos: " + to_string(man.get_cenpos().x) + ", " + to_string(man.get_cenpos().y)));
+        //list.add(string("off(x): " + to_string(xoff)));
+        list.draw(win.getren(), 1);
+        SDL_Rect cam = {(int)camera.x, (int)camera.y, (int)camera.w, (int)camera.h};
+        //SDL_RenderDrawRect(win.getren(), &cam);
+        man.drawOF(&camera, NULL, 1 / scalex);
         win.pst();
         win.clr();
         SDL_Delay(10);
