@@ -15,11 +15,11 @@ int main(int argn, char** args)
     cout << " size_of(RENDERER): " << sizeof(RENDERER) << endl;
     cout << " size_of(TEXTURE): " << sizeof(TEXTURE) << endl;
     cout << " size_of(FONT): " << sizeof(FONT) << endl;
+    cout << " size_of(TXT): " << sizeof(TXT) << endl;
     cout << " size_of(AUDIO): " << sizeof(AUDIO) << endl;
     cout << " size_of(physx): " << sizeof(physx) << endl;
     cout << " size_of(physx_body): " << sizeof(physx_body) << endl;
     cout << " size_of(physx_surface): " << sizeof(physx_surface) << endl;
-    cout << " size_of(textBox): " << sizeof(TextBox) << endl;
-    cout << " size_of(textList): " << sizeof(TextList) << endl;
-    cout << " size_of(SDL_Color): " << sizeof(SDL_Color) << endl;
+    cout << " size_of(simpledoll): " << sizeof(simpledoll) << endl;
+    cout << " size_of(doll): " << sizeof(doll) << endl;
 }

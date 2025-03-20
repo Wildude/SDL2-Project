@@ -13,9 +13,9 @@ class weapon : public physx_body{
         target = tar;
     }
     void aim(){
-        //angle = angle_bn(Vflt2(image.get_cenpos().x, image.get_cenpos().y), target);
+        angle = angle_bn(Vflt2(image.get_cenpos().x, image.get_cenpos().y), target);
         image.set_srcpos(0, 0);
-        //Center_of_mass = maincenter;
+        Center_of_mass = maincenter;
         if(twoside){
             if(target.getx() < image.get_cenpos().x)switchside();
             //else normside();
@@ -37,8 +37,8 @@ class weapon : public physx_body{
     void switchside(){
         if(!twoside)return;
         image.set_srcpos(image.getsrc().w, 0);
-        //Center_of_mass = Vflt2(image.getdst().w - maincenter.getx(), Center_of_mass.gety());
-        //angle += 180;
+        Center_of_mass = Vflt2(image.getdst().w - maincenter.getx(), Center_of_mass.gety());
+        angle += 180;
     }
     void disptar(ostream& os = cout){
         os << " target = " << target << endl;
