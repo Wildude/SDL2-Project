@@ -2,5 +2,5 @@
 class GUI
 {
     map<int, TextList*> textLists;
-    
+    // continue
 };
