@@ -123,7 +123,7 @@ void parseLayerdata(XMLElement* mapelt, vector<vector<vector<int>>>& table_array
 }
 void setTileParams(XMLDocument& doc, Tileset& tileset, vector<vector<vector<int>>>& table_array){
     XMLElement* e = doc.RootElement();
-    cout << " doc root value: " << e -> Value() << endl;
+    //cout << " doc root value: " << e -> Value() << endl;
     parseTileset(e, tileset);
     parseLayerdata(e, table_array, tileset);
 }
@@ -166,7 +166,7 @@ int main(int argn, char** args)
             file << endl;
         }
     //
-    cout << layers << ' ' << rows << ' ' << columns << endl;
+    // cout << layers << ' ' << rows << ' ' << columns << endl;
     Vflt2 velrel = Vflt2(0, 0);
     SDL_FRect camera = {0, 0, (float)win.getw(), (float)win.geth()};
     int FrameStarter = 0;
@@ -258,12 +258,13 @@ int main(int argn, char** args)
         //string stats1 = string("camera(x, y, w, h): (" + to_string(camera.x) + ", " + to_string((int)camera.y) + ", " + to_string((int)camera.w) + ", " + to_string((int)camera.h) + ")");
         //string stats2 = string(" camoff, playfac = " + to_string(camoff) + ", " + to_string(playfac)); 
         string stats3 = "usemag: " + to_string((int)usescale);
+        string stats4 = "speed: " + to_string(speed);
         SDL_Color red = {255, 0, 0, 255};
         FONT font(DEF_FONT, 20);
         TextList list;
         list.setxpos(0);
-        list.add(stats3.c_str(), &font, &red);
-        //list.add(stats2);
+        //list.add(stats3);
+        //list.add(stats4);
         //list.add(string("pos: " + to_string(man.get_cenpos().x) + ", " + to_string(man.get_cenpos().y)));
         //list.add(string("off(x): " + to_string(xoff)));
         list.draw(win.getren(), 1);

@@ -2,10 +2,6 @@
 #include "../Headers/inclusions.hpp"
 int main(int argn, char** args)
 {
-    cout << " size_of(SDL_Window*): " << sizeof(SDL_Window*) << endl;
-    cout << " size_of(SDL_Renderer*): " << sizeof(SDL_Renderer*) << endl;
-    cout << " size_of(SDL_Texture*): " << sizeof(SDL_Texture*) << endl;
-    cout << " size_of(SDL_Surface*): " << sizeof(SDL_Surface*) << endl;
     cout << " size_of(SDL_Rect): " << sizeof(SDL_Rect) << endl;
     cout << " size_of(SDL_FRect): " << sizeof(SDL_FRect) << endl;
     cout << " size_of(SDL_FPoint): " << sizeof(SDL_FPoint) << endl;

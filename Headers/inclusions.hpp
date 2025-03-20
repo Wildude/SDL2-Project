@@ -1,4 +1,6 @@
 #include "Basic.hpp"
+#include "queue.hpp"
+#include "stacks.hpp"
 #include "zlib/zlib.h"
 #include "base64.cpp"
 #include "base64.hpp"

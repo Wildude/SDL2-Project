@@ -599,7 +599,12 @@ class FONT
         return *this;
     }
     void setpath(const char* fpath = DEF_FONT){
-        path = fpath;
+        if(!fpath){
+            if(path)delete path;
+            return;
+        }
+        path = new char[strlen(fpath)];
+        strcpy(path, fpath);
     }
     FONT(const FONT& f)
     {
@@ -633,7 +638,7 @@ class FONT
     {
         //cout<<" constructor called for font\n";
         INIT();
-        path = fontpath;
+        setpath(fontpath);
         setptsize(pt_size);
         setfont(path);
     }
@@ -652,13 +657,19 @@ class FONT
     ~FONT()
     {
         TTF_CloseFont(fontdata);
+        delete path;
     }
+    friend ostream& operator<<(ostream&, const FONT&);
     private:
     TTF_Font* fontdata; // 4 bytes
-    const char* path; // 4 bytes
+    char* path = NULL; // 4 bytes
     int ptsize; // 4 bytes
     // total = 12 bytes
 };
+ostream& operator<<(ostream& os, const FONT& font){
+    os << '<' << font.getpath() << ">(x" << font.getptsize() << ')';
+    return os;
+}
 class TextBox{
     private:
     SDL_Rect box; // 16 bytes
@@ -804,17 +815,42 @@ class TextBox{
     SDL_Color& getCol2(){
         return col2;
     }
+    const char* getText() const{
+        return text;
+    }
+    friend ostream& operator<<(ostream&, const TextBox&);
 };
+ostream& operator<<(ostream& os, const TextBox& box){
+    os << '\"' << box.getText() << '\"'
+    << ' ' 
+    << '(' 
+    << box.getBoxc().x << ',' 
+    << box.getBoxc().y << ',' 
+    << box.getBoxc().w << ',' 
+    << box.getBoxc().h << ')'
+    << ' ' << box.getFontc() << ' '
+    << '{'  
+    << (int)box.getCol1c().r << ','
+    << (int)box.getCol1c().g << ','
+    << (int)box.getCol1c().b << ','
+    << (int)box.getCol1c().a << '}'
+    << ' ' << '{'
+    << (int)box.getCol2c().r << ','
+    << (int)box.getCol2c().g << ','
+    << (int)box.getCol2c().b << ','
+    << (int)box.getCol2c().a << '}';
+    return os;
+}
 class TextList{
-    // improve to stack or queue or linked list
-    vector<TextBox> boxes; // 12 bytes
+    //improved from vector (12 bytes) to nodestack (8 bytes)
+    nodestack<TextBox> boxes;
     int xpos; // 4 bytes
-    // total = 16 bytes
+    // total = 12 bytes
     public:
     TextList(){}
     TextList(const vector<TextBox>& texts, int x)
     {
-        boxes = texts;
+        for(int i = 0; i < texts.size(); i++)boxes.push(texts[i]);
         xpos = x;
         setup();
     }
@@ -823,55 +859,60 @@ class TextList{
     }
     void setup()
     {
-        for(int i = 0; i < boxes.size(); i++)
-            boxes[i].setboxpos(xpos, (i ? 0 : boxes[i - 1].getBox().h));
-    }
-    void addFont(const FONT& font){
-        //boxes.clear();
-        int w, h;
-        font.TEXT_size("random text", &w, &h);
-        TextBox box(DEF_FONT, font.getptsize());
-        //boxes.push_back(box);
+        Lnode<TextBox>* curr = boxes.peek();
+        Lnode<TextBox>* prev = NULL;
+        if(!curr)return;
+        // maybe check for previous push operation to save time used for traversal
+        while(curr){
+            curr->id.setboxpos(xpos, prev ? prev->id.getBox().h : 0);
+            prev = curr;
+            curr = curr->next;
+        }
     }
     void add(const char* txt, FONT* font = NULL, SDL_Color* col1 = NULL, SDL_Color* col2 = NULL){
         int w, h;
         if(!font){
-            if(boxes.size()){
-                font = new FONT(boxes[boxes.size() - 1].getFont());
+            if(boxes.peek()){
+                font = new FONT(boxes.peek()->id.getFont());
             }
-            else{
-                font = new FONT();
-            }
+            else font = new FONT();
         }
         font->TEXT_size(txt, &w, &h);
         if(!col1){
-            if(boxes.size()){
-                col1 = &boxes[boxes.size() - 1].getCol1();
-            }
-            else{
-                col1 = new SDL_Color({0, 0, 0, 0});
-            }
+            if(boxes.peek())
+                col1 = &boxes.peek()->id.getCol1(); // hmmm
+            else col1 = new SDL_Color({0, 0, 0, 0});
         }
-        if(!col2){
-            col2 = new SDL_Color({(Uint8)(255 - col1->r), (Uint8)(255 - col1->g), (Uint8)(255 - col1->b), (Uint8)(255 - col1->a)});
-        }
-        int yoffset = (boxes.size() ? boxes[boxes.size() - 1].getBox().y + boxes[boxes.size() - 1].getBox().h : 0);
+        if(!col2)
+            col2 = new SDL_Color({
+                (Uint8)(255 - col1->r), 
+                (Uint8)(255 - col1->g), 
+                (Uint8)(255 - col1->b), 
+                (Uint8)(255 - col1->a)
+            });
+        int yoffset = (boxes.peek() ? boxes.peek()->id.getBox().y + boxes.peek()->id.getBox().h : 0);
         TextBox tbox(txt, *font);
         tbox.setboxpos(xpos, yoffset);
         tbox.setcol1(col1->r, col1->g, col1->b, col1->a);
         tbox.setcol2(col2->r, col2->g, col2->b, col2->a);
-        boxes.push_back(tbox);
+        boxes.push(tbox);
     }
-    void add(string txt){return add(txt);}
+    void add(string txt){return add(txt.c_str());}
     void draw(SDL_Renderer* rend = NULL, short drawtype = 2){
-        vector<SDL_Texture*> boards(boxes.size());
-        for(int i = 0; i < boxes.size(); i++){
+        Lnode<TextBox>* curr = boxes.peek();
+        while(curr){
             SDL_Texture* board;
-            boxes[i].draw(rend, board, drawtype);
+            curr->id.draw(rend, board, drawtype);
+            curr = curr->next;
         }
     }
     void drawi(int i, SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2){
-        boxes[i].draw(rend, board, drawtype);
+        Lnode<TextBox>* head = boxes.peek();
+        Lnode<TextBox>* curr = nextNode(head, i);
+        curr->id.draw(rend, board, drawtype);
+    }
+    nodestack<TextBox> getBoxes(){
+        return boxes;
     }
 };
 class AUDIO
