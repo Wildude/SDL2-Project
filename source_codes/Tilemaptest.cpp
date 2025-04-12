@@ -102,37 +102,23 @@ int main(int argn, char** args)
         man.getdst().x += vel.getx();
         man.getdst().y -= vel.gety();
         camera.x = (man.get_cenpos().x <= camera.w / 2 ? 0 : 1) * (man.get_cenpos().x - camera.w/2);
-        camera.x = std::max(0.0f, std::min(camera.x, (float)(mapWidth - win.getw()) * (1 / scalex)));
+        camera.x = std::max(0.0f, std::min(camera.x, (float)(mapWidth - camera.w)));
+        SDL_Texture* renderTarget = SDL_CreateTexture(
+            win.getren(),
+            SDL_PIXELFORMAT_RGBA8888,
+            SDL_TEXTUREACCESS_TARGET,
+            (int)camera.w,
+            (int)camera.h
+        );        
+        SDL_SetRenderTarget(win.getren(), renderTarget);
+        win.clr();
         int startX = max((int)(camera.x / tileset.tileWidth), 0);
         float decendX = (max(man.get_cenpos().x, camera.w/2) + camera.w/2) / tileset.tileWidth;
         int endX = min((int)(decendX == floor(decendX) ? decendX - 1 : decendX), columns - 1);
         int startY = std::max((int)(camera.y / tileset.tileHeight), 0);
-        int endY   = std::min((int)((camera.y + camera.h) / tileset.tileHeight), (int)(flat.size() / columns) - 1);
+        int endY = std::min((int)((camera.y + camera.h) / tileset.tileHeight), (int)(flat.size() / columns) - 1);
         float W = 0;
         // loop over visible tile grid
-        for (int y = startY; y <= endY; ++y) {
-            int i = y * columns + startX;  // flattened index of tile (x, y)
-
-            if (flat[i] <= 0) continue; // skip empty tiles
-
-            // Calculate the position of the tile
-            float xpos = startX * (float)tileset.tileWidth - camera.x;
-            SDL_FRect rect = SDL_FRect({
-                xpos, // x position on screen
-                y * (float)tileset.tileHeight - camera.y, // y position on screen
-                tileset.tileWidth + xpos, // width of the tile
-                (float)tileset.tileHeight                 // height of the tile
-            });
-            SDL_Rect srcrect = SDL_Rect({
-                -(int)xpos,
-                0,
-                tileset.tileWidth + (int)xpos, // width of the tile
-                (int)tileset.tileHeight
-            });
-            W = -xpos;
-            // Render the tile if it's within the camera view
-            SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], &srcrect, &rect);
-        }
         for (int x = startX; x <= endX; ++x) {
             for (int y = startY; y <= endY; ++y) {
                 // beginning tiles not clipped because of flicker issue
@@ -159,27 +145,30 @@ int main(int argn, char** args)
                 SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], &srcrect, &rect);
             }
         }
-        SDL_Rect cam = {(int)camera.x, (int)camera.y, (int)camera.w, (int)camera.h};
-        SDL_SetRenderDrawColor(win.getren(), 0, 150, 100, 255);
-        SDL_RenderDrawLineF(win.getren(), camera.w/2, 0, camera.w/2, win.geth());
+        //SDL_SetRenderDrawColor(win.getren(), 0, 150, 100, 255);
+        //SDL_RenderDrawLineF(win.getren(), camera.w/2, 0, camera.w/2, win.geth());
+        /*
         TEXTURE midline(surf, win.getren());
         midline.queryF();
         midline.set_dstpos(win.getw()/2 - 1, 0);
         midline.drawC(win.getren());
-        //SDL_RenderDrawLineF(win.getren(), 320, 0, 320, win.geth());
+        */
         SDL_RenderDrawLineF(win.getren(), 160, 0, 160, win.geth());
         SDL_RenderDrawLineF(win.getren(), 480, 0, 480, win.geth());
-        if(man.drawOF(win.getren(), &camera, 1 / scalex) < 0){cout << " error here\n\a"; return 1;}
-        TextList list;
-        list.setxpos(0);
-        SDL_Color green = {0, 255, 0, 255};
-        list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
-        list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
-        list.add(string("camera.x: " + to_string(camera.x)));
-        list.add((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")));
-        list.draw(win.getren());
+        // must fix the center snapping issue at beginning and end of sliding
+        man.drawOF(win.getren(), &camera, 1 / scalex);
+        //TextList list;
+        //list.setxpos(0);
+        //SDL_Color green = {0, 255, 0, 255};
+        //list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
+        //list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
+        //list.add(string("camera.x: " + to_string(camera.x)));
+        //list.add((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")));
+        //list.draw(win.getren());
+        SDL_SetRenderTarget(win.getren(), NULL);
+        SDL_Rect dest = { 0, 0, win.getw(), win.geth()};
+        SDL_RenderCopy(win.getren(), renderTarget, NULL, &dest);
         win.pst();
-        win.clr();
         SDL_Delay(10);
     }
     return 0;
