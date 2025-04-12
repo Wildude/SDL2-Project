@@ -1,5 +1,13 @@
 //g++ -I../src/Include -L../src/Lib -o ../Executables/ Tilemaptest.exe Tilemaptest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
 //
+/*
+* FINAL UPDATES
+* - was able to rescale visible tiles to the camera
+* - Need to fix center snapping issue
+* - Need to fix quick crashing issue  
+* - Need to fix magnification misalignment issue  
+* - Need to optimize the usage of render target 
+*/
 #include "../Headers/inclusions.hpp"
 #include <map>
 int main(int argn, char** args)
@@ -14,7 +22,7 @@ int main(int argn, char** args)
     // consider deleting doc by scoping out
     tileset.display();
     int mapWidth = tileset.tileWidth * tileset.width;
-    WINDOW win("Tilemaptest");
+    WINDOW win("Tilemaptest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
     win.crtB();
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
@@ -167,9 +175,10 @@ int main(int argn, char** args)
         //list.draw(win.getren());
         SDL_SetRenderTarget(win.getren(), NULL);
         SDL_Rect dest = { 0, 0, win.getw(), win.geth()};
-        SDL_RenderCopy(win.getren(), renderTarget, NULL, &dest);
+        SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);
         win.pst();
         SDL_Delay(10);
+        SDL_DestroyTexture(renderTarget);
     }
     return 0;
 }
