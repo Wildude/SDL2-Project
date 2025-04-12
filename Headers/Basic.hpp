@@ -88,3 +88,18 @@ namespace strmap
 		return (const char*)to_c_str(num);
 	}
 }
+template <class T>
+void flatten(const vector<vector<T>>& array, vector<T>& flat) {
+	for (size_t i = 0; i < array.size(); i++) {
+		for (size_t j = 0; j < array[i].size(); j++) {
+			flat.push_back(array[i][j]);
+		}
+	}
+}
+
+template <class T>
+void flatten(const vector<vector<vector<T>>>& array, vector<T>& flat) {
+	for (size_t i = 0; i < array.size(); i++) {
+		flatten(array[i], flat);
+	}
+}

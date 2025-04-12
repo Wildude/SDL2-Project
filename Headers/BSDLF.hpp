@@ -269,102 +269,94 @@ class RENDERER
 class TEXTURE
 {
     SDL_Texture* texture; // 4 bytes (pointer)
-    SDL_Renderer* renderer; // 4 bytes (pointer) // x
+    // SDL_Renderer* renderer; // 4 bytes (pointer) // x
     SDL_Rect src = {0, 0, 0, 0}; // 16 bytes (4 * 4 int) // x
     SDL_FRect dst = {0, 0, 0, 0}; // 16 bytes (4 * 4 float) //x
     SDL_FPoint center = {0, 0}; // 8 bytes (4 + 4 float) //x
-    SDL_RendererFlip flip = SDL_FLIP_NONE; // 4 bytes (optional)
+    // SDL_RendererFlip flip = SDL_FLIP_NONE; // 4 bytes (optional)
     char* path = NULL;
-    double angle = 0; // 8 bytes
+    // double angle = 0; // 8 bytes
     // total = 
     public:
     TEXTURE(){
         texture = NULL;
-        renderer = NULL;
+        // renderer = NULL;
         INIT();
     }
-    void copy(const TEXTURE& t){
-        setren(t.renderer);
+    void copy(const TEXTURE& t, SDL_Renderer* rend){
         setpath(t.path);
-        load();
+        load(NULL, rend);
     }
     TEXTURE(const char* filepath, SDL_Renderer* ren)
     {
         //cout<<" contructor called for textures\n";
         texture = NULL;
-        renderer = NULL;
-        setren(ren);
+        // renderer = NULL;
         INIT();
         setpath(filepath);
-        load();
+        load(filepath, ren);
     }
     const TEXTURE& operator=(const TEXTURE& t)
     {
         //cout<<" assignment called for font\n";
         if(this != &t){
             texture = t.texture;
-            renderer = t.renderer;
+            // renderer = t.renderer;
             src = t.src;
             dst = t.dst;
             center = t.center;
-            flip = t.flip;
+            // flip = t.flip;
             path = t.path;
-            angle = t.angle;
+            // angle = t.angle;
             return *this;
         }
     }
     TEXTURE(SDL_Surface* surf, SDL_Renderer* rend){
         texture = NULL;
-        renderer = NULL;
+        // renderer = NULL;
         INIT();
-        setren(rend);
-        surfcpy(surf);
-    }
-    SDL_Renderer* setren(SDL_Renderer* rend = NULL)
-    {
-        renderer = rend;
-        return renderer;
+        surfcpy(surf, rend);
     }
     SDL_Renderer* crtren(SDL_Window* win = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED)
     {
-        renderer = crtren(win, index, flag);
-        return renderer;
+        // renderer = crtren(win, index, flag);
+        return NULL; //renderer;
     }
     SDL_Renderer* getren() const
     {
-        return renderer;
+        return NULL;// renderer;
     }
     void setangle(double angle_)
     {
-        angle = angle_;
+        //angle = angle_;
     }
     double getangle()
     {
-        return angle;
+        return -1.99999999999999F;// angle;
     }
     void displayf(ofstream& out)
     {
         out<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
-        out<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
-        out<<" angle: "<<angle<<endl;
+        //out<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
+        //out<<" angle: "<<angle<<endl;
         out<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
         out<<" src_dim(w, h): "<<src.w<<','<<src.h<<endl;
         out<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
         out<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
         out<<" center(x, y): "<<center.x<<','<<center.y<<endl;
-        out<<" flipstate: "<<flip<<endl;
+        //out<<" flipstate: "<<flip<<endl;
     }
     void display(ostream& os = cout)
     {
         os<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
-        os<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
-        os<<" angle: "<<angle<<endl;
+        //os<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
+        //os<<" angle: "<<angle<<endl;
         os<<" src_pos(x, y): "<<src.x<<','<<src.y<<endl;
         os<<" src_dim(w, h): "<<src.w<<','<<src.h<<endl;
         os<<" dst_pos(x, y): "<<dst.x<<','<<dst.y<<endl;
         os<<" dst_dim(w, h): "<<dst.w<<','<<dst.h<<endl;
         os<<" center(x, y): "<<center.x<<','<<center.y<<endl;
-        os<<" flipstate: "<<flip<<endl;
+        // os<<" flipstate: "<<flip<<endl;
     }
     const SDL_FPoint& getcenter()
     {
@@ -380,7 +372,7 @@ class TEXTURE
     }
     void setflip(const SDL_RendererFlip& flag_)
     {
-        flip = flag_;
+        // flip = flag_;
     }
     const char* setpath(const char* filepath)
     {
@@ -502,20 +494,20 @@ class TEXTURE
         setcenter();
         return query((src_ ? &(src_->w) : &src.w), (src_ ? &(src_->h) : &src.h));
     }
-    SDL_Texture* load(const char* filepath = NULL, SDL_Renderer* rend = NULL)
+    SDL_Texture* load(const char* filepath, SDL_Renderer* rend)
     {
-        texture = IMG_LoadTexture((rend ? rend : renderer), filepath ? filepath : path);
+        texture = IMG_LoadTexture((rend), filepath ? filepath : path);
         if(!texture)texture_file << " Error loading texture: " << SDL_GetError() << endl;
         return texture;
     }
-    SDL_Texture* surfcpy(SDL_Surface* surf = NULL, SDL_Renderer* rend = NULL)
+    SDL_Texture* surfcpy(SDL_Surface* surf, SDL_Renderer* rend)
     {
-        texture = SDL_CreateTextureFromSurface((rend ? rend : renderer), surf);
+        texture = SDL_CreateTextureFromSurface((rend), surf);
         return texture;
     }
-    int rencpy(double* angle_ = NULL, SDL_FRect* dst_ = NULL, SDL_RendererFlip flag = SDL_FLIP_NONE, SDL_FPoint* center_ = NULL, SDL_Rect* src_ = NULL, SDL_Renderer* rend = NULL)
+    int rencpy(SDL_Renderer* rend, SDL_FRect* dst_ = NULL, SDL_Rect* src_ = NULL, SDL_RendererFlip flag = SDL_FLIP_NONE, SDL_FPoint* center_ = NULL, double angle = 0)
     {
-        return SDL_RenderCopyExF((rend ? rend : renderer), texture, (src_ ? src_ : &src), (dst_ ? dst_ : &dst), (angle_ ? *angle_ : angle), (center_ ? center_ : &center), flag);
+        return SDL_RenderCopyExF(rend, texture, (src_ ? src_ : &src), (dst_ ? dst_ : &dst), angle, (center_ ? center_ : &center), flag);
     }
     int queryF()
     {
@@ -536,27 +528,27 @@ class TEXTURE
         return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
     // don't use
-    int drawPX(SDL_FRect* rect = NULL, SDL_Renderer* rend = NULL, float scale = 0.5){
+    int drawPX(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 0.5){
         SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - (bool)(dst.x/(rect->w * scale)) * (rect->w * scale) , dst.y - (int)(dst.y/(rect->h * scale)) * (rect->h * scale), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
         return drawC(rend, drawRect);
     }
-    int drawOF(SDL_FRect* rect = NULL, SDL_Renderer* rend = NULL, float scale = 1){
+    int drawOF(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 1){
         SDL_FPoint c = {getcenter().x * scale, getcenter().y * scale};
-        SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - rect->x, dst.y - rect->y, dst.w * scale, dst.h}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h}));
+        SDL_FRect* drawRect = (rect ? new SDL_FRect({get_cenpos().x > rect->w/2 ? rect->w/2 - c.x : dst.x, dst.y - rect->y, dst.w * scale, dst.h}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h}));
         return drawC(rend, drawRect);
     }
-    int drawC(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
+    int drawC(SDL_Renderer* rend, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)
     {
-        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
+        if(rencpy(rend, rect, NULL, flip, NULL, 0) < 0)return -3;
         return 1;
     }
-    int drawO(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
+    int drawO(SDL_Renderer* rend, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)
     {
-    	if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
-        pst(rend ? rend : renderer);
+    	if(rencpy(rend, rect, NULL, flip, &center, 0) < 0)return -3;
+        pst(rend);
         return 1;
     }
-    int drawI(const char* filepath, bool clrer = 1, SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL)
+    int drawI(const char* filepath, SDL_Renderer* rend, bool clrer = 1, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)
     {
         if(!load(filepath, rend)){return -1;}
         if(queryR() < 0){return -2;}
@@ -564,21 +556,21 @@ class TEXTURE
         set_dstpos();
         set_dstdim();
         setcenter();
-        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, rend) < 0)return -3;
+        if(rencpy(rend, (rect ? rect : &dst), NULL, flip, &center, 0) < 0)return -3;
         pst(rend);
         if(clrer)if(clr(rend) < 0) return -4;
         return 1;
     }
-    int draw(SDL_Renderer* rend = NULL, SDL_FRect* rect = NULL, bool clrer = 1)
+    int draw(SDL_Renderer* rend, SDL_FRect* rect = NULL, bool clrer = 1, SDL_RendererFlip flip = SDL_FLIP_NONE)
     {
         if(queryR() < 0){return -1;}
         set_srcpos();
         set_dstpos();
         set_dstdim();
         setcenter();
-        if(rencpy(NULL, (rect ? rect : &dst), flip, &center, &src, (rend ? rend : renderer)) < 0)return -2;
-        pst(rend ? rend : renderer);
-        if(clrer)if(clr((rend ? rend : renderer)) < 0) return -3;
+        if(rencpy(rend, (rect ? rect : &dst), NULL, flip, &center, 0) < 0)return -2;
+        pst(rend);
+        if(clrer)if(clr((rend)) < 0) return -3;
         return 1;
     }
 };
@@ -789,7 +781,7 @@ class TextBox{
         SDL_RenderCopy(rend, board, NULL, &box);
     }
     void printbox(){
-        cout << box << endl;
+        cout << box.x << ", " << box.y << ", " << box.w << ", " << box.h;
     }
     const SDL_Rect& getBoxc() const{
         return box;
@@ -843,14 +835,15 @@ ostream& operator<<(ostream& os, const TextBox& box){
 }
 class TextList{
     //improved from vector (12 bytes) to nodestack (8 bytes)
-    nodestack<TextBox> boxes;
+    //nodestack<TextBox> boxes;
+    vector<TextBox> boxes;
     int xpos; // 4 bytes
     // total = 12 bytes
     public:
     TextList(){}
     TextList(const vector<TextBox>& texts, int x)
     {
-        for(int i = 0; i < texts.size(); i++)boxes.push(texts[i]);
+        for(int i = 0; i < texts.size(); i++)boxes.push_back(texts[i]);
         xpos = x;
         setup();
     }
@@ -859,28 +852,37 @@ class TextList{
     }
     void setup()
     {
-        Lnode<TextBox>* curr = boxes.peek();
-        Lnode<TextBox>* prev = NULL;
-        if(!curr)return;
-        // maybe check for previous push operation to save time used for traversal
-        while(curr){
-            curr->id.setboxpos(xpos, prev ? prev->id.getBox().h : 0);
-            prev = curr;
-            curr = curr->next;
+        int size = boxes.size();
+        for(int i = 0; i < size; i++){
+            boxes[i].setboxpos(xpos, i ? boxes[i - 1].getBox().h : 0);
         }
+        // below is a nodestack implementation
+        /*
+            Lnode<TextBox>* curr = boxes.peek();
+            Lnode<TextBox>* prev = NULL;
+            if(!curr)return;
+            // maybe check for previous push operation to save time used for traversal
+            while(curr){
+                curr->id.setboxpos(xpos, prev ? prev->id.getBox().h : 0);
+                prev = curr;
+                curr = curr->next;
+            }
+        */
     }
     void add(const char* txt, FONT* font = NULL, SDL_Color* col1 = NULL, SDL_Color* col2 = NULL){
         int w, h;
+        int size = boxes.size();
+        // the following implementation has nodestack adaptations as well
         if(!font){
-            if(boxes.peek()){
-                font = new FONT(boxes.peek()->id.getFont());
+            if(size/*boxes.peek()*/){
+                font = new FONT(boxes[size - 1]/*boxes.peek()->id*/.getFont());
             }
             else font = new FONT();
         }
         font->TEXT_size(txt, &w, &h);
         if(!col1){
-            if(boxes.peek())
-                col1 = &boxes.peek()->id.getCol1(); // hmmm
+            if(size/*boxes.peek()*/)
+                col1 = &boxes[size - 1]/*boxes.peek()->id*/.getCol1(); // hmmm
             else col1 = new SDL_Color({0, 0, 0, 0});
         }
         if(!col2)
@@ -890,30 +892,47 @@ class TextList{
                 (Uint8)(255 - col1->b), 
                 (Uint8)(255 - col1->a)
             });
-        int yoffset = (boxes.peek() ? boxes.peek()->id.getBox().y + boxes.peek()->id.getBox().h : 0);
+        int yoffset = (size /*boxes.peek()*/ ? boxes[size - 1]/*boxes.peek()->id*/.getBox().y + boxes[size - 1]/*boxes.peek()->id*/.getBox().h : 0);
         TextBox tbox(txt, *font);
         tbox.setboxpos(xpos, yoffset);
         tbox.setcol1(col1->r, col1->g, col1->b, col1->a);
         tbox.setcol2(col2->r, col2->g, col2->b, col2->a);
-        boxes.push(tbox);
+        boxes.push_back(tbox);
+        //boxes.push(tbox);
     }
     void add(string txt){return add(txt.c_str());}
-    void draw(SDL_Renderer* rend = NULL, short drawtype = 2){
+    void draw(SDL_Renderer* rend, short drawtype = 2){
+        // has nodestack impns
+        int size = boxes.size();
+        for(int i = 0; i < size; i++){
+            SDL_Texture* board;
+            boxes[i].draw(rend, board, drawtype);
+        }
+        /*
         Lnode<TextBox>* curr = boxes.peek();
         while(curr){
             SDL_Texture* board;
             curr->id.draw(rend, board, drawtype);
             curr = curr->next;
         }
+        */
     }
     void drawi(int i, SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2){
+        boxes[i].draw(rend, board, drawtype);
+        /*
         Lnode<TextBox>* head = boxes.peek();
         Lnode<TextBox>* curr = nextNode(head, i);
         curr->id.draw(rend, board, drawtype);
+        */
     }
+    const vector<TextBox>& getBoxes(){
+        return boxes;
+    }
+    /*
     nodestack<TextBox> getBoxes(){
         return boxes;
     }
+    */
 };
 class AUDIO
 {
@@ -987,7 +1006,7 @@ public:
 
     bool waitForConnection(Uint16 port) {
         IPaddress ip;
-        if (SDLNet_ResolveHost(&ip, nullptr, port) < 0) {
+        if (SDLNet_ResolveHost(&ip, NULL, port) < 0) {
             network_file << "Failed to resolve host for server: " << SDLNet_GetError() << endl;
             return false;
         }
@@ -1059,8 +1078,8 @@ public:
     }
 
 private:
-    TCPsocket socket = nullptr;
-    TCPsocket serverSocket = nullptr;
-    UDPsocket udpSocket = nullptr;
+    TCPsocket socket;
+    TCPsocket serverSocket;
+    UDPsocket udpSocket;
     IPaddress udpIP;
 };

@@ -8,8 +8,153 @@ struct Tileset
     int width;
     int height;
     int numColumns;
+    void display(){
+        cout << "Tileset Name: " << name << endl;
+        //cout << "First Grid ID: " << firstGridID << endl;
+        cout << "Tile Width: " << tileWidth << endl;
+        cout << "Tile Height: " << tileHeight << endl;
+        //cout << "Spacing: " << spacing << endl;
+        //cout << "Margin: " << margin << endl;
+        cout << "Width: " << width << endl;
+        cout << "Height: " << height << endl;
+        cout << "Number of Columns: " << numColumns << endl;
+        cout << "Tiles: ";
+        for (const auto& tile : tiles) {
+            cout << tile << "\n";
+        }
+        cout << endl;
+    }
     vector<string> tiles;
     string name;
+    void testTileDecode(XMLElement* pTileElement){
+        int m_width = 20, m_height = 15;
+        vector<vector<int>> data;
+            string decodedIDs;
+            XMLElement* pDataNode;
+            for(XMLElement* e = pTileElement->FirstChildElement(); e != 
+            NULL; e = e->NextSiblingElement()){
+                cout << e->Value() << endl;
+                if(e->Value() == string("layer")){
+                    pDataNode = e->FirstChildElement();
+                    cout << "Layer name: " << e->Attribute("name") << endl;
+                }
+            }
+            //cout << "Layer idf: " << pDataNode->Attribute("id") << endl;
+            for(XMLNode* e = pDataNode->FirstChild(); e != NULL; e = 
+            e->NextSibling())
+            {
+                XMLText* text = e->ToText();
+                string t = text->Value();
+                string ey;
+                for(int i = 0; i < t.size(); i++){
+                    if(t[i] > 32)ey += t[i];
+                }
+                cout << t ;
+                decodedIDs = base64_decode(ey);
+            }
+            // uncompress zlib compression
+            uLongf numGids = m_width * m_height * sizeof(int);
+            vector<unsigned> gids(numGids);
+            uncompress((Bytef*)&gids[0], &numGids,(const 
+            Bytef*)decodedIDs.c_str(), decodedIDs.size());
+            vector<int> layerRow(m_width);
+            for(int j = 0; j < m_height; j++)
+                data.push_back(layerRow);
+            for(int rows = 0; rows < m_height; rows++){
+                for(int cols = 0; cols < m_width; cols++){
+                    data[rows][cols] = gids[rows * m_width + cols];
+                    cout << " [" << data[rows][cols] << ']';
+                }
+                cout << endl;
+            } 
+    }
+    void parseTileset(XMLElement* mapelt){
+        const char* buffer;
+        //
+        buffer = mapelt->Attribute("tilewidth");
+        
+        this->tileWidth = atoi(buffer);
+
+        buffer = mapelt->Attribute("tileheight");
+
+        this->tileHeight = atoi(buffer);
+
+        buffer = mapelt->Attribute("width");
+        
+        this->width = atoi(buffer);
+        
+        buffer = mapelt->Attribute("height");
+        
+        this->height = atoi(buffer);
+        
+        //
+        this->tiles.clear();
+        //cout << " entering loop for tiles: \n";
+        for(XMLElement* e = mapelt->FirstChildElement(); e !=NULL; e = e->NextSiblingElement()){
+            if(e->Value() == string("tileset")){
+                //cout << " tileset found\n";
+                const char* buffer = e->Attribute("source");
+                XMLDocument xdoc;
+                xdoc.LoadFile(buffer);
+                //cout << "loading status: " << xdoc.ErrorName() << endl;
+                for(XMLElement* e = xdoc.RootElement()->FirstChildElement(); e != NULL; e = e->NextSiblingElement()){
+                    if(e -> Value() == string("tile")){
+                        buffer = e->FirstChildElement()->Attribute("source");
+                        this->tiles.push_back(buffer);
+                    }
+                }
+            }
+        }
+        /*
+        cout << "tileset details: \n";
+        cout << " width: " << this->tileWidth << endl;
+        cout << " width: " << this->height << endl;
+        cout << " width: " << this->width << endl;
+        cout << " tiles: \n";
+        for(int i = 0; i < this->tiles.size(); i++){
+            cout << ' ' << this->tiles[i] << endl;
+        }
+        //*/
+    }
+    void parseLayerdata(XMLElement* mapelt, vector<vector<vector<int>>>& table_array){
+        table_array.clear();
+        for(XMLElement* e = mapelt->FirstChildElement(); e != NULL; e = e->NextSiblingElement()){
+            if(e->Value() == string("layer")){
+                //cout << " Layer found\n";
+                vector<vector<int>> tablei;
+                XMLText* text = e->FirstChildElement()->FirstChild()->ToText();
+                string t = text->Value();
+                string ey;
+                for(int i = 0; i < t.size(); i++){
+                    if(t[i] > 32)ey += t[i];
+                }
+                string decodedIDs = base64_decode(ey);
+                //cout << this->width << endl;
+                uLongf numGids = this->width * this->height * sizeof(int);
+                vector<unsigned> gids(numGids);
+                uncompress((Bytef*)&gids[0], &numGids,(const 
+                Bytef*)decodedIDs.c_str(), decodedIDs.size());
+                vector<int> layerRow(this->width);
+                for(int j = 0; j < this->height; j++)
+                    tablei.push_back(layerRow);
+                for(int rows = 0; rows < this->height; rows++){
+                    for(int cols = 0; cols < this->width; cols++){
+                        tablei[rows][cols] = gids[rows * this->width + cols];
+                    //    cout << tablei[rows][cols] << ' ';
+                    }
+                  //  cout << endl;
+                } 
+                //cout << "================================\n";
+                table_array.push_back(tablei);
+            }
+        }
+    }
+    void setTileParams(XMLDocument& doc, vector<vector<vector<int>>>& table_array){
+        XMLElement* e = doc.RootElement();
+        //cout << " doc root value: " << e -> Value() << endl;
+        parseTileset(e);
+        parseLayerdata(e, table_array);
+    }
 };
 class Layer
 {
@@ -71,9 +216,9 @@ class TileLayer : public Layer
                     /*
                     board.drawTile(2, 2, 
                     (j * m_tileSize) - x2, (i * m_tileSize) - y2, m_tileSize, 
-                    m_tileSize, (id - (tileset.firstGridID - 1)) / 
-                    tileset.numColumns, (id - (tileset.firstGridID - 1)) % 
-                    tileset.numColumns, rend);
+                    m_tileSize, (id - (this->firstGridID - 1)) / 
+                    this->numColumns, (id - (this->firstGridID - 1)) % 
+                    this->numColumns, rend);
                     */
                 }
         }
@@ -98,7 +243,7 @@ class TileLayer : public Layer
 class LevelParser
 {
     public:
-        Level* parseLevel(const char* levelFile){
+        Level* parseLevel(const char* levelFile, SDL_Renderer* rend){
             // create a TinyXML document and load the map XML
             XMLDocument levelDocument;
             levelDocument.LoadFile(levelFile);
@@ -117,7 +262,7 @@ class LevelParser
             for(XMLElement* e = pRoot->FirstChildElement(); e != NULL; e = 
             e->NextSiblingElement())
                 if(e->Value() == string("tileset"))
-                    parseTilesets(e, pLevel->getTilesets());
+                    parseTilesets(e, pLevel->getTilesets(), rend);
             // parse any object layers
             for(XMLElement* e = pRoot->FirstChildElement(); e != NULL; e = 
             e->NextSiblingElement())
@@ -128,9 +273,8 @@ class LevelParser
         TEXTURE board;
         private:
         void parseTilesets(XMLElement* pTilesetRoot,
-        vector<Tileset>* pTilesets, SDL_Renderer* rend = NULL){
-            board.setren(rend ? rend : board.getren());
-            board.load(pTilesetRoot->FirstChildElement()->Attribute("source"));
+        vector<Tileset>* pTilesets, SDL_Renderer* rend){
+            board.load(pTilesetRoot->FirstChildElement()->Attribute("source"), rend);
             board.queryF();
             // create a tileset object
             Tileset tileset;
