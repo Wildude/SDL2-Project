@@ -108,9 +108,35 @@ int main(int argn, char** args)
         int endX = min((int)(decendX == floor(decendX) ? decendX - 1 : decendX), columns - 1);
         int startY = std::max((int)(camera.y / tileset.tileHeight), 0);
         int endY   = std::min((int)((camera.y + camera.h) / tileset.tileHeight), (int)(flat.size() / columns) - 1);
-        // Loop over the visible horizontal range and render only visible tiles.
+        float W = 0;
+        // loop over visible tile grid
+        for (int y = startY; y <= endY; ++y) {
+            int i = y * columns + startX;  // flattened index of tile (x, y)
+
+            if (flat[i] <= 0) continue; // skip empty tiles
+
+            // Calculate the position of the tile
+            float xpos = startX * (float)tileset.tileWidth - camera.x;
+            SDL_FRect rect = SDL_FRect({
+                xpos, // x position on screen
+                y * (float)tileset.tileHeight - camera.y, // y position on screen
+                tileset.tileWidth + xpos, // width of the tile
+                (float)tileset.tileHeight                 // height of the tile
+            });
+            SDL_Rect srcrect = SDL_Rect({
+                -(int)xpos,
+                0,
+                tileset.tileWidth + (int)xpos, // width of the tile
+                (int)tileset.tileHeight
+            });
+            W = -xpos;
+            // Render the tile if it's within the camera view
+            SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], &srcrect, &rect);
+        }
         for (int x = startX; x <= endX; ++x) {
             for (int y = startY; y <= endY; ++y) {
+                // beginning tiles not clipped because of flicker issue
+                // fix issue later
                 int i = y * columns + x;  // flattened index of tile (x, y)
 
                 if (flat[i] <= 0) continue; // skip empty tiles
@@ -120,17 +146,17 @@ int main(int argn, char** args)
                 SDL_FRect rect = SDL_FRect({
                     xpos, // x position on screen
                     y * (float)tileset.tileHeight - camera.y, // y position on screen
-                    x != endX ? (float)tileset.tileWidth : (float)(tileset.tileWidth), // width of the tile
+                    x != endX ? (float)tileset.tileWidth : (float)(camera.w - xpos), // width of the tile
                     (float)tileset.tileHeight                 // height of the tile
                 });
                 SDL_Rect srcrect = SDL_Rect({
                     0,
                     0,
-                    
+                    x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
+                    (int)tileset.tileHeight
                 });
                 // Render the tile if it's within the camera view
-
-                SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], NULL, &rect);
+                SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], &srcrect, &rect);
             }
         }
         SDL_Rect cam = {(int)camera.x, (int)camera.y, (int)camera.w, (int)camera.h};
@@ -150,7 +176,7 @@ int main(int argn, char** args)
         list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
         list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
         list.add(string("camera.x: " + to_string(camera.x)));
-        list.add((string("X(start, end): (" + to_string(startX) + ", " + to_string(endX) + ")")));
+        list.add((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")));
         list.draw(win.getren());
         win.pst();
         win.clr();
