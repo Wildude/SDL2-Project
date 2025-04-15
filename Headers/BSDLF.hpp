@@ -534,7 +534,7 @@ class TEXTURE
     }
     int drawOF(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 1){
         SDL_FPoint c = {getcenter().x * scale, getcenter().y * scale};
-        SDL_FRect* drawRect = (rect ? new SDL_FRect({get_cenpos().x > rect->w/2 ? rect->w/2 - c.x : dst.x, dst.y - rect->y, dst.w * scale, dst.h}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h}));
+        SDL_FRect* drawRect = (rect ? new SDL_FRect({/*get_cenpos().x > rect->w/2 ? rect->w/2 - c.x : */dst.x - rect->x - (c.x - getcenter().x), dst.y - rect->y, dst.w * scale, dst.h}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h}));
         return drawC(rend, drawRect);
     }
     int drawC(SDL_Renderer* rend, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)

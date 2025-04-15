@@ -3,9 +3,9 @@
 /*
 * FINAL UPDATES
 * - was able to rescale visible tiles to the camera
-* - Need to fix center snapping issue
-* - Need to fix quick crashing issue  
-* - Need to fix magnification misalignment issue  
+* - Need to fix center snapping issue (fixed)
+* - Need to fix quick crashing issue (fixed)
+* - Need to fix magnification misalignment issue (fixed I think)
 * - Need to optimize the usage of render target 
 */
 #include "../Headers/inclusions.hpp"
@@ -22,7 +22,7 @@ int main(int argn, char** args)
     // consider deleting doc by scoping out
     tileset.display();
     int mapWidth = tileset.tileWidth * tileset.width;
-    WINDOW win("Tilemaptest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
+    WINDOW win("Tilemaptest");
     win.crtB();
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
