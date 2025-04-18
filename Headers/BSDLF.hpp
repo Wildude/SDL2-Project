@@ -754,6 +754,7 @@ class TextBox{
     }
     void draw(SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2)
     {
+        font.TEXT_size(text, &box.w, &box.h);
         SDL_Surface* surf;
         switch (drawtype)
         {
@@ -901,6 +902,7 @@ class TextList{
         //boxes.push(tbox);
     }
     void add(string txt){return add(txt.c_str());}
+    void add(){return add("");}
     void draw(SDL_Renderer* rend, short drawtype = 2){
         // has nodestack impns
         int size = boxes.size();
@@ -924,6 +926,9 @@ class TextList{
         Lnode<TextBox>* curr = nextNode(head, i);
         curr->id.draw(rend, board, drawtype);
         */
+    }
+    void edit(const char* text, int i = 0){
+        boxes[i].settext(text);
     }
     const vector<TextBox>& getBoxes(){
         return boxes;

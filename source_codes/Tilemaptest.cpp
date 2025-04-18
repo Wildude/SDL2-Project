@@ -64,6 +64,13 @@ int main(int argn, char** args)
         (int)camera.w,
         (int)camera.h
     );        
+    TextList list;
+    list.setxpos(0);
+    SDL_Color green = {0, 255, 0, 255};
+    list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
+    list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
+    list.add(string("camera.x: " + to_string(camera.x)));
+    list.add();
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         bool camscaled = false;
@@ -176,18 +183,15 @@ int main(int argn, char** args)
         midline.set_dstpos(win.getw()/2 - 1, 0);
         midline.drawC(win.getren());
         */
+        list.edit(string("camera.w/2: " + to_string(camera.w/2)).c_str(), 0);
+        list.edit(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)).c_str(), 1);
+        list.edit(string("camera.x: " + to_string(camera.x)).c_str(), 2);
+        list.edit((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")).c_str(), 3);
+        list.draw(win.getren());
         SDL_RenderDrawLineF(win.getren(), 160, 0, 160, win.geth());
         SDL_RenderDrawLineF(win.getren(), 480, 0, 480, win.geth());
         // must fix the center snapping issue at beginning and end of sliding
         man.drawOF(win.getren(), &camera, 1 / scalex);
-        //TextList list;
-        //list.setxpos(0);
-        //SDL_Color green = {0, 255, 0, 255};
-        //list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
-        //list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
-        //list.add(string("camera.x: " + to_string(camera.x)));
-        //list.add((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")));
-        //list.draw(win.getren());
         SDL_SetRenderTarget(win.getren(), NULL);
         SDL_Rect dest = { 0, 0, win.getw(), win.geth()};
         SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);

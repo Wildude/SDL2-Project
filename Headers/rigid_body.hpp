@@ -50,36 +50,14 @@ enum LoR{
     RIGHT = 0,
     LEFT
 };
-class sprite
-{
-    SDL_Texture* image;
-    SDL_FPoint clip;
-    public:
-    sprite(const SDL_FPoint& portion)
-    {
-        clip = portion;
-    }
-    void setimage(const char* path){
-        image = IMG_LoadTexture(NULL, path);
-    }
-    void animate(){
-        // 
-    }
-};
+// a ragdoll player mechanics system 
 class ragdoll
 {
-    // scale is assumed to be according to a standard 640 x 480 screen
-    map<const char*, SDL_Texture*> parts;
+    // uses a single picture as a texture atlas
+    SDL_Texture* atlas;
+    SDL_Rect clip[15];
     public:
-    ragdoll(){
-        for(int i = 0; i < 15; i++)parts[body_list[i]] = NULL;
-    }
-    void setImage(int i, const char* path){
-        //
-    }
-    void draw(SDL_Renderer* rend){
-        for(int i = 0; i < 15; i++){
-            SDL_RenderCopy(rend, parts[body_list[i]], NULL, NULL);
-        }
+    void parse(const char* filepath){
+        // parse image, uv dimensions, coordinates and centers from file
     }
 };
