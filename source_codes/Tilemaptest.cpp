@@ -22,7 +22,7 @@ int main(int argn, char** args)
     // consider deleting doc by scoping out
     tileset.display();
     int mapWidth = tileset.tileWidth * tileset.width;
-    WINDOW win("Tilemaptest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
+    WINDOW win("Tilemaptest");
     win.crtB();
     win.pstcol(255, 255, 255, 255);
     float speed = 10;

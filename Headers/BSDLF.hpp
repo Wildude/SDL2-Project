@@ -666,53 +666,50 @@ class TextBox{
     private:
     SDL_Rect box; // 16 bytes
     SDL_Color col1, col2; // 2 * 4 bytes
-    char* text; // 4 bytes
+    string text; // 24 bytes
     FONT font; // 12 bytes
-    // total = 48 bytes
+    // total = 66 bytes
     void setbox(int x, int y, int w, int h)
     {
         box = {x, y, w, h};
     }
     public:
-    SDL_Surface* solid_render(const char* _text = NULL, SDL_Color* col = NULL)
+    SDL_Surface* solid_render(const char* text_ = NULL, SDL_Color* col = NULL)
     {
-        return TTF_RenderText_Solid(font.getfont(), (_text ? _text : text), (col ? *col : col1));
+        return TTF_RenderText_Solid(font.getfont(), (text_ ? text_ : text.c_str()), (col ? *col : col1));
     }
-    SDL_Surface* shaded_render(const char* _text = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
+    SDL_Surface* shaded_render(const char* text_ = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
-        return TTF_RenderText_Shaded(font.getfont(), (_text ? _text : text), (cola ? *cola : col1), (colb ? *colb : col2));
+        return TTF_RenderText_Shaded(font.getfont(), (text_ ? text_ : text.c_str()), (cola ? *cola : col1), (colb ? *colb : col2));
     }
-    SDL_Surface* blended_render(const char* _text = NULL, SDL_Color* col = NULL)
+    SDL_Surface* blended_render(const char* text_ = NULL, SDL_Color* col = NULL)
     {
-        return TTF_RenderText_Blended(font.getfont(), (_text ? _text : text), (col ? *col : col1));
+        return TTF_RenderText_Blended(font.getfont(), (text_ ? text_ : text.c_str()), (col ? *col : col1));
     }
-    SDL_Surface* LCD_render(const char* _text = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
+    SDL_Surface* LCD_render(const char* text_ = NULL, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
-        return TTF_RenderText_LCD(font.getfont(), (_text ? _text : text), (cola ? *cola : col1), (colb ? *colb : col2));
+        return TTF_RenderText_LCD(font.getfont(), (text_ ? text_ : text.c_str()), (cola ? *cola : col1), (colb ? *colb : col2));
     }
-    SDL_Surface* blended_render_utf8(const char* _text = NULL, SDL_Color* col = NULL){
-        return TTF_RenderUTF8_Blended(font.getfont(), (_text ? _text : text), (col ? *col : col1));
+    SDL_Surface* blended_render_utf8(const char* text_ = NULL, SDL_Color* col = NULL){
+        return TTF_RenderUTF8_Blended(font.getfont(), (text_ ? text_ : text.c_str()), (col ? *col : col1));
     }
-    SDL_Surface* blended_render_unicode(const char* _text = NULL, SDL_Color* col = NULL){
-        return TTF_RenderUNICODE_Blended(font.getfont(), (const Uint16*)(_text ? _text : text), (col ? *col : col1));
+    SDL_Surface* blended_render_unicode(const char* text_ = NULL, SDL_Color* col = NULL){
+        return TTF_RenderUNICODE_Blended(font.getfont(), (const Uint16*)(text_ ? text_ : text.c_str()), (col ? *col : col1));
     }
-    TextBox(const char* text_, int x, int y, int w, int h, const FONT& font_, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
+    TextBox(const string& text_, int x, int y, int w, int h, const FONT& font_, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
     {
-        text = NULL;
+        text = text_;
         font = font_;
         col1 = (cola ? *cola : SDL_Color({0, 0, 0, 0}));
         col2 = (colb ? *colb : SDL_Color({(Uint8)(255 - col1.r), (Uint8)(255 - col1.g), (Uint8)(255 - col1.b), (Uint8)(255 - col1.a)}));
         box = {x, y, w, h};
-        text = new char[strlen(text_)];
-        strcpy(text, text_);
     }
-    TextBox(const char* text_, const FONT& font_){
+    TextBox(const string& text_, const FONT& font_){
+        text = text_;
         font = font_;
-        text = new char[strlen(text_)];
-        strcpy(text, text_);
         col1 = SDL_Color({0, 0, 0, 0});
         col2 = SDL_Color({(Uint8)(255 - col1.r), (Uint8)(255 - col1.g), (Uint8)(255 - col1.b), (Uint8)(255 - col1.a)});
-        font.TEXT_size(text, &box.w, &box.h);
+        font.TEXT_size(text.c_str(), &box.w, &box.h);
         box.x = 0;
         box.y = 0;
     }
@@ -739,47 +736,49 @@ class TextBox{
     }
     void settext(const char* text_)
     {
-        if(text)delete text;
-        text = new char[strlen(text_)];
-        strcpy(text, text_);
+        text = text_;
+        font.TEXT_size(text.c_str(), &box.w, &box.h);
     }
     void settext(const string& text_)
     {
-        settext(text_.c_str());
+        text = text_;
+        font.TEXT_size(text.c_str(), &box.w, &box.h);
     }
     void setboxpos(int x, int y)
     {
         box.x = x;
         box.y = y;
     }
-    void draw(SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2)
+    void draw(SDL_Renderer* rend, SDL_Texture*& board, short drawtype = 2)
     {
-        font.TEXT_size(text, &box.w, &box.h);
         SDL_Surface* surf;
         switch (drawtype)
         {
         case 0:
-            surf = solid_render(text, &col1);
+            surf = solid_render(text.c_str(), &col1);
             break;
         case 1:
-            surf = shaded_render(text, &col1, &col2);
+            surf = shaded_render(text.c_str(), &col1, &col2);
             break;
         case 2:
-            surf = blended_render(text, &col1);
+            surf = blended_render(text.c_str(), &col1);
             break;
         case 3:
-            surf = LCD_render(text, &col1, &col2);
+            surf = LCD_render(text.c_str(), &col1, &col2);
             break;
         default:
-            surf = blended_render(text, &col1);
+            surf = blended_render(text.c_str(), &col1);
             break;
         }
         if(!surf){
             font_file << " Error drawing to surface: " << SDL_GetError() << endl;
             return;
         }
+        if(board)SDL_DestroyTexture(board);
         board = SDL_CreateTextureFromSurface(rend, surf);
         SDL_RenderCopy(rend, board, NULL, &box);
+        SDL_DestroyTexture(board);
+        SDL_FreeSurface(surf);
     }
     void printbox(){
         cout << box.x << ", " << box.y << ", " << box.w << ", " << box.h;
@@ -809,7 +808,7 @@ class TextBox{
         return col2;
     }
     const char* getText() const{
-        return text;
+        return text.c_str();
     }
     friend ostream& operator<<(ostream&, const TextBox&);
 };
@@ -907,7 +906,7 @@ class TextList{
         // has nodestack impns
         int size = boxes.size();
         for(int i = 0; i < size; i++){
-            SDL_Texture* board;
+            SDL_Texture* board = NULL;
             boxes[i].draw(rend, board, drawtype);
         }
         /*
@@ -919,7 +918,7 @@ class TextList{
         }
         */
     }
-    void drawi(int i, SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2){
+    void drawi(int i, SDL_Renderer* rend, SDL_Texture*& board, short drawtype = 2){
         boxes[i].draw(rend, board, drawtype);
         /*
         Lnode<TextBox>* head = boxes.peek();
