@@ -129,7 +129,7 @@ class WINDOW
         SDL_Color color = (col_p ? *col_p : col);
         return SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     }
-    SDL_Renderer* crtren(SDL_Window* window_ = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED)
+    SDL_Renderer* crtren(SDL_Window* window_ = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC)
     {
         renderer = SDL_CreateRenderer((window_ ? window_ : window), index, flag);
         return renderer;

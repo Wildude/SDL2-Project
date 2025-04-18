@@ -5,8 +5,8 @@
 * - was able to rescale visible tiles to the camera
 * - Need to fix center snapping issue (fixed)
 * - Need to fix quick crashing issue (fixed)
-* - Need to fix magnification misalignment issue (fixed I think)
-* - Need to optimize the usage of render target 
+* - Need to fix magnification misalignment issue (fixed)
+* - Need to optimize the usage of render target (fixed)
 */
 #include "../Headers/inclusions.hpp"
 #include <map>
@@ -22,7 +22,7 @@ int main(int argn, char** args)
     // consider deleting doc by scoping out
     tileset.display();
     int mapWidth = tileset.tileWidth * tileset.width;
-    WINDOW win("Tilemaptest");
+    WINDOW win("Tilemaptest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_FULLSCREEN);
     win.crtB();
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
@@ -57,8 +57,16 @@ int main(int argn, char** args)
     int FrameStarter = 0;
     man.set_cenpos(win.getw()/2, win.geth()/2);
     bool usescale = false;
+    SDL_Texture* renderTarget = SDL_CreateTexture(
+        win.getren(),
+        SDL_PIXELFORMAT_RGBA8888,
+        SDL_TEXTUREACCESS_TARGET,
+        (int)camera.w,
+        (int)camera.h
+    );        
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
+        bool camscaled = false;
         int x, y;
         SDL_GetMouseState(&x, &y);
         Vflt2 mousepos(x, y);
@@ -91,18 +99,22 @@ int main(int argn, char** args)
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_SPACE]){
                 //vel = Vflt2_0;
                 if(camera.w < win.getw() * 3)camera.w *= 2;
+                camscaled = true;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_MINUS]){
                 if(camera.w > win.getw() / 10)camera.w-=5;
+                camscaled = true;
                 //camera.h--;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_EQUALS]){
                 if(camera.w < win.getw() * 3)camera.w+=5;
+                camscaled = true;
                 //camera.h++;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_BACKSPACE]){
                 //usescale = !usescale;
                 if(camera.w > win.getw() / 10)camera.w /= 2;
+                camscaled = true;
             }
         }
         float scalex = camera.w / win.getw();
@@ -111,13 +123,16 @@ int main(int argn, char** args)
         man.getdst().y -= vel.gety();
         camera.x = (man.get_cenpos().x <= camera.w / 2 ? 0 : 1) * (man.get_cenpos().x - camera.w/2);
         camera.x = std::max(0.0f, std::min(camera.x, (float)(mapWidth - camera.w)));
-        SDL_Texture* renderTarget = SDL_CreateTexture(
-            win.getren(),
-            SDL_PIXELFORMAT_RGBA8888,
-            SDL_TEXTUREACCESS_TARGET,
-            (int)camera.w,
-            (int)camera.h
-        );        
+        if(camscaled){
+            SDL_DestroyTexture(renderTarget);
+            renderTarget = SDL_CreateTexture(
+                win.getren(),
+                SDL_PIXELFORMAT_RGBA8888,
+                SDL_TEXTUREACCESS_TARGET,
+                (int)camera.w,
+                (int)camera.h
+            );        
+        }
         SDL_SetRenderTarget(win.getren(), renderTarget);
         win.clr();
         int startX = max((int)(camera.x / tileset.tileWidth), 0);
@@ -178,7 +193,6 @@ int main(int argn, char** args)
         SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);
         win.pst();
         SDL_Delay(10);
-        SDL_DestroyTexture(renderTarget);
     }
     return 0;
 }
