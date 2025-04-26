@@ -12,38 +12,60 @@
 #include <map>
 int main(int argn, char** args)
 {
-    vector<vector<vector<int>>> Layers;
-    Tileset tileset;
-    {
-        XMLDocument doc;
-        doc.LoadFile("../Files/XML/StageX.tmx");
-        tileset.setTileParams(doc, Layers);
-    }
-    // consider deleting doc by scoping out
-    tileset.display();
-    int mapWidth = tileset.tileWidth * tileset.width;
     WINDOW win("Tilemaptest");
     win.crtB();
     win.pstcol(255, 255, 255, 255);
+    vector<vector<vector<int>>> Layers;
+    Tileset tileset;
+    tileset.parseALL("../Files/XML/16bit world.tmx", Layers, win.getren());
+    // consider deleting doc by scoping out
+    int mapWidth = tileset.tileWidth * tileset.width;
+    int mapHeight = tileset.tileHeight * tileset.height;
+    cout << mapWidth << " * " << mapHeight << endl;
     float speed = 10;
     SDL_Event event;
     TEXTURE man;
-    SDL_Surface* surf = SDL_CreateRGBSurface(0, 10, 30, 8, 0, 0, 0, 0);
+    SDL_Surface* surf = SDL_CreateRGBSurface(0, 10, 16, 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
     man.surfcpy(surf, win.getren());
     man.queryF();
     man.magnify(2);
     surf = SDL_CreateRGBSurface(0, 2, win.geth(), 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
+    SDL_Surface* surfy = SDL_CreateRGBSurface(0, win.getw(), 2, 8, 0, 0, 0, 0);
+    SDL_SetSurfaceColorMod(surfy, 0, 255, 0);
+    TEXTURE midlinex(surf, win.getren());
+    midlinex.queryF();
+    midlinex.set_dstpos(win.getw()/2 - 1, 0);
+    TEXTURE midliney(surfy, win.getren());
+    midliney.queryF();
+    midliney.set_dstpos(0, win.geth()/2 - 1);
+    // free both surfaces from memory
+    SDL_FreeSurface(surf);
+    SDL_FreeSurface(surfy);
     //
     Vflt2 vel(0, 0);
     int layers = Layers.size(), rows = Layers[0].size(), columns = Layers[0][0].size();
     vector<int> flat;
     flatten(Layers, flat);
+    int possize = tileset.pos.size();
     map<int, SDL_Texture*> tex_maps;
-    for(int i = 0; i < tileset.tiles.size(); i++){
-        tex_maps[i] = IMG_LoadTexture(win.getren(), tileset.tiles[i].c_str());
+    //tileset.display();
+    tex_maps[0] = IMG_LoadTexture(win.getren(), tileset.src.c_str());
+    SDL_Color col = {200, 0, 0, 255};
+    //
+    /*
+    FONT font("../Fonts/nyala.ttf", 8);
+    
+    for(int i = 0; i < possize; i++){
+        string text = string("(" + to_string(tileset.pos[i].getx()) + "," + to_string(tileset.pos[i].gety()) + ")");
+        SDL_Surface* surf = TTF_RenderText_Blended(font.getfont(), text.c_str(), col);
+        if(!surf)cout << '\a';
+        tex_maps[i] = SDL_CreateTextureFromSurface(win.getren(), surf);
+        SDL_FreeSurface(surf);
     }
+    */
+    //
     ofstream file("../Files/logTilesize.txt");
     for(int i = 0; i < layers; i++)
         for(int j = 0; j < Layers[i].size(); j++){
@@ -66,10 +88,10 @@ int main(int argn, char** args)
     );        
     TextList list;
     list.setxpos(0);
-    SDL_Color green = {0, 255, 0, 255};
-    list.add(string("camera.w/2: " + to_string(camera.w/2)).c_str(), NULL, &green);
-    list.add(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)));
-    list.add(string("camera.x: " + to_string(camera.x)));
+    list.add("", NULL, &col);
+    list.add();
+    list.add();
+    list.add();
     list.add();
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
@@ -106,21 +128,25 @@ int main(int argn, char** args)
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_SPACE]){
                 //vel = Vflt2_0;
                 if(camera.w < win.getw() * 3)camera.w *= 2;
+                if(camera.h < win.geth() * 3)camera.h *= 2;
                 camscaled = true;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_MINUS]){
-                if(camera.w > win.getw() / 10)camera.w-=5;
+                if(camera.w > win.getw() / 10)camera.w -= 5;
+                if(camera.h > win.geth() / 10)camera.h -= 5;
                 camscaled = true;
                 //camera.h--;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_EQUALS]){
-                if(camera.w < win.getw() * 3)camera.w+=5;
+                if(camera.w < win.getw() * 3)camera.w += 5;
+                if(camera.h < win.geth() * 3)camera.h += 5;
                 camscaled = true;
                 //camera.h++;
             }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_BACKSPACE]){
                 //usescale = !usescale;
                 if(camera.w > win.getw() / 10)camera.w /= 2;
+                if(camera.h > win.getw() / 10)camera.h /= 2;
                 camscaled = true;
             }
         }
@@ -130,6 +156,8 @@ int main(int argn, char** args)
         man.getdst().y -= vel.gety();
         camera.x = (man.get_cenpos().x <= camera.w / 2 ? 0 : 1) * (man.get_cenpos().x - camera.w/2);
         camera.x = std::max(0.0f, std::min(camera.x, (float)(mapWidth - camera.w)));
+        camera.y = (man.get_cenpos().y <= camera.h / 2 ? 0 : 1) * (man.get_cenpos().y - camera.h/2);
+        camera.y = std::max(0.0f, std::min(camera.y, (float)(mapHeight - camera.h)));
         if(camscaled){
             SDL_DestroyTexture(renderTarget);
             renderTarget = SDL_CreateTexture(
@@ -159,41 +187,45 @@ int main(int argn, char** args)
 
                 // Calculate the position of the tile
                 float xpos = x * (float)tileset.tileWidth - camera.x;
+                float ypos = y * (float)tileset.tileHeight - camera.y;
+
                 SDL_FRect rect = SDL_FRect({
                     xpos, // x position on screen
-                    y * (float)tileset.tileHeight - camera.y, // y position on screen
+                    ypos, // y position on screen
                     x != endX ? (float)tileset.tileWidth : (float)(camera.w - xpos), // width of the tile
-                    (float)tileset.tileHeight                 // height of the tile
+                    y != endY ? (float)tileset.tileHeight : (float)(camera.h - ypos) // height of the tile
                 });
-                SDL_Rect srcrect = SDL_Rect({
-                    0,
-                    0,
-                    x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
-                    (int)tileset.tileHeight
-                });
+                for(int j = 0; j < layers; j++){
+                    SDL_Rect srcrect = SDL_Rect({
+                        tileset.pos[flat[i + rows * columns * j] - 1].getx() * tileset.tileWidth,
+                        tileset.pos[flat[i + rows * columns * j] - 1].gety() * tileset.tileHeight,
+                        x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
+                        y != endY ? (int)tileset.tileHeight : (int)(camera.h - ypos)
+                    });
+                    SDL_RenderCopyF(win.getren(), tex_maps[0], &srcrect, &rect);
+                }
                 // Render the tile if it's within the camera view
-                SDL_RenderCopyF(win.getren(), tex_maps[flat[i] - 1], &srcrect, &rect);
             }
         }
-        //SDL_SetRenderDrawColor(win.getren(), 0, 150, 100, 255);
-        //SDL_RenderDrawLineF(win.getren(), camera.w/2, 0, camera.w/2, win.geth());
-        /*
-        TEXTURE midline(surf, win.getren());
-        midline.queryF();
-        midline.set_dstpos(win.getw()/2 - 1, 0);
-        midline.drawC(win.getren());
-        */
-        list.edit(string("camera.w/2: " + to_string(camera.w/2)).c_str(), 0);
-        list.edit(string("man.getcenpos.x: " + to_string(man.get_cenpos().x)).c_str(), 1);
-        list.edit(string("camera.x: " + to_string(camera.x)).c_str(), 2);
-        list.edit((string("X(start, end, W): (" + to_string(startX) + ", " + to_string(endX) + ", " + to_string(W) + ")")).c_str(), 3);
+        //
+        midlinex.drawC(win.getren());
+        midliney.drawC(win.getren());
+        //
+        list.edit(string("camera.D/2(w,h): (" + to_string((int)camera.w / 2) + ", " + to_string((int)camera.h / 2) + ")").c_str(), 0);
+        list.edit(string("man.getcenpos(x,y): (" + to_string((int)man.get_cenpos().x) + ", " + to_string((int)man.get_cenpos().y) + ")").c_str(), 1);
+        list.edit(string("camera(x,y,w,h): (" + to_string((int)camera.x) + ", " + to_string((int)camera.y) + ", " + to_string((int)camera.w) + ", " + to_string((int)camera.h) + ")").c_str(), 2);
+        list.edit(string("X(start, end): (" + to_string(startX) + ", " + to_string(endX) + ")").c_str(), 3);
+        list.edit(string("Y(start, end): (" + to_string(startY) + ", " + to_string(endY) + ")").c_str(), 4);
         list.draw(win.getren());
-        SDL_RenderDrawLineF(win.getren(), 160, 0, 160, win.geth());
-        SDL_RenderDrawLineF(win.getren(), 480, 0, 480, win.geth());
-        // must fix the center snapping issue at beginning and end of sliding
+        //
+        SDL_RenderDrawLineF(win.getren(), win.getw()/4, 0, win.getw()/4, win.geth());
+        SDL_RenderDrawLineF(win.getren(), win.getw() * 0.75, 0, win.getw() * 0.75, win.geth());
+        SDL_RenderDrawLineF(win.getren(), 0, win.geth()/4, win.getw(), win.geth()/4);
+        SDL_RenderDrawLineF(win.getren(), 0, win.geth() * 0.75, win.getw(), win.geth() * 0.75);
+        //
         man.drawOF(win.getren(), &camera, 1 / scalex);
+        //
         SDL_SetRenderTarget(win.getren(), NULL);
-        SDL_Rect dest = { 0, 0, win.getw(), win.geth()};
         SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);
         win.pst();
         SDL_Delay(10);
