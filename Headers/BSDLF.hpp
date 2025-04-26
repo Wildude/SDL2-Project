@@ -500,7 +500,7 @@ class TEXTURE
         if(!texture)texture_file << " Error loading texture: " << SDL_GetError() << endl;
         return texture;
     }
-    SDL_Texture* surfcpy(SDL_Surface* surf, SDL_Renderer* rend)
+    SDL_Texture* surfcpy(SDL_Surface*& surf, SDL_Renderer* rend)
     {
         texture = SDL_CreateTextureFromSurface((rend), surf);
         return texture;

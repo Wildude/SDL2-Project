@@ -1,3 +1,3 @@
-class stage : public TEXTURE{
+class stage{
     
 };
