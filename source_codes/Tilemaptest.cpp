@@ -93,6 +93,7 @@ int main(int argn, char** args)
     list.add();
     list.add();
     list.add();
+    double angle = 0;
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         bool camscaled = false;
@@ -107,6 +108,12 @@ int main(int argn, char** args)
         //
         else{
             FrameStarter = SDL_GetTicks();
+            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_Q]){
+                angle--;
+            }
+            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_E]){
+                angle++;
+            }
             if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){
                 vel.getx() -= speed * physx::delta;
             }
@@ -202,7 +209,7 @@ int main(int argn, char** args)
                         x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
                         y != endY ? (int)tileset.tileHeight : (int)(camera.h - ypos)
                     });
-                    SDL_RenderCopyF(win.getren(), tex_maps[0], &srcrect, &rect);
+                    SDL_RenderCopyExF(win.getren(), tex_maps[0], &srcrect, &rect, angle, NULL, SDL_FLIP_NONE);
                 }
                 // Render the tile if it's within the camera view
             }
