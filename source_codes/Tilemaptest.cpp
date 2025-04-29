@@ -25,7 +25,7 @@ int main(int argn, char** args)
     float speed = 10;
     SDL_Event event;
     TEXTURE man;
-    SDL_Surface* surf = SDL_CreateRGBSurface(0, 10, 16, 8, 0, 0, 0, 0);
+    SDL_Surface* surf = SDL_CreateRGBSurface(0, 5, 8, 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
     man.surfcpy(surf, win.getren());
     man.queryF();
@@ -212,7 +212,7 @@ int main(int argn, char** args)
         midliney.drawC(win.getren());
         //
         list.edit(string("camera.D/2(w,h): (" + to_string((int)camera.w / 2) + ", " + to_string((int)camera.h / 2) + ")").c_str(), 0);
-        list.edit(string("man.getcenpos(x,y): (" + to_string((int)man.get_cenpos().x) + ", " + to_string((int)man.get_cenpos().y) + ")").c_str(), 1);
+        list.edit(string("man.getcenpos(x,y, w, h): (" + to_string((int)man.get_cenpos().x) + ", " + to_string((int)man.get_cenpos().y) + ", " + to_string((int)(man.getdst().w * (1 / scalex))) + ", " + to_string((int)(man.getdst().h * (1 / scalex))) + ")").c_str(), 1);
         list.edit(string("camera(x,y,w,h): (" + to_string((int)camera.x) + ", " + to_string((int)camera.y) + ", " + to_string((int)camera.w) + ", " + to_string((int)camera.h) + ")").c_str(), 2);
         list.edit(string("X(start, end): (" + to_string(startX) + ", " + to_string(endX) + ")").c_str(), 3);
         list.edit(string("Y(start, end): (" + to_string(startY) + ", " + to_string(endY) + ")").c_str(), 4);
@@ -223,7 +223,7 @@ int main(int argn, char** args)
         SDL_RenderDrawLineF(win.getren(), 0, win.geth()/4, win.getw(), win.geth()/4);
         SDL_RenderDrawLineF(win.getren(), 0, win.geth() * 0.75, win.getw(), win.geth() * 0.75);
         //
-        man.drawOF(win.getren(), &camera, 1 / scalex);
+        man.drawOF(win.getren(), &camera, 1);
         //
         SDL_SetRenderTarget(win.getren(), NULL);
         SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);
