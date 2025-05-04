@@ -7,6 +7,7 @@
 * - Need to fix quick crashing issue (fixed)
 * - Need to fix magnification misalignment issue (fixed)
 * - Need to optimize the usage of render target (fixed)
+* - Need to fix tile rotating feature (able to rotate only the map, but movement is still local)
 */
 #include "../Headers/inclusions.hpp"
 #include <map>
@@ -209,7 +210,7 @@ int main(int argn, char** args)
                         x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
                         y != endY ? (int)tileset.tileHeight : (int)(camera.h - ypos)
                     });
-                    SDL_RenderCopyExF(win.getren(), tex_maps[0], &srcrect, &rect, angle, NULL, SDL_FLIP_NONE);
+                    SDL_RenderCopyExF(win.getren(), tex_maps[0], &srcrect, &rect, 0, NULL, SDL_FLIP_NONE);
                 }
                 // Render the tile if it's within the camera view
             }
@@ -230,11 +231,12 @@ int main(int argn, char** args)
         SDL_RenderDrawLineF(win.getren(), 0, win.geth()/4, win.getw(), win.geth()/4);
         SDL_RenderDrawLineF(win.getren(), 0, win.geth() * 0.75, win.getw(), win.geth() * 0.75);
         //
-        man.drawOF(win.getren(), &camera, 1);
+        man.drawOF(win.getren(), &camera, 1, -angle);
         //
         SDL_SetRenderTarget(win.getren(), NULL);
-        SDL_RenderCopy(win.getren(), renderTarget, NULL, NULL);
+        SDL_RenderCopyEx(win.getren(), renderTarget, NULL, NULL, angle, NULL, SDL_FLIP_NONE);
         win.pst();
+        win.clr();
         SDL_Delay(10);
     }
     return 0;

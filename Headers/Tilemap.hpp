@@ -9,6 +9,7 @@ struct Tileset
     int width;
     int height;
     int numColumns;
+    int tilecount;
     vector<Vint2> pos;
     string name, src;
     void display(){
@@ -27,16 +28,6 @@ struct Tileset
         }
         cout << endl;
     }
-    void parseALL(const char* filepath, vector<vector<vector<int>>>& Layers, SDL_Renderer* rend){
-        file << " parsing tilemap: " << filepath << endl;
-        XMLDocument doc;
-        if(doc.LoadFile("../Files/XML/16bit world.tmx")){
-            file << " document loading error\n";
-        }
-        else file << " document loading success\n";
-        setTileParams(doc, Layers);
-        setTilesetPos(rend);
-    }
     void parseTileset(XMLElement* mapelt){
         file << " parsing Tileset:\n";
         const char* buffer;
@@ -45,7 +36,7 @@ struct Tileset
         if(!buffer)file << " attribute tilewidth not found\n";
         else {
             tileWidth = atoi(buffer);
-            file << " tilewidth:" << tileWidth << endl;
+            file << " tilewidth: " << tileWidth << endl;
         }
         //
         buffer = mapelt->Attribute("tileheight");
@@ -55,127 +46,59 @@ struct Tileset
             file << " tileheight: " << tileHeight << endl;
         }
         //
-        buffer = mapelt->Attribute("width");
-        if(!buffer)file << " attribute width not found\n";
+        buffer = mapelt->Attribute("name");
+        if(!buffer)file << " attribute name not found\n";
         else{
-            width = atoi(buffer);
-            file << " width: " << width << endl;
-        } 
+            name = buffer;
+            file << " name: " << name << endl;
+        }
         //
-        buffer = mapelt->Attribute("height");
-        if(!buffer)file << " attribute height not found\n";
+        buffer = mapelt->Attribute("columns");
+        if(!buffer)file << " attribute columns not found\n";
         else{
-            height = atoi(buffer);
-            file << " height: " << height << endl;
-        } 
+            numColumns = atoi(buffer);
+            file << " columns: " << numColumns << endl;
+        }
         //
+        buffer = mapelt->Attribute("tilecount");
+        if(!buffer)file << " attribute tilecount not found\n";
+        else{
+            tilecount = atoi(buffer);
+            file << " tilecount: " << tilecount << endl;
+        }
         file << " entering loop for tilesets: \n";
-        bool notilesets = true, notiles = true;
         for(XMLElement* e = mapelt->FirstChildElement(); e !=NULL; e = e->NextSiblingElement()){
-            if(e->Value() == string("tileset")){
-                notilesets = false;
-                file << " tileset found\n";
-                const char* buffer = e->Attribute("source");
+            if(e->Value() == string("image")){
+                file << " image atlas found\n";
+                buffer = e->Attribute("source");
                 if(!buffer)file << " attribute source not found\n";
                 else{
                     file << " source: " << buffer << endl;
+                    src = buffer;
                 }
-                XMLDocument xdoc;
-                if(xdoc.LoadFile(buffer)){
-                    file << " Error loading source: " << xdoc.ErrorName() << endl;
+                //
+                buffer = e->Attribute("width");
+                if(!buffer)file << " attribute width not found\n";
+                else{
+                    file << " width: " << buffer << endl;
+                    width = atoi(buffer);
                 }
-                //cout << "loading status: " << xdoc.ErrorName() << endl;
-                file << " entering loop for tiles: \n";
-                for(XMLElement* e = xdoc.RootElement()->FirstChildElement(); e != NULL; e = e->NextSiblingElement()){
-                    if(e -> Value() == string("image")){
-                        notiles = false;
-                        file << " image atlas found\n";
-                        buffer = e->Attribute("source");
-                        if(!buffer)file << " attribute source not found\n";
-                        else {
-                            file << " source: " << buffer << endl;
-                            src = buffer;
-                        }
-                    }
+                //
+                buffer = e->Attribute("height");
+                if(!buffer)file << " attribute width not found\n";
+                else{
+                    file << " width: " << buffer << endl;
+                    height = atoi(buffer);
                 }
             }
         }
-        if(notilesets)file << " no tilesets were found\n";
-        if(notiles)file << " no tiles were found\n";
         file << " parsing Tileset finished\n";
-        /*
-        cout << "tileset details: \n";
-        cout << " width: " << this->tileWidth << endl;
-        cout << " width: " << this->height << endl;
-        cout << " width: " << this->width << endl;
-        cout << " tiles: \n";
-        for(int i = 0; i < this->tiles.size(); i++){
-            cout << ' ' << this->tiles[i] << endl;
-        }
-        //*/
-    }
-    void parseLayerdata(XMLElement* mapelt, vector<vector<vector<int>>>& table_array){
-        table_array.clear();
-        file << " parsing layer data:\n";
-        file << " table data cleared\n";
-        file << " Entering Layer loop:\n";
-        bool nolayers = true;
-        for(XMLElement* e = mapelt->FirstChildElement(); e != NULL; e = e->NextSiblingElement()){
-            if(e->Value() == string("layer")){
-                nolayers = false;
-                file << " Layer found\n";
-                vector<vector<int>> tablei;
-                XMLText* text = e->FirstChildElement()->FirstChild()->ToText();
-                string t = text->Value();
-                file << " raw text: {\n " << t << "\n }\n";
-                string ey;
-                file << " filtering out whitespace characters...\n";
-                for(int i = 0; i < t.size(); i++){
-                    if(t[i] > 32)ey += t[i];
-                }
-                file << " now text: {\n " << ey << "\n }\n";
-                file << " decoding text\n";
-                string decodedIDs = base64_decode(ey);
-                // file << " decodedIDs: {\n " << decodedIDs << "\n }\n";
-                uLongf numGids = width * height * sizeof(int);
-                file << " making numGids = width * height * sizeof(int): " << width 
-                << " * " << height << " * " << sizeof(int) << endl; // << " = " << numGids << endl;
-                file << " uncompressing\n";
-                vector<unsigned> gids(numGids);
-                uncompress((Bytef*)&gids[0], &numGids,(const 
-                Bytef*)decodedIDs.c_str(), decodedIDs.size());
-                vector<int> layerRow(width);
-                for(int j = 0; j < height; j++)
-                    tablei.push_back(layerRow);
-                for(int rows = 0; rows < height; rows++){
-                    for(int cols = 0; cols < width; cols++){
-                        tablei[rows][cols] = gids[rows * width + cols];
-                        //file << tablei[rows][cols] << ' ';
-                    }
-                    //file << endl;
-                } 
-                // file << "================================\n";
-                table_array.push_back(tablei);
-            }
-        }
-        file << " parsing Layer data finished\n";
-    }
-    void setTileParams(XMLDocument& doc, vector<vector<vector<int>>>& table_array){
-        XMLElement* e = doc.RootElement();
-        file << " doc root value: " << e -> Value() << endl;
-        parseTileset(e);
-        parseLayerdata(e, table_array);
-    }
-    void setTilesetPos(SDL_Renderer* rend){
-        SDL_Texture* image = IMG_LoadTexture(rend, src.c_str());
-        int w, h;
-        SDL_QueryTexture(image, NULL, NULL, &w, &h);
-        SDL_DestroyTexture(image);
-        int rows = h / tileHeight, cols = w / tileWidth;
+        file << " setting UV positions:\n";
+        int rows = height / tileHeight, cols = width / tileWidth;
         int size = rows * cols;
         for(int i = 0; i < size; i++){
             Vint2 uv(i % rows, i / cols);
-            cout << ' ' << i << ' ' << uv << endl;
+            file << ' ' << i << ' ' << uv << endl;
             pos.push_back(uv);
         }
     }
@@ -183,70 +106,51 @@ struct Tileset
 class Layer
 {
     public:
-        virtual void render() = 0;
+        virtual void render(SDL_Renderer*, map<int, SDL_Texture*>&) = 0;
         virtual void update() = 0;
         protected:
         virtual ~Layer() {}
 };
-class Level
-{
-    public:
-        //Level();
-        ~Level() {}
-        void update(){
-            for(int i = 0; i < layers.size(); i++)
-                layers[i]->update();
-        }
-        void render(){
-            for(int i = 0; i < layers.size(); i++)
-                layers[i]->render();
-        }
-        vector<Tileset>* getTilesets(){
-            return &tilesets;
-        }
-        vector<Layer*>* getLayers(){
-            return &layers;
-        }
-        
-    private:
-        friend class LevelParser;
-        Level();
-        vector<Tileset> tilesets;
-        vector<Layer*> layers;
-};
 class TileLayer : public Layer
 {
     public:
-        TileLayer(int tileSize, const vector<Tileset> &tilesets) : m_tileSize(tileSize), m_tilesets(tilesets){
-            //m_numColumns = (WinWidth / m_tileSize);
-            //m_numRows = (WinHeight / m_tileSize);
+        TileLayer(const TileLayer& layer): m_tileIDs(layer.m_tileIDs), name(layer.name), layerid(layer.layerid), m_tileSize(layer.m_tileSize), m_tilesets(layer.m_tilesets){
+            m_numColumns = (640 / m_tileSize);
+            m_numRows = (480 / m_tileSize);
+        }
+        TileLayer(int tileSize, map<int, Tileset*> &tilesets) : m_tileSize(tileSize), m_tilesets(tilesets){
+            m_numColumns = (640 / m_tileSize);
+            m_numRows = (480 / m_tileSize);
         }
         virtual void update(){
-            m_position += m_velocity;
+
         }
-        virtual void render(){
-            int x, y, x2, y2 = 0;
-            x = m_position.getx() / m_tileSize;
-            y = m_position.gety() / m_tileSize;
-            x2 = int(m_position.getx()) % m_tileSize;
-            y2 = int(m_position.gety()) % m_tileSize;
+        virtual void render(SDL_Renderer* rend, map<int, SDL_Texture*>& tex_maps){
             for(int i = 0; i < m_numRows; i++)
                 for(int j = 0; j < m_numColumns; j++)
                 {
-                    int id = m_tileIDs[i][j + x];
-                    if(id == 0)continue;
-                    Tileset tileset = getTilesetByID(id);
+                    int id = m_tileIDs[i][j];
+                    if(id <= 0)continue;
+                    int firstgid = getTilesetByID(id);
+                    Tileset tileset = *m_tilesets[firstgid];
+                    id -= (firstgid - 1);
                     id--;
-                    /*
-                    board.drawTile(2, 2, 
-                    (j * m_tileSize) - x2, (i * m_tileSize) - y2, m_tileSize, 
-                    m_tileSize, (id - (this->firstGridID - 1)) / 
-                    this->numColumns, (id - (this->firstGridID - 1)) % 
-                    this->numColumns, rend);
-                    */
+                    SDL_FRect rect = SDL_FRect({
+                        (float)(j * m_tileSize), // x position on screen
+                        (float)(i * m_tileSize), // y position on screen
+                        (float)m_tileSize, // width of the tile
+                        (float)m_tileSize // height of the tile
+                    });
+                    SDL_Rect srcrect = SDL_Rect({
+                        tileset.pos[id].getx() * tileset.tileWidth,
+                        tileset.pos[id].gety() * tileset.tileHeight,
+                        m_tileSize, // width of the tile
+                        m_tileSize
+                    });
+                    SDL_RenderCopyExF(rend, tex_maps[firstgid], &srcrect, &rect, 0, NULL, SDL_FLIP_NONE);
                 }
         }
-        void setTileIDs(const vector<vector<int>>& data) 
+        void setTileIDs(const vector<vector<int>>& data)
         { 
             m_tileIDs = data; 
         }
@@ -254,114 +158,203 @@ class TileLayer : public Layer
         { 
             m_tileSize = tileSize; 
         }
-        Tileset getTilesetByID(int tileID);
+        int getTilesetByID(int tileID){
+            int id = 1;
+            while(m_tilesets.find(id) != m_tilesets.end()){
+                Tileset tileset = *m_tilesets[id];
+                if(tileID >= id && tileID < id + tileset.tilecount)
+                return id;
+                else id += tileset.tilecount;
+            }
+            return 0;
+        }
+        void setid(int id){
+            layerid = id;
+        }
+        void setname(string sname){
+            name = sname;
+        }
         private:
+        int layerid;
+        string name;
         int m_numColumns;
         int m_numRows;
         int m_tileSize;
-        Vflt2 m_position;
-        Vflt2 m_velocity;
-        const vector<Tileset> &m_tilesets;
+        map<int, Tileset*>& m_tilesets;
         vector<vector<int>> m_tileIDs;
 };
-class LevelParser
+class Level
 {
     public:
-        Level* parseLevel(const char* levelFile, SDL_Renderer* rend){
+        Level() {}
+        ~Level() {}
+        void update(){
+            for(int i = 0; i < layers.size(); i++)
+                layers[i]->update();
+        }
+        void render(SDL_Renderer* rend){
+            for(int i = 0; i < layers.size(); i++)
+                layers[i]->render(rend, texMap);
+        }
+        vector<Tileset>* getTilesets(){
+            return &tilesets;
+        }
+        vector<Layer*>* getLayers(){
+            return &layers;
+        }
+        void mapTilesets(SDL_Renderer* rend){
+            for(Tileset& tileset: tilesets){
+                SDL_Texture* texture = IMG_LoadTexture(rend, tileset.src.c_str());
+                if(!texture){
+                    file << " texture loading ("<< '\"' << tileset.src << "\") error in level: " << SDL_GetError() << endl;
+                    texMap[tileset.firstGridID] = NULL;
+                }
+                else texMap[tileset.firstGridID] = texture;
+            }
+        }
+        void parseLevel(const char* levelFile, SDL_Renderer* rend){
+            file << " parsing level\n";
             // create a TinyXML document and load the map XML
             XMLDocument levelDocument;
-            levelDocument.LoadFile(levelFile);
+            if(levelDocument.LoadFile(levelFile)){
+                file << " loading level failed\n";
+                return;
+            }
+            else file << " level loading success\n";
             // create the level object
-            Level* pLevel = new Level();
             // get the root node 
             XMLElement* pRoot = levelDocument.RootElement();
             const char* buffer;
-            pRoot->Attribute("tilewidth", buffer);
-            m_tileSize = atoi(buffer);
-            pRoot->Attribute("width", buffer);
-            m_width = atoi(buffer);
-            pRoot->Attribute("height", buffer);
-            m_height = atoi(buffer);
+            //
+            buffer = pRoot->Attribute("tilewidth");
+            if(!buffer)file << " attribute tileSize not found\n";
+            else{
+                file << " tilesize: " << buffer << endl;
+                m_tileSize = atoi(buffer);
+            }
+            //
+            buffer = pRoot->Attribute("width");
+            if(!buffer)file << " attribute width not found\n";
+            else{
+                file << " width: " << buffer << endl;
+                m_width = atoi(buffer);    
+            }
+            //
+            buffer = pRoot->Attribute("height");
+            if(!buffer)file << " attribute height not found\n";
+            else {
+                file << " height: " << buffer << endl;
+                m_height = atoi(buffer);    
+            }
             // parse the tilesets
-            for(XMLElement* e = pRoot->FirstChildElement(); e != NULL; e = 
-            e->NextSiblingElement())
-                if(e->Value() == string("tileset"))
-                    parseTilesets(e, pLevel->getTilesets(), rend);
+            parseTilesets(pRoot->FirstChildElement(), getTilesets());
+            mapTilesets(rend);
+            mapTilesets(*getTilesets());
             // parse any object layers
-            for(XMLElement* e = pRoot->FirstChildElement(); e != NULL; e = 
-            e->NextSiblingElement())
-                if(e->Value() == string("layer"))
-                    parseTileLayer(e, pLevel->getLayers(), pLevel->getTilesets());
-            return pLevel;
+            parseLayerdata(pRoot->FirstChildElement(), getLayers(), m_width, m_height, m_tileSize, tilesetMap);
         }
         TEXTURE board;
         private:
-        void parseTilesets(XMLElement* pTilesetRoot,
-        vector<Tileset>* pTilesets, SDL_Renderer* rend){
-            board.load(pTilesetRoot->FirstChildElement()->Attribute("source"), rend);
-            board.queryF();
-            // create a tileset object
-            Tileset tileset;
-            const char* buffer;
-            pTilesetRoot->FirstChildElement()->Attribute("width", buffer);
-            tileset.width = atoi(buffer);
-            pTilesetRoot->FirstChildElement()->Attribute("height", buffer);
-            tileset.height= atoi(buffer);
-            pTilesetRoot->Attribute("firstgid", buffer);
-            tileset.firstGridID= atoi(buffer);
-            pTilesetRoot->Attribute("tilewidth", buffer);
-            tileset.tileWidth= atoi(buffer);
-            pTilesetRoot->Attribute("tileheight", buffer);
-            tileset.tileHeight= atoi(buffer);
-            pTilesetRoot->Attribute("spacing", buffer);
-            tileset.spacing= atoi(buffer);
-            pTilesetRoot->Attribute("margin", buffer);
-            tileset.margin= atoi(buffer);
-            tileset.name = pTilesetRoot->Attribute("name");
-            tileset.numColumns = tileset.width / (tileset.tileWidth + 
-            tileset.spacing);
-            pTilesets->push_back(tileset);
+        void mapTilesets(vector<Tileset>& tilesets){
+            for(Tileset& tileset: tilesets)
+            tilesetMap[tileset.firstGridID] = &tileset;
         }
-        void parseTileLayer(XMLElement* pTileElement, vector<Layer*> *pLayers, const vector<Tileset>* pTilesets){
-            TileLayer* pTileLayer = new TileLayer(m_tileSize, *pTilesets);
-            // tile data
-            vector<vector<int>> data;
-            string decodedIDs;
-            XMLElement* pDataNode;
-            for(XMLElement* e = pTileElement->FirstChildElement(); e != 
-            NULL; e = e->NextSiblingElement())
-                if(e->Value() == string("data"))
-                    pDataNode = e;
-            for(XMLNode* e = pDataNode->FirstChild(); e != NULL; e = 
-            e->NextSibling())
-            {
-                XMLText* text = e->ToText();
-                string t = text->Value();
-                cout << " text: " << t << endl;
-                decodedIDs = base64_decode(t);
-                cout << "decodedIds: " << decodedIDs << endl;
-            }
-            // uncompress zlib compression
-            size_t numGids = m_width * m_height * sizeof(int);
-            vector<unsigned> gids(numGids);
-            /*
-            uncompress((Bytef*)&gids[0], &numGids,(const 
-            Bytef*)decodedIDs.c_str(), decodedIDs.size());
-            vector<int> layerRow(m_width);
-            for(int j = 0; j < m_height; j++)
-                data.push_back(layerRow);
-            for(int rows = 0; rows < m_height; rows++){
-                for(int cols = 0; cols < m_width; cols++){
-                    data[rows][cols] = gids[rows * m_width + cols];
-                    cout << " [" << data[rows][cols] << ']';
+        void parseLayerdata(XMLElement* mapelt, vector<Layer*>* layers, int width, int height, int tileSize, map<int, Tileset*>& mapTilesets){
+            file << " parsing layers\n";
+            file << " Entering Layer loop:\n";
+            for(XMLElement* e = mapelt; e != NULL; e = e->NextSiblingElement()){
+                if(e->Value() == string("layer")){
+                    file << " Layer found\n";
+                    TileLayer layer(tileSize, mapTilesets);
+                    const char* buffer = NULL;
+                    //
+                    buffer = e->Attribute("id");
+                    if(!buffer)file << " attribute id not found\n";
+                    else{
+                        file << " id: " << buffer << endl;
+                        layer.setid(atoi(buffer));
+                    }
+                    //
+                    buffer = e->Attribute("name");
+                    if(!buffer)file << " attribute name not found\n";
+                    else {
+                        layer.setname(buffer);
+                        file << " name: " << buffer << endl;
+                    }
+                    vector<vector<int>> data;
+                    XMLText* text = e->FirstChildElement()->FirstChild()->ToText();
+                    string t = text->Value();
+                    file << " raw text: {\n " << t << "\n }\n";
+                    string ey;
+                    file << " filtering out whitespace characters...\n";
+                    for(int i = 0; i < t.size(); i++){
+                        if(t[i] > 32)ey += t[i];
+                    }
+                    file << " now text: {\n " << ey << "\n }\n";
+                    file << " decoding text\n";
+                    string decodedIDs = base64_decode(ey);
+                    // file << " decodedIDs: {\n " << decodedIDs << "\n }\n";
+                    uLongf numGids = width * height * sizeof(int);
+                    file << " making numGids = width * height * sizeof(int): " << width 
+                    << " * " << height << " * " << sizeof(int) << endl; // << " = " << numGids << endl;
+                    file << " uncompressing\n";
+                    vector<unsigned> gids(numGids);
+                    uncompress((Bytef*)&gids[0], &numGids,(const 
+                    Bytef*)decodedIDs.c_str(), decodedIDs.size());
+                    vector<int> layerRow(width);
+                    for(int j = 0; j < height; j++)
+                        data.push_back(layerRow);
+                    for(int rows = 0; rows < height; rows++){
+                        for(int cols = 0; cols < width; cols++){
+                            data[rows][cols] = gids[rows * width + cols];
+                            //file << tablei[rows][cols] << ' ';
+                        }
+                        //file << endl;
+                    } 
+                    // file << "================================\n";
+                    layer.setTileIDs(data);
+                    layers->push_back(new TileLayer(layer));
                 }
-                cout << endl;
-            }  
-            pTileLayer->setTileIDs(data);
-            pLayers->push_back(pTileLayer);
-            */
+            }
+            file << " parsing Layers finished\n";
         }
-        int m_tileSize;
-        int m_width;
-        int m_height;
+        void parseTilesets(XMLElement* pTilesetRoot,
+        vector<Tileset>* pTilesets){
+            file << " parsing tilesets:\n";
+            for(XMLElement* e = pTilesetRoot; e != NULL; e = e->NextSiblingElement()){
+                if(e->Value() == string("tileset")){
+                    file << " tileset found\n";
+                    const char* buffer = NULL;
+                    Tileset tileset;
+                    buffer = e->Attribute("firstgid");
+                    if(!buffer)file << " attribute firstgid not found\n";
+                    else{
+                        tileset.firstGridID = atoi(buffer);
+                        file << " firstgid: " << buffer << endl;
+                    } 
+                    buffer = e->Attribute("source");
+                    if(!buffer)file << " attribute source not found\n";
+                    else{
+                        file << " loading tileset: " << buffer << endl;
+                        XMLDocument doc;
+                        if(doc.LoadFile(buffer)){
+                            file << " tileset loading error\n";
+                        }
+                        else file << " tileset loading success\n";
+                        tileset.parseTileset(doc.RootElement());
+                        pTilesets->push_back(tileset);
+                        file << " tileset pushed\n";
+                    }            
+                }
+            }
+            file << " parsing tilesets finished\n";
+        }
+    private:
+        // friend class LevelParser;
+        //Level(){}
+        vector<Tileset> tilesets;
+        vector<Layer*> layers;
+        map<int, SDL_Texture*> texMap;
+        map<int, Tileset*> tilesetMap;
+        int m_tileSize, m_width, m_height;
 };

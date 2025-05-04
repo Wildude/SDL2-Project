@@ -7,9 +7,10 @@
 #include "SDL2_namespace.hpp"
 #include "vector2D.hpp"
 #include "BSDLF.hpp"
+#include "GUI.hpp"
 #include "physics.hpp"
 #include "rigid_body.hpp"
 //#include "Weapons.hpp"
-//#include "stage.hpp"
 #include "Tilemap.hpp"
-#include "GUI.hpp"
+#include "stage.hpp"
+

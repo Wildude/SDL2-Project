@@ -532,14 +532,14 @@ class TEXTURE
         SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - (bool)(dst.x/(rect->w * scale)) * (rect->w * scale) , dst.y - (int)(dst.y/(rect->h * scale)) * (rect->h * scale), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
         return drawC(rend, drawRect);
     }
-    int drawOF(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 1){
+    int drawOF(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 1, double angle = 0){
         SDL_FPoint c = {getcenter().x * scale, getcenter().y * scale};
         SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - rect->x - (c.x - getcenter().x), dst.y - rect->y - (c.y - getcenter().y), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
-        return drawC(rend, drawRect);
+        return drawC(rend, drawRect, angle);
     }
-    int drawC(SDL_Renderer* rend, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)
+    int drawC(SDL_Renderer* rend, SDL_FRect* rect = NULL, double angle = 0, SDL_RendererFlip flip = SDL_FLIP_NONE)
     {
-        if(rencpy(rend, rect, NULL, flip, NULL, 0) < 0)return -3;
+        if(rencpy(rend, rect, NULL, flip, NULL, angle) < 0)return -3;
         return 1;
     }
     int drawO(SDL_Renderer* rend, SDL_FRect* rect = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE)

@@ -10,6 +10,10 @@
 // requires copy constructor, destructor and a few operators
 class physx
 {
+    /*
+    * physics class
+    * requires improvements
+    */
     public:
     static constexpr float delta = 0.1;
         physx(){}
@@ -82,6 +86,7 @@ class physx
 };
 class physx_surface // static object
 {
+    // this class requires improvements
     public:
     Vflt2* vecs;
     float coff = 0.1;

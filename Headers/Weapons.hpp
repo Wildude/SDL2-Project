@@ -1,4 +1,9 @@
 class weapon : public physx_body{
+    /*
+    * weapon class
+    * derived from physx_body
+    * needs improvements
+    */
     Vflt2 target;
     bool twoside = false;
     Vflt2 maincenter;
