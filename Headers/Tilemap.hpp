@@ -107,7 +107,9 @@ class Layer
 {
     public:
         virtual void render(SDL_Renderer*, map<int, SDL_Texture*>&) = 0;
+        virtual void Frender(SDL_Renderer*, map<int, SDL_Texture*>&, const SDL_FRect&, const SDL_Point&) = 0;
         virtual void update() = 0;
+        virtual void display() = 0;
         protected:
         virtual ~Layer() {}
 };
@@ -150,6 +152,43 @@ class TileLayer : public Layer
                     SDL_RenderCopyExF(rend, tex_maps[firstgid], &srcrect, &rect, 0, NULL, SDL_FLIP_NONE);
                 }
         }
+        void Frender(SDL_Renderer* rend, map<int, SDL_Texture*>& texmap, const SDL_FRect& camera, const SDL_Point& mapsize){
+            Tileset sampTileset = *m_tilesets[1];
+            SDL_Rect range = {
+                max((int)(camera.x / sampTileset.tileWidth), 0),
+                min((int)(camera.x + camera.w) / sampTileset.tileWidth, mapsize.x - 1),
+                max((int)(camera.y / sampTileset.tileHeight), 0),
+                min((int)((camera.y + camera.h) / sampTileset.tileHeight), mapsize.y - 1)
+            };
+            // loop over visible tile grid
+                for (int x = range.x; x <= range.y; ++x) {
+                    for (int y = range.w; y <= range.h; ++y) {
+                        int id = m_tileIDs[y][x];
+                        if(id <= 0)continue;
+                        int firstgid = getTilesetByID(id);
+                        Tileset tileset = *m_tilesets[firstgid];
+                        id -= (firstgid - 1);
+                        id--;
+                        // Calculate the position of the tile
+                        float xpos = x * (float)tileset.tileWidth - camera.x;
+                        float ypos = y * (float)tileset.tileHeight - camera.y;
+                        SDL_FRect rect = SDL_FRect({
+                            xpos, // x position on screen
+                            ypos, // y position on screen
+                            x != range.y ? (float)tileset.tileWidth : (float)(camera.w - xpos), // width of the tile
+                            y != range.h ? (float)tileset.tileHeight : (float)(camera.h - ypos) // height of the tile
+                        });
+                        SDL_Rect src = SDL_Rect({
+                            tileset.pos[id].getx() * tileset.tileWidth,
+                            tileset.pos[id].gety() * tileset.tileHeight,
+                            x != range.y ? tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
+                            y != range.h ? tileset.tileHeight : (int)(camera.h - ypos) // height of the tile
+                        });
+                        // Render the tile if it's within the camera view
+                        SDL_RenderCopyExF(rend, texmap[firstgid], &src, &rect, 0, NULL, SDL_FLIP_NONE);
+                    }
+                }
+        }
         void setTileIDs(const vector<vector<int>>& data)
         { 
             m_tileIDs = data; 
@@ -174,6 +213,26 @@ class TileLayer : public Layer
         void setname(string sname){
             name = sname;
         }
+        void display(){
+            cout << " Tile layer details:\n";
+            cout << "Layer ID: " << layerid << endl;
+            cout << "Layer Name: " << name << endl;
+            cout << "Tile Size: " << m_tileSize << endl;
+            cout << "Number of Columns: " << m_numColumns << endl;
+            cout << "Number of Rows: " << m_numRows << endl;
+            cout << "Tile IDs: " << endl;
+            for (const auto& row : m_tileIDs) {
+                for (const auto& id : row) {
+                    cout << " " << id;
+                }
+                cout << endl;
+            }
+            cout << "Tilesets: " << endl;
+            for (const auto& tileset : m_tilesets) {
+                cout << "Tileset ID: " << tileset.first << endl;
+                tileset.second->display();
+            }
+        }
         private:
         int layerid;
         string name;
@@ -195,6 +254,11 @@ class Level
         void render(SDL_Renderer* rend){
             for(int i = 0; i < layers.size(); i++)
                 layers[i]->render(rend, texMap);
+        }
+        void Frender(SDL_Renderer* rend, const SDL_FRect& camera){
+            SDL_Point mapsize = {m_width, m_height};
+            for(int i = 0; i < layers.size(); i++)
+                layers[i]->Frender(rend, texMap, camera, mapsize);
         }
         vector<Tileset>* getTilesets(){
             return &tilesets;
@@ -253,7 +317,34 @@ class Level
             // parse any object layers
             parseLayerdata(pRoot->FirstChildElement(), getLayers(), m_width, m_height, m_tileSize, tilesetMap);
         }
-        TEXTURE board;
+        int getwidth() const {
+            return m_width;
+        }
+        int getheight() const {
+            return m_height;
+        }
+        int getMapWidth() const {
+            return m_width * m_tileSize;
+        }
+        int getMapHeight() const {
+            return m_height * m_tileSize;
+        }
+        int gettilesize() const {
+            return m_tileSize;
+        }
+        void display(){
+            cout << "Level Details:\n";
+            cout << "Width: " << m_width << endl;
+            cout << "Height: " << m_height << endl;
+            cout << "Tile Size: " << m_tileSize << endl;
+            cout << "Mapwidth: " << getMapWidth() << endl;
+            cout << "Mapheight: " << getMapHeight() << endl;
+            return;
+            cout << "Layers:\n";
+            for (int i = 0; i < layers.size(); i++) {
+                layers[i]->display();
+            }
+        }
         private:
         void mapTilesets(vector<Tileset>& tilesets){
             for(Tileset& tileset: tilesets)

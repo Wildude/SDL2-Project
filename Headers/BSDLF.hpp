@@ -14,43 +14,219 @@ ofstream texture_file(filepath + texture_path);
 ofstream audio_file(filepath + audio_path);
 ofstream network_file(filepath + network_path);
 using namespace SDL2;
-class EVENT
-{
-    SDL_Event event;
+
+class InputManager {
     public:
-    EVENT()
-    {
-        SDL_PollEvent(&event);
+    InputManager() {
+        keyDown.fill(false);
+        //keyPressed.fill(false);
+        keyReleased.fill(false);
+        keyDelayCounters.fill(0);
     }
-    int poll()
-    {
-        return SDL_PollEvent(&event);
+
+    void update() {
+        // Reset transitional states
+        //keyPressed.fill(false);
+        keyReleased.fill(false);
+        //mousePressed.fill(false);
+        mouseReleased.fill(false);
+
+        // Poll all events
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+
+            if (e.type == SDL_KEYDOWN && !e.key.repeat) {
+                SDL_Scancode sc = e.key.keysym.scancode;
+                keyDown[sc] = true;
+                //keyPressed[sc] = true;
+            } else if (e.type == SDL_KEYUP) {
+                SDL_Scancode sc = e.key.keysym.scancode;
+                keyDown[sc] = false;
+                keyReleased[sc] = true;
+                keyDelayCounters[sc] = 0;
+            }
+
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                mouseDown[e.button.button] = true;
+                //mousePressed[e.button.button] = true;
+            } else if (e.type == SDL_MOUSEBUTTONUP) {
+                mouseDown[e.button.button] = false;
+                mouseReleased[e.button.button] = true;
+            }
+
+            if (e.type == SDL_MOUSEMOTION) {
+                mouseX = e.motion.x;
+                mouseY = e.motion.y;
+            }
+
+            if (e.type == SDL_MOUSEWHEEL) {
+                mouseWheelY = e.wheel.y;
+            }
+        }
+
+        // Update key repeat delay counters
+        updateDelays();
+
+        mouseWheelY = 0; // Reset wheel each frame
     }
-    Uint8 key(SDL_Scancode keypressed)
-    {
-        return SDL_GetKeyboardState(NULL)[keypressed];
+
+    bool shouldQuit() const { return quit; }
+
+    // Keyboard input
+    bool isKeyDown(SDL_Scancode key) const { return keyDown[key]; }
+    //bool isKeyJustPressed(SDL_Scancode key) const { return keyPressed[key]; }
+    bool isKeyReleased(SDL_Scancode key) const { return keyReleased[key]; }
+
+    // Delayed action support
+    bool isKeyReady(SDL_Scancode key, int delayFrames = 10){
+        if(keyDown[key]){
+            if(keyDelayCounters[key] && keyDelayCounters[key] < delayFrames){
+                return false;
+            }
+            else{
+                if(key == SDL_SCANCODE_INSERT){
+                    cout << " evaluated\n";
+                }
+                keyDelayCounters[key] = 0;
+                return true;
+            }
+        }
+        else return false;
     }
-    bool mbn(int index)
-    {
-        return (event.button.button == index - 1);
+
+    // Mouse input
+    bool isMouseDown(Uint8 button) const { return mouseDown[button]; }
+    //bool isMouseJustPressed(Uint8 button) const { return mousePressed[button]; }
+    bool isMouseReleased(Uint8 button) const { return mouseReleased[button]; }
+
+    int getMouseX() const { return mouseX; }
+    int getMouseY() const { return mouseY; }
+    int getMouseWheelY() const { return mouseWheelY; }
+    const array<int, SDL_NUM_SCANCODES>& getDelayCounters(){
+        return keyDelayCounters;
     }
-    /*
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
-    // arrows
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]);
-    // WASD
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_A]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]);
-    if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_D]);
-    // mouse button click
-    if(event.button.button == 1); // left click
-    if(event.button.button == 2); // middle click
-    if(event.button.button == 3); // right click
-    */
+    protected:
+    void updateDelays() {
+        for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
+            if (keyDown[i]) {
+                keyDelayCounters[i]++;
+            } else {
+                keyDelayCounters[i] = 0;
+            }
+        }
+    }
+    bool quit = false;
+    
+
+    array<bool, SDL_NUM_SCANCODES> keyDown;
+    // array<bool, SDL_NUM_SCANCODES> keyPressed;
+    array<bool, SDL_NUM_SCANCODES> keyReleased;
+    array<int, SDL_NUM_SCANCODES> keyDelayCounters;
+
+    array<bool, 8> mouseDown{};      // SDL_BUTTON_LEFT...SDL_BUTTON_X2
+    //array<bool, 8> mousePressed{};
+    array<bool, 8> mouseReleased{};
+    int mouseX = 0;
+    int mouseY = 0;
+    int mouseWheelY = 0;
+    protected: SDL_Event e;
+};
+class TextInputHandler : public InputManager {
+    public:
+    TextInputHandler(bool use = false) : useText(use) {
+        if(useText)startText();
+    }
+    void setTextUse(bool use){
+        useText = use;
+    }
+    bool checkText(){
+        if(!useText)SDL_StopTextInput();
+        else SDL_StartTextInput();
+        return useText;
+    }
+    bool getTextState() const{
+        return useText;
+    }
+    ~TextInputHandler() {
+        SDL_StopTextInput(); // Stop listening for text input when done
+    }
+    void update() {
+        if (useText){
+            if (!SDL_IsTextInputActive()) SDL_StartTextInput();
+        }
+        // Only start text input once when entering text mode
+        else if(SDL_IsTextInputActive()) SDL_StopTextInput();
+        // Clear all events in this mode
+        while (SDL_PollEvent(&e)) {
+            //cout << " still on text: "<< useText << endl;
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                mouseDown[e.button.button] = true;
+                //mousePressed[e.button.button] = true;
+            } 
+            else if (e.type == SDL_MOUSEBUTTONUP) {
+                mouseDown[e.button.button] = false;
+                mouseReleased[e.button.button] = true;
+            }
+            if (e.type == SDL_MOUSEMOTION) {
+                mouseX = e.motion.x;
+                mouseY = e.motion.y;
+            }
+            if (e.type == SDL_MOUSEWHEEL) {
+                mouseWheelY = e.wheel.y;
+            }
+            if (e.type == SDL_KEYUP) {
+                SDL_Scancode sc = e.key.keysym.scancode;
+                keyDown[sc] = false;
+                keyReleased[sc] = true;
+                keyDelayCounters[sc] = 0;
+            }
+            if(!useText){
+                if (e.type == SDL_KEYDOWN && !e.key.repeat) {
+                    SDL_Scancode sc = e.key.keysym.scancode;
+                    keyDown[sc] = true;
+                    //keyPressed[sc] = true;
+                }
+            }   
+            else{
+                if (e.type == SDL_TEXTINPUT) {
+                    inputText += e.text.text;
+                } 
+                else if (e.type == SDL_KEYDOWN) {
+                    if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty()) {
+                        inputText.pop_back();
+                    } else if (
+                        e.key.keysym.sym == SDLK_RETURN || 
+                        e.key.keysym.sym == SDLK_ESCAPE
+                    ) {
+                        useText = false;
+                        SDL_StopTextInput();  // stop when exiting
+                    }
+                }
+            }
+            
+        }
+        updateDelays();
+    }
+    const string& getText() const {
+        return inputText;
+    }
+
+    void clearText() {
+        inputText.clear();
+    }
+
+private:
+    void startText(){
+        SDL_StartTextInput(); // Start listening for text input
+        inputText.clear();    // Initialize empty text buffer
+    }
+    bool useText;
+    string inputText; // Stores the text input
 };
 class WINDOW
 {
@@ -837,24 +1013,27 @@ class TextList{
     //improved from vector (12 bytes) to nodestack (8 bytes)
     //nodestack<TextBox> boxes;
     vector<TextBox> boxes;
-    int xpos; // 4 bytes
+    int xpos, ypos; // 4 bytes
     // total = 12 bytes
     public:
     TextList(){}
-    TextList(const vector<TextBox>& texts, int x)
+    TextList(const vector<TextBox>& texts, int x, int y = 0)
     {
         for(int i = 0; i < texts.size(); i++)boxes.push_back(texts[i]);
         xpos = x;
+        ypos = y;
         setup();
     }
-    void setxpos(float x){
+    void setpos(int x, int y = 0){
         xpos = x;
+        ypos = y;
+        setup();
     }
     void setup()
     {
         int size = boxes.size();
         for(int i = 0; i < size; i++){
-            boxes[i].setboxpos(xpos, i ? boxes[i - 1].getBox().h : 0);
+            boxes[i].setboxpos(xpos, i ? boxes[i - 1].getBox().y + boxes[i - 1].getBox().h : ypos);
         }
         // below is a nodestack implementation
         /*
@@ -892,7 +1071,12 @@ class TextList{
                 (Uint8)(255 - col1->b), 
                 (Uint8)(255 - col1->a)
             });
-        int yoffset = (size /*boxes.peek()*/ ? boxes[size - 1]/*boxes.peek()->id*/.getBox().y + boxes[size - 1]/*boxes.peek()->id*/.getBox().h : 0);
+        int yoffset = (
+            size /*boxes.peek()*/ ? 
+            boxes[size - 1]/*boxes.peek()->id*/.getBox().y + boxes[size - 1]/*boxes.peek()->id*/.getBox().h 
+            : ypos
+        );
+        cout << " ypos is: "<< ypos << endl;;
         TextBox tbox(txt, *font);
         tbox.setboxpos(xpos, yoffset);
         tbox.setcol1(col1->r, col1->g, col1->b, col1->a);

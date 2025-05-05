@@ -1,0 +1,57 @@
+//g++ -I../src/Include -L../src/Lib -o ../Executables/TextEditingTrial.exe TextEditingTrial.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+//
+/*
+* FINAL UPDATES
+* - was able to distinguish between text editing and normal polling mode
+* - Need to fix update() in TextInputHandler so that it doesn't completely overrides that's of InputHandler
+* - After that need to fix the toggling issue (such a headache)
+* - Once all is completed move to HUD + SDL text editing functions (advanced)
+* 
+*/
+#include "../Headers/inclusions.hpp"
+#include <map>
+int main(int argn, char** args)
+{
+    WINDOW win("Text Editing trial");
+    win.crtB();
+    win.pstcol(255, 255, 255, 255);
+    SDL_Color col = {200, 0, 0, 255};
+    SDL_Point textpos = {win.getw()/4, win.geth()/4};
+    TextList list;
+    list.setpos(textpos.x, textpos.y);
+    list.add("", NULL, &col);
+    list.add();
+    int quant = 3;
+    TextInputHandler input;
+    while(!input.shouldQuit()){
+        input.update();
+        bool moved = false, camscaled = false;
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+        Vflt2 mousepos(x, y);
+        if(input.isKeyDown(SDL_SCANCODE_ESCAPE))break;
+        //
+        if(input.isKeyDown(SDL_SCANCODE_UP))textpos.y -= 1;
+        if(input.isKeyDown(SDL_SCANCODE_DOWN))textpos.y += 1;
+        if(input.isKeyDown(SDL_SCANCODE_LEFT))textpos.x -= 1;
+        if(input.isKeyDown(SDL_SCANCODE_RIGHT))textpos.x += 1;
+        //
+        if(input.isMouseDown(SDL_BUTTON_LEFT)){
+            input.setTextUse(true);
+        }
+        if(input.isMouseDown(SDL_BUTTON_RIGHT)){
+            input.setTextUse(false);
+        }
+        list.setpos(textpos.x, textpos.y);
+        list.edit(string(" text: " + input.getText()).c_str(), 0);
+        list.edit(string(" textinput?: " + (input.getTextState() ? string("true") : string("false"))).c_str(), 1);
+        list.draw(win.getren());
+        //
+        //
+        //
+        win.pst();
+        win.clr();
+        SDL_Delay(16);
+    }
+    return 0;
+}

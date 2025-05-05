@@ -7,7 +7,9 @@
 * - Need to fix quick crashing issue (fixed)
 * - Need to fix magnification misalignment issue (fixed)
 * - Need to optimize the usage of render target (fixed)
+* - Tilemap drawing system integrated
 * - Need to fix tile rotating feature (able to rotate only the map, but movement is still local)
+* 
 */
 #include "../Headers/inclusions.hpp"
 #include <map>
@@ -17,12 +19,13 @@ int main(int argn, char** args)
     win.crtB();
     win.pstcol(255, 255, 255, 255);
     vector<vector<vector<int>>> Layers;
-    Tileset tileset;
-    tileset.parseALL("../Files/XML/16bit world.tmx", Layers, win.getren());
+    Level bit16;
+    bit16.parseLevel("../Files/XML/16bit world.tmx", win.getren());
     // consider deleting doc by scoping out
-    int mapWidth = tileset.tileWidth * tileset.width;
-    int mapHeight = tileset.tileHeight * tileset.height;
-    cout << mapWidth << " * " << mapHeight << endl;
+    bit16.display();
+    //return 1;
+    int mapWidth = bit16.getMapWidth();
+    int mapHeight = bit16.getMapHeight();
     float speed = 10;
     SDL_Event event;
     TEXTURE man;
@@ -46,36 +49,7 @@ int main(int argn, char** args)
     SDL_FreeSurface(surfy);
     //
     Vflt2 vel(0, 0);
-    int layers = Layers.size(), rows = Layers[0].size(), columns = Layers[0][0].size();
-    vector<int> flat;
-    flatten(Layers, flat);
-    int possize = tileset.pos.size();
-    map<int, SDL_Texture*> tex_maps;
-    //tileset.display();
-    tex_maps[0] = IMG_LoadTexture(win.getren(), tileset.src.c_str());
     SDL_Color col = {200, 0, 0, 255};
-    //
-    /*
-    FONT font("../Fonts/nyala.ttf", 8);
-    
-    for(int i = 0; i < possize; i++){
-        string text = string("(" + to_string(tileset.pos[i].getx()) + "," + to_string(tileset.pos[i].gety()) + ")");
-        SDL_Surface* surf = TTF_RenderText_Blended(font.getfont(), text.c_str(), col);
-        if(!surf)cout << '\a';
-        tex_maps[i] = SDL_CreateTextureFromSurface(win.getren(), surf);
-        SDL_FreeSurface(surf);
-    }
-    */
-    //
-    ofstream file("../Files/logTilesize.txt");
-    for(int i = 0; i < layers; i++)
-        for(int j = 0; j < Layers[i].size(); j++){
-            for(int k = 0; k < Layers[i][j].size(); k++)
-                file << ' ' << Layers[i][j][k];
-            file << endl;
-        }
-    //
-    // cout << layers << ' ' << rows << ' ' << columns << endl;
     SDL_FRect camera = {0, 0, (float)win.getw(), (float)win.geth()};
     int FrameStarter = 0;
     man.set_cenpos(win.getw()/2, win.geth()/2);
@@ -88,76 +62,90 @@ int main(int argn, char** args)
         (int)camera.h
     );        
     TextList list;
-    list.setxpos(0);
+    list.setpos(win.getw()/4, win.geth()/4);
     list.add("", NULL, &col);
     list.add();
-    list.add();
-    list.add();
-    list.add();
     double angle = 0;
-    while(event.type != SDL_QUIT){
-        SDL_PollEvent(&event);
-        bool camscaled = false;
+    int framestarter = 0;
+    int quant = 3;
+    TextInputHandler input;
+    while(!input.shouldQuit()){
+        input.update();
+        bool moved = false, camscaled = false;
         int x, y;
         SDL_GetMouseState(&x, &y);
         Vflt2 mousepos(x, y);
-        if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
-        if(event.type != SDL_KEYDOWN){
-            int ticksnow = SDL_GetTicks() - FrameStarter;
-            if(ticksnow > 100)vel = Vflt2_0;
+        if(input.isKeyDown(SDL_SCANCODE_ESCAPE))break;
+        if(input.isKeyDown(SDL_SCANCODE_Q))angle--;
+        if(input.isKeyDown(SDL_SCANCODE_E))angle++;
+        if(input.isKeyDown(SDL_SCANCODE_LEFT)){
+            moved = true;
+            vel.getx() -= speed * physx::delta;
         }
-        //
-        else{
-            FrameStarter = SDL_GetTicks();
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_Q]){
-                angle--;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_E]){
-                angle++;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_LEFT]){
-                vel.getx() -= speed * physx::delta;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_RIGHT]){
-                vel.getx() += speed * physx::delta;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_UP]){
-                vel.gety() += speed * physx::delta;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_DOWN]){
-                vel.gety() -= speed * physx::delta;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_W]){
-                speed += (speed >= 100 ? 0 : 1);
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_S]){
-                speed -= (speed <= 0 ? 0 : 1);
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_SPACE]){
-                //vel = Vflt2_0;
-                if(camera.w < win.getw() * 3)camera.w *= 2;
-                if(camera.h < win.geth() * 3)camera.h *= 2;
-                camscaled = true;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_MINUS]){
-                if(camera.w > win.getw() / 10)camera.w -= 5;
-                if(camera.h > win.geth() / 10)camera.h -= 5;
-                camscaled = true;
-                //camera.h--;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_EQUALS]){
-                if(camera.w < win.getw() * 3)camera.w += 5;
-                if(camera.h < win.geth() * 3)camera.h += 5;
-                camscaled = true;
-                //camera.h++;
-            }
-            if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_BACKSPACE]){
-                //usescale = !usescale;
-                if(camera.w > win.getw() / 10)camera.w /= 2;
-                if(camera.h > win.getw() / 10)camera.h /= 2;
-                camscaled = true;
+        if(input.isKeyDown(SDL_SCANCODE_RIGHT)){
+            moved = true;
+            vel.getx() += speed * physx::delta;
+        }
+        if(input.isKeyDown(SDL_SCANCODE_UP)){
+            moved = true;
+            vel.gety() += speed * physx::delta;
+        }
+        if(input.isKeyDown(SDL_SCANCODE_DOWN)){
+            moved = true;
+            vel.gety() -= speed * physx::delta;
+        }
+        if(!moved){
+            framestarter = !framestarter ? SDL_GetTicks() : framestarter;
+            if(SDL_GetTicks() - framestarter > 100){
+                vel.getx() = 0;
+                vel.gety() = 0;
+                framestarter = SDL_GetTicks();
             }
         }
+        else framestarter = 0;
+        if(input.isKeyDown(SDL_SCANCODE_W)){
+            speed += (speed >= 100 ? 0 : 1);
+        }
+        if(input.isKeyDown(SDL_SCANCODE_S)){
+            speed -= (speed <= 0 ? 0 : 1);
+        }
+        if(input.isKeyReady(SDL_SCANCODE_SPACE, quant)){
+            //vel = Vflt2_0;
+            if(camera.w < win.getw() * 3 && camera.h < win.geth() * 3){
+                camera.w *= 2;
+                camera.h *= 2;
+            }
+            camscaled = true;
+        }
+        if(input.isKeyReady(SDL_SCANCODE_MINUS, quant)){
+            if(camera.w > win.getw() / 10 && camera.h > win.getw() / 10){
+                camera.w -= 5;
+                camera.h -= 5;
+            }
+            camscaled = true;
+        }
+        if(input.isKeyReady(SDL_SCANCODE_EQUALS, quant)){
+            if(camera.w < win.getw() * 3 && camera.h < win.geth() * 3){
+                camera.w += 5;
+                camera.h += 5;
+            }
+            camscaled = true;
+        }
+        if(input.isKeyReady(SDL_SCANCODE_BACKSPACE, quant)){   
+            if(camera.w > win.getw() / 10 && camera.h > win.getw() / 10){
+                camera.w /= 2;
+                camera.h /= 2;
+            }
+            camscaled = true;
+            cout << " backed\n";
+        }
+        if(input.isMouseDown(SDL_BUTTON_LEFT)){   
+            input.setTextUse(true);
+        }
+        if(input.isMouseDown(SDL_BUTTON_RIGHT)){   
+            input.setTextUse(false);
+        }
+        //vel = (vel.getmag() * cos(torad(angle)), vel.getmag() * sin(torad(angle)));
         float scalex = camera.w / win.getw();
         float xoff = win.getw() * (1 - scalex) / 2;
         man.getdst().x += vel.getx();
@@ -178,53 +166,15 @@ int main(int argn, char** args)
         }
         SDL_SetRenderTarget(win.getren(), renderTarget);
         win.clr();
-        int startX = max((int)(camera.x / tileset.tileWidth), 0);
-        float decendX = (max(man.get_cenpos().x, camera.w/2) + camera.w/2) / tileset.tileWidth;
-        int endX = min((int)(decendX == floor(decendX) ? decendX - 1 : decendX), columns - 1);
-        int startY = std::max((int)(camera.y / tileset.tileHeight), 0);
-        int endY = std::min((int)((camera.y + camera.h) / tileset.tileHeight), (int)(flat.size() / columns) - 1);
-        float W = 0;
-        // loop over visible tile grid
-        for (int x = startX; x <= endX; ++x) {
-            for (int y = startY; y <= endY; ++y) {
-                // beginning tiles not clipped because of flicker issue
-                // fix issue later
-                int i = y * columns + x;  // flattened index of tile (x, y)
-
-                if (flat[i] <= 0) continue; // skip empty tiles
-
-                // Calculate the position of the tile
-                float xpos = x * (float)tileset.tileWidth - camera.x;
-                float ypos = y * (float)tileset.tileHeight - camera.y;
-
-                SDL_FRect rect = SDL_FRect({
-                    xpos, // x position on screen
-                    ypos, // y position on screen
-                    x != endX ? (float)tileset.tileWidth : (float)(camera.w - xpos), // width of the tile
-                    y != endY ? (float)tileset.tileHeight : (float)(camera.h - ypos) // height of the tile
-                });
-                for(int j = 0; j < layers; j++){
-                    SDL_Rect srcrect = SDL_Rect({
-                        tileset.pos[flat[i + rows * columns * j] - 1].getx() * tileset.tileWidth,
-                        tileset.pos[flat[i + rows * columns * j] - 1].gety() * tileset.tileHeight,
-                        x != endX  ? (int)tileset.tileWidth : (int)(camera.w - xpos), // width of the tile
-                        y != endY ? (int)tileset.tileHeight : (int)(camera.h - ypos)
-                    });
-                    SDL_RenderCopyExF(win.getren(), tex_maps[0], &srcrect, &rect, 0, NULL, SDL_FLIP_NONE);
-                }
-                // Render the tile if it's within the camera view
-            }
-        }
+        bit16.Frender(win.getren(), camera);
         //
         midlinex.drawC(win.getren());
         midliney.drawC(win.getren());
         //
-        list.edit(string("camera.D/2(w,h): (" + to_string((int)camera.w / 2) + ", " + to_string((int)camera.h / 2) + ")").c_str(), 0);
-        list.edit(string("man.getcenpos(x,y, w, h): (" + to_string((int)man.get_cenpos().x) + ", " + to_string((int)man.get_cenpos().y) + ", " + to_string((int)(man.getdst().w * (1 / scalex))) + ", " + to_string((int)(man.getdst().h * (1 / scalex))) + ")").c_str(), 1);
-        list.edit(string("camera(x,y,w,h): (" + to_string((int)camera.x) + ", " + to_string((int)camera.y) + ", " + to_string((int)camera.w) + ", " + to_string((int)camera.h) + ")").c_str(), 2);
-        list.edit(string("X(start, end): (" + to_string(startX) + ", " + to_string(endX) + ")").c_str(), 3);
-        list.edit(string("Y(start, end): (" + to_string(startY) + ", " + to_string(endY) + ")").c_str(), 4);
+        list.edit(string(" text: " + input.getText()).c_str(), 0);
+        list.edit(string(" textinput?: " + (input.getTextState() ? string("true") : string("false"))).c_str(), 1);
         list.draw(win.getren());
+        
         //
         SDL_RenderDrawLineF(win.getren(), win.getw()/4, 0, win.getw()/4, win.geth());
         SDL_RenderDrawLineF(win.getren(), win.getw() * 0.75, 0, win.getw() * 0.75, win.geth());
@@ -237,7 +187,7 @@ int main(int argn, char** args)
         SDL_RenderCopyEx(win.getren(), renderTarget, NULL, NULL, angle, NULL, SDL_FLIP_NONE);
         win.pst();
         win.clr();
-        SDL_Delay(10);
+        SDL_Delay(16);
     }
     return 0;
 }

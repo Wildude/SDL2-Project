@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <conio.h>
 #include <map>
+#include <array>
 using namespace std;
 namespace nummap
 {
