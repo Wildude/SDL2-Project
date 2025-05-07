@@ -1076,7 +1076,6 @@ class TextList{
             boxes[size - 1]/*boxes.peek()->id*/.getBox().y + boxes[size - 1]/*boxes.peek()->id*/.getBox().h 
             : ypos
         );
-        cout << " ypos is: "<< ypos << endl;;
         TextBox tbox(txt, *font);
         tbox.setboxpos(xpos, yoffset);
         tbox.setcol1(col1->r, col1->g, col1->b, col1->a);

@@ -339,7 +339,6 @@ class Level
             cout << "Tile Size: " << m_tileSize << endl;
             cout << "Mapwidth: " << getMapWidth() << endl;
             cout << "Mapheight: " << getMapHeight() << endl;
-            return;
             cout << "Layers:\n";
             for (int i = 0; i < layers.size(); i++) {
                 layers[i]->display();

@@ -1,4 +1,4 @@
-//g++ -I../src/Include -L../src/Lib -o ../Executables/ Tilemaptest.exe Tilemaptest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net
+//g++ -I../src/Include -L../src/Lib -o ../Executables/Tilemaptest.exe Tilemaptest.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lSDL2_net -lz
 //
 /*
 * FINAL UPDATES
@@ -9,6 +9,8 @@
 * - Need to optimize the usage of render target (fixed)
 * - Tilemap drawing system integrated
 * - Need to fix tile rotating feature (able to rotate only the map, but movement is still local)
+* - Level details not displayed properly (Layers cause program crash and only display '64')
+* - Possible cause is map size (so above problem is almost fixed)
 * 
 */
 #include "../Headers/inclusions.hpp"
@@ -20,7 +22,7 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     vector<vector<vector<int>>> Layers;
     Level bit16;
-    bit16.parseLevel("../Files/XML/16bit world.tmx", win.getren());
+    bit16.parseLevel("../Files/XML/StageX.tmx", win.getren());
     // consider deleting doc by scoping out
     bit16.display();
     //return 1;
