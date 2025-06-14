@@ -1,0 +1,38 @@
+@startuml
+' Define main game class
+class Game {
+    - isRunning : bool
+    + initialize()
+    + run()
+    + shutdown()
+}
+
+' Define player class
+class Player {
+    - health : int
+    - position : Vector2
+    + move()
+    + attack()
+    + takeDamage(amount : int)
+}
+
+' Define enemy class
+class Enemy {
+    - health : int
+    - position : Vector2
+    + update()
+    + takeDamage(amount : int)
+}
+
+' Define input manager
+class InputManager {
+    + processInput()
+    + getKeyState(key : string) : bool
+}
+
+' Relationships
+Game --> Player : uses
+Game --> Enemy : controls
+Game --> InputManager : delegates input
+Player <|-- Enemy : shared behavior?
+@enduml
