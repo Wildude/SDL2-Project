@@ -1,0 +1,26 @@
+Script log created
+Creating new state
+New state created
+Libraries loaded
+Loading script: "../Files/scripts/script_template.lua"
+Script (" ../Files/scripts/script_template.lua") loaded
+Checking run status: Run status good
+Getting global variable: "player": success
+Getting global variable: "health": success
+Getting global variable: "alive": success
+Getting global function: "killPlayer": success
+Getting type of stack[-1]: function
+Getting type of stack[-1]: table
+Getting type of stack[-1]: string
+Getting type of stack[-1]: table
+Getting type of stack[-1]: number
+Getting type of stack[-1]: table
+Getting type of stack[-1]: boolean
+Getting type of stack[-1]: table
+Checking run status: Run status good
+Getting type of stack[-1]: table
+Popping stack: 1x: Success
+Popping stack: 1x: Success
+Popping stack: 1x: Stack already empty
+Closing lua state
+Script ended
