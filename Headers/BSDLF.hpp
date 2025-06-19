@@ -778,6 +778,11 @@ class FONT
     {
         *this = f;
     }
+    FONT(const FONT& f, int style)
+    {
+        *this = f;
+        setStyle(style);
+    }
     TTF_Font* getfont() const
     {
         TTF_Font* font = fontdata;
@@ -822,6 +827,20 @@ class FONT
         cout << " ptsize: " << ptsize << endl;
         cout << " path: " << path << endl;
     }
+    void setStyle(int style){
+        TTF_SetFontStyle(fontdata, style);
+    }
+    int getStyle(){
+        return TTF_GetFontStyle(fontdata);
+    }
+    /*
+    Constant	                Effect
+    TTF_STYLE_NORMAL	        Default
+    TTF_STYLE_BOLD	            Bold text
+    TTF_STYLE_ITALIC	        Slanted text
+    TTF_STYLE_UNDERLINE	        Underline
+    TTF_STYLE_STRIKETHROUGH	    Strike line
+    */
     ~FONT()
     {
         TTF_CloseFont(fontdata);
@@ -910,6 +929,10 @@ class TextBox{
         col2.b = b;
         col2.a = a;
     }
+    void setfont(const FONT& font_){
+        font = font_;
+        font.TEXT_size(text.c_str(), &box.w, &box.h);
+    }
     void settext(const char* text_)
     {
         text = text_;
@@ -969,6 +992,18 @@ class TextBox{
         return col1;
     }
     const SDL_Color& getCol2c() const{
+        return col2;
+    }
+    SDL_Rect& getBox(){
+        return box;
+    }
+    FONT& getFont(){
+        return font;
+    }
+    SDL_Color& getCol1(){
+        return col1;
+    }
+    SDL_Color& getCol2(){
         return col2;
     }
     SDL_Rect& getBox(){

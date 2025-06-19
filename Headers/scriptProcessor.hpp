@@ -36,6 +36,8 @@ class script
                 checkRunStatus();
             }
         }
+        // function checks the run status of scripts after load
+        // also runs lua functions with nargs = number of arguments and nresults = number of returns
         bool checkRunStatus(int nargs = 0, int nresults = 0, int errfunc = 0){
             fs << "Checking run status:";
             int runStatus = lua_pcall(L, nargs, nresults, errfunc);
@@ -47,6 +49,7 @@ class script
             fs << " Run status good\n";
             return true;
         }
+        // dumps the whole lua stack
         void dumpLuaStack() {
             fs << "Dumping lua stack:";
             int top = lua_gettop(L);
@@ -84,7 +87,7 @@ class script
             fs << " }\n";
             fs << "}\n";
         }
-
+        // gets lua global variables and returns their value if they are the same type as inputted
         const char* getglobal(const char* globalvar, const char* type = "string")
         {
             fs << "Getting global variable: \"" << globalvar << "\":";
@@ -179,6 +182,7 @@ class script
                 return NULL;
             }
         }
+        // gets global function and puts it into the lua stack (if the function exists)
         bool getglobalFunc(const char* funcname){
             fs << "Getting global function: \"" << funcname << "\":";
             lua_getglobal(L, funcname);
@@ -187,44 +191,54 @@ class script
                 fs << " success\n";
                 return true;
             }
-                    
             else
             {
                 fs << "\n[Lua exc]: \"" << funcname << "\" is not a function!\n";
                 return false;
             }
         }
+        // pushes a number into the lua stack
         void pushnum(int num){
             lua_pushnumber(L, num);
         }
+        // pushes as string into the lua stack
         void pushstr(const char* str){
             lua_pushstring(L, str);
         }
+        // pushes a boolean into the lua stack
         void pushbool(int tof){
             lua_pushboolean(L, tof);
         }
+        // creates a lua table and pushes it into the stack
         void newtab(){
             lua_newtable(L);
         }
+        // sets field for the table in the lua stack
         void setfield(const char* field, int index = -1){
             lua_setfield(L, index, field);
             // remember that when setting field the value at the top of stack is popped.
         }
+        // gets field from the table in the lua stack
         int getfield(const char* field, int index = -1){
             return lua_getfield(L, index, field);
         }
+        // gets the number of elements in the lua stack
         int gettop(){
             lua_gettop(L);
         }
+        // gets the element in ith index in the lua stack and returns it as string
         const char* tostr(int index = -1){
             return lua_tostring(L, index);
         }
+        // gets the element in ith index in the lua stack and returns it as number
         int tonum(int index = -1){
             return lua_tonumber(L, index);
         }
+        // gets the element in ith index in the lua stack and returns it as boolean
         bool tobool(int index = -1){
             return lua_toboolean(L, index);
         }
+        // pops 'nums' elements off the lua stack
         void pop(int nums = 1){
             fs << "Popping stack: "<< nums << "x:";
             if(gettop() < 1){
@@ -234,6 +248,7 @@ class script
             lua_pop(L, nums);
             fs << " Success\n";
         }
+        // gets the datatype of the element at 'index' position of the lua stack
         const char* gettype(int index = -1){
             if(!gettop()){
                 return "empty stack";

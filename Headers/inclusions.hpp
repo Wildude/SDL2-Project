@@ -8,6 +8,7 @@
 #include "vector2D.hpp"
 #include "BSDLF.hpp"
 #include "GUI.hpp"
+#include "command.hpp"
 #include "physics.hpp"
 #include "rigid_body.hpp"
 //#include "Weapons.hpp"
