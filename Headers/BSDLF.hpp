@@ -305,6 +305,10 @@ class WINDOW
         SDL_Color color = (col_p ? *col_p : col);
         return SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
     }
+    int set_rencol(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {
+        return SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    }
     SDL_Renderer* crtren(SDL_Window* window_ = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC)
     {
         renderer = SDL_CreateRenderer((window_ ? window_ : window), index, flag);
@@ -703,6 +707,34 @@ class TEXTURE
     int queryN(){
         return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
+    static int drawRect(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize = 1){
+        if(ptsize == 1){
+            SDL_RenderDrawRect(rend, &rect);
+        }
+        SDL_Rect lines[4] = {
+            {rect.x - ptsize/2, rect.y - ptsize/2, rect.w + ptsize, ptsize},
+            {rect.x - ptsize/2, rect.y - ptsize/2, ptsize, rect.h + ptsize},
+            {rect.x - ptsize/2, rect.y + rect.h - ptsize/2, rect.w + ptsize, ptsize},
+            {rect.x + rect.w - ptsize/2, rect.y - ptsize/2, ptsize, rect.h + ptsize}
+        };
+        for(int i = 0; i < 4; i++){
+            SDL_RenderFillRect(rend, &lines[i]);
+        }
+    }
+    static int drawRectP(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize = 1){
+        if(ptsize == 1){
+            SDL_RenderDrawRect(rend, &rect);
+        }
+        SDL_Rect lines[4] = {
+            {rect.x - ptsize/2, rect.y - ptsize/2, rect.w + ptsize, ptsize},
+            {rect.x - ptsize/2, rect.y + ptsize/2, ptsize, rect.h},
+            {rect.x + ptsize/2, rect.y + rect.h - ptsize/2, rect.w, ptsize},
+            {rect.x + rect.w - ptsize/2, rect.y + ptsize/2, ptsize, rect.h}
+        };
+        for(int i = 0; i < 4; i++){
+            SDL_RenderFillRect(rend, &lines[i]);
+        }
+    }
     // don't use
     int drawPX(SDL_Renderer* rend, SDL_FRect* rect = NULL, float scale = 0.5){
         SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - (bool)(dst.x/(rect->w * scale)) * (rect->w * scale) , dst.y - (int)(dst.y/(rect->h * scale)) * (rect->h * scale), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
@@ -748,6 +780,9 @@ class TEXTURE
         pst(rend);
         if(clrer)if(clr((rend)) < 0) return -3;
         return 1;
+    }
+    int drawRect(SDL_Rect rect){
+
     }
 };
 class FONT
@@ -857,6 +892,294 @@ ostream& operator<<(ostream& os, const FONT& font){
     os << '<' << font.getpath() << ">(x" << font.getptsize() << ')';
     return os;
 }
+class Box {
+    SDL_Rect contentRect;      // Position and size of the actual content (text/image/button)
+    SDL_Rect padding; // Space around content (inside the border)
+    SDL_Rect border; // Border thickness (around the padding)
+    SDL_Rect margin; // margin
+    // ---------------------------------------------
+    // x - left, y - top, w - right, h - bottom
+    // ---------------------------------------------
+    // Optional: Colors or styles
+    SDL_Color borderColor; // Color of the border
+    SDL_Color backgroundColor; // Background color of the content area
+    void updatebox(){
+        switch (anchor){
+            case TOP_LEFT:
+            padding.x = 0;
+            padding.y = 0;
+            break;
+            case CENTER:
+            padding.x = 
+            padding.y =
+            padding.w =
+            padding.h = 
+            max(max(padding.x, padding.y),max(padding.w, padding.h));
+            break;
+            case BOTTOM_RIGHT:
+            padding.w = 0;
+            padding.h = 0;
+            break;
+            case TOP:
+            padding.y = 0;
+            break;
+            case BOTTOM:
+            padding.h = 0;
+            break;
+            case LEFT:
+            padding.x = 0;
+            break;
+            case RIGHT:
+            padding.w = 0;
+            break;
+            case TOP_RIGHT:
+            padding.w = 0;
+            padding.y = 0;
+            break;
+            BOTTOM_LEFT:
+            padding.x = 0;
+            padding.h = 0;
+            break;
+            default:
+            break;
+        }   
+    }
+    public:
+    // Anchor/origin (e.g., top-left, center)
+    enum Anchor { TOP_LEFT, CENTER, BOTTOM_RIGHT, TOP, BOTTOM, LEFT, RIGHT, TOP_RIGHT, BOTTOM_LEFT, CUSTOM};
+    Anchor anchor = CENTER;
+    Box() {
+        padding = {0, 0, 0, 0};
+        border = {0, 0, 0, 0};
+        margin = {0, 0, 0, 0};
+    }
+    const Box& operator=(const Box& box){
+        if(this != &box){
+            contentRect = box.contentRect;
+            padding = box.padding;
+            border = box.border;
+            margin = box.margin;
+            borderColor = box.borderColor;
+            backgroundColor = box.backgroundColor;
+            anchor = box.anchor;
+        }
+        return *this;
+    }
+    Box(const Box& box){
+        *this = box;
+    }
+    Box(int x, int y, int w, int h){
+        contentRect = {x, y, w, h};
+    }
+    float padavgx(){
+        return (padding.x + padding.w)/2.0f;
+    }
+    float padavgy(){
+        return (padding.y + padding.h)/2.0f;
+    }
+    float padavg(){
+        return (padavgx() + padavgy())/2;
+    }
+    float borderavgx(){
+        return (border.x + border.w)/2.0f;
+    }
+    float borderavgy(){
+        return (border.y + border.h)/2.0f;
+    }
+    float borderavg(){
+        return (borderavgx() + borderavgy())/2;
+    }
+    float marginavgx(){
+        return (margin.x + margin.w)/2.0f;
+    }
+    float marginavgy(){
+        return (margin.y + margin.h)/2.0f;
+    }
+    float marginavg(){
+        return (marginavgx() + marginavgy())/2;
+    }
+    void setanchor(Anchor Nanchor = CENTER){
+        anchor = Nanchor;
+        updatebox();
+    }
+    const SDL_Rect& getcontent(){
+        return contentRect;
+    }
+    void setpos(SDL_Point point){
+        setpos(point.x, point.y);
+    }
+    void setpos(int x, int y){
+        contentRect.x = x;
+        contentRect.y = y;
+    }
+    void setSize(int w, int h){
+        contentRect.w = w;
+        contentRect.h = h;
+    }
+    void setpadding(int x = -1, int y = -1, int w = -1, int h = -1){
+        if(x == -1 && y == -1 && w == -1 && h == -1){
+            padding.x =
+            padding.y = 
+            padding.w = 
+            padding.h = 
+            max(max(padding.x, padding.y), max(padding.w, padding.h));
+            cout << " previous pad\n";
+            return;
+        }
+        else if(y == -1 && w == -1 && h == -1){
+            padding.x = 
+            padding.y =
+            padding.w =
+            padding.h = x;
+            cout << " center pad\n";
+            return;
+        }
+        else if(w == -1 && h == -1){
+            padding.x = padding.w = x;
+            padding.y = padding.h = y;
+            cout << " 2x center pad\n";
+            return;
+        }
+        else if(h == -1){
+            padding.x = x;
+            padding.y = padding.h = y;
+            padding.w = w;
+            cout << " 3x pad\n";
+            return;
+        }
+        else{
+            padding.x = x;
+            padding.y = y;
+            padding.w = w;
+            padding.h = h;
+            cout << " 4x pad\n";
+            return;
+        }
+    }
+    void setborder(int x = -1, int y = -1, int w = -1, int h = -1){
+        if(x == -1 && y == -1 && w == -1 && h == -1){
+            border.x =
+            border.y =
+            border.w =
+            border.h =
+            max(max(border.x, border.y), max(border.w, border.h));
+            return;
+        }
+        else if(y == -1 && w == -1 && h == -1){
+            border.x =
+            border.y =
+            border.w =
+            border.h = x;
+            return;
+        }
+        else if(w == -1 && h == -1){
+            border.x = border.w = x;
+            border.y = border.h = y;
+            return;
+        }
+        else if(h == -1){
+            border.x = x;
+            border.y = border.h = y;
+            border.w = w;
+            return;
+        }
+        else{
+            border.x = x;
+            border.y = y;
+            border.w = w;
+            border.h = h;
+            return;
+        }
+    }
+    void setmargin(int x = -1, int y = -1, int w = -1, int h = -1){
+        if(x == -1 && y == -1 && w == -1 && h == -1){
+            margin.x =
+            margin.y =
+            margin.w =
+            margin.h =
+            max(max(margin.x, margin.y), max(margin.w, margin.h));
+            return;
+        }
+        else if(y == -1 && w == -1 && h == -1){
+            margin.x =
+            margin.y =
+            margin.w =
+            margin.h = x;
+            return;
+        }
+        else if(w == -1 && h == -1){
+            margin.x = margin.w = x;
+            margin.y = margin.h = y;
+            return;
+        }
+        else if(h == -1){
+            margin.x = x;
+            margin.y = margin.h = y;
+            margin.w = w;
+            return;
+        }
+        else{
+            margin.x = x;
+            margin.y = y;
+            margin.w = w;
+            margin.h = h;
+            return;
+        }
+    }
+    const SDL_Rect& getpadding(){
+        return padding;
+    }
+    const SDL_Rect& getmargin(){
+        return margin;
+    }
+    const SDL_Rect& getborder(){
+        return border;
+    }
+    // Final computed size including all layers
+    SDL_Rect fullRect() const {
+        SDL_Rect rect;
+        rect.x = contentRect.x
+                 - padding.x - border.x - margin.x;
+        rect.y = contentRect.y
+                 - padding.y - border.y - margin.y;
+        rect.w = contentRect.w
+                 + padding.x + padding.w
+                 + border.x + border.w
+                 + margin.x + margin.w;
+        rect.h = contentRect.h
+                 + padding.y + padding.h
+                 + border.y + border.h
+                 + margin.y + margin.h;
+        return rect;
+    }
+
+    SDL_Rect paddingBox() const {
+        SDL_Rect rect = contentRect;
+        rect.x -= padding.x;
+        rect.y -= padding.y;
+        rect.w += padding.x + padding.w;
+        rect.h += padding.y + padding.h;
+        return rect;
+    }
+
+    SDL_Rect borderBox() const {
+        SDL_Rect pad = paddingBox();
+        pad.x -= border.x;
+        pad.y -= border.y;
+        pad.w += border.x + border.w;
+        pad.h += border.y + border.h;
+        return pad;
+    }
+
+    SDL_Rect marginBox() const {
+        SDL_Rect border = borderBox();
+        border.x -= margin.x;
+        border.y -= margin.y;
+        border.w += margin.x + margin.w;
+        border.h += margin.y + margin.h;
+        return border;
+    }
+};
 class TextBox{
     private:
     SDL_Rect box; // 16 bytes
@@ -908,7 +1231,7 @@ class TextBox{
         box.x = 0;
         box.y = 0;
     }
-    TextBox(const char* path = DEF_FONT, int ptsize = 12){
+    TextBox(int ptsize = 12, const char* path = DEF_FONT){
         font = FONT(path, ptsize);
     }
     void setcol1(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
@@ -973,7 +1296,7 @@ class TextBox{
             font_file << " Error drawing to surface: " << SDL_GetError() << endl;
             return;
         }
-        if(board)SDL_DestroyTexture(board);
+        if(!board)SDL_DestroyTexture(board);
         board = SDL_CreateTextureFromSurface(rend, surf);
         SDL_RenderCopy(rend, board, NULL, &box);
         SDL_DestroyTexture(board);
@@ -1006,17 +1329,18 @@ class TextBox{
     SDL_Color& getCol2(){
         return col2;
     }
-    SDL_Rect& getBox(){
-        return box;
+    // pointers
+    SDL_Rect* getBoxP(){
+        return &box;
     }
-    FONT& getFont(){
-        return font;
+    FONT* getFontP(){
+        return &font;
     }
-    SDL_Color& getCol1(){
-        return col1;
+    SDL_Color* getCol1P(){
+        return &col1;
     }
-    SDL_Color& getCol2(){
-        return col2;
+    SDL_Color* getCol2P(){
+        return &col2;
     }
     const char* getText() const{
         return text.c_str();
