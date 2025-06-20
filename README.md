@@ -69,7 +69,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 </details>
 <!-- Headers Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers">headers/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers">headers/</a></strong></summary>
 &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/Basic.hpp">Basic.hpp</a> <br>
 &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/BSDLF.hpp">BSDLF.hpp</a> <br>
 &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
