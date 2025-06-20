@@ -28,89 +28,89 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ## 📁 Project Structure
 <!-- Audio Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Audio">Audio/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Audio">Audio/</a></strong></summary>
   &nbsp &nbsp &nbsp &nbsp <i>Empty (for now)</i> <br>
 </details>
 <!-- Executables Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Executables">Executables/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Executables/UI_test1.exe">UI_test1.exe</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Executables/UI_test2.exe">UI_test2.exe</a> <br>
-  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Executables/UI_test3.exe">UI_test3.exe</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables">Executables/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test1.exe">UI_test1.exe</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test2.exe">UI_test2.exe</a> <br>
+  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test3.exe">UI_test3.exe</a> <br>
 </details>
 <!-- Fonts Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Fonts">Fonts/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Fonts/ROCK.ttf">ROCK.ttf</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Fonts/ROCKB.ttf">ROCKB.ttf</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts">Fonts/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCK.ttf">ROCK.ttf</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCKB.ttf">ROCKB.ttf</a> <br>
 </details>
 <!-- Icons Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Icons">Icons/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Icons/Addis_Ababa_University_logo.ico">AAU.ico</a>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Icons">Icons/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Icons/Addis_Ababa_University_logo.ico">AAU.ico</a>
 </details>
 <!-- Images Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images">Images/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images">Images/</a></strong></summary>
 &nbsp &nbsp &nbsp &nbsp - 
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Samples">Samples/</a> <br>  
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Samples/AAU.png">AAU.png</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Samples/CS.jpg">CS.jpg</a> <br>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Samples">Samples/</a> <br>  
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Samples/AAU.png">AAU.png</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Samples/CS.jpg">CS.jpg</a> <br>
 &nbsp &nbsp &nbsp &nbsp - 
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Stages">Stages/</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Tilesets">Tilesets/</a>
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Tilesets/tileset_1bit.png">tileset_1bit.png</a> <br>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Stages">Stages/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Tilesets">Tilesets/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Tilesets/tileset_1bit.png">tileset_1bit.png</a> <br>
 &nbsp &nbsp &nbsp &nbsp - 
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Weapons">Weapons/</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Weapons/AK 47">AK47/</a>
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Weapons/AK 47/AK_47.png">AK_47.png</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Weapons/fire">fire/</a>
-  <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Images/Weapons/fire/fire.png">fire.png</a> <br>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons">Weapons/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/AK 47">AK47/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/AK 47/AK_47.png">AK_47.png</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/fire">fire/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/fire/fire.png">fire.png</a> <br>
 </details>
 <!-- Headers Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers">headers/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/Basic.hpp">Basic.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/BSDLF.hpp">BSDLF.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/vector2D.hpp">vector2D.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/command.hpp">command.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/GUI.hpp">GUI.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/physics.hpp">physics.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/rigid_body.hpp">rigid_body.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/Tilemap.hpp">Tilemap.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers">headers/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/Basic.hpp">Basic.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/BSDLF.hpp">BSDLF.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/vector2D.hpp">vector2D.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/command.hpp">command.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/GUI.hpp">GUI.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/physics.hpp">physics.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/rigid_body.hpp">rigid_body.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/Tilemap.hpp">Tilemap.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
 </details>
 <!-- Sample_codes Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/sample_codes">sample_codes/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/sample_codes">sample_codes/</a></strong></summary>
 &nbsp &nbsp &nbsp &nbsp - <i>Non-functional (and old) sample source codes</i>
 </details>
 <!-- Source_codes Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/source_codes">source_codes/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/source_codes/UI_test.cpp">UI_test.cpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/source_codes/UI_test2.cpp">UI_test2.cpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/source_codes/UI_test3.cpp">UI_test3.cpp</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes">source_codes/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test.cpp">UI_test.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test2.cpp">UI_test2.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test3.cpp">UI_test3.cpp</a> <br>
 </details>
 <!-- SRC Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/src">src/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/src">src/</a></strong></summary>
 &nbsp &nbsp &nbsp &nbsp - <i>Where SDL, FFMPEG, LUA and ZLIB reisde (open at your own risk)</i> <br>
 </details>
 <!-- Design Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/design">design/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/design/sample">sample/</a> <br>
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/design/sample/game_class.puml">game_class.puml</a> <br>
-&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/design/sample/sample1.uml">sample1.uml</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/design">design/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/design/sample">sample/</a> <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/design/sample/game_class.puml">game_class.puml</a> <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/design/sample/sample1.uml">sample1.uml</a> <br>
 </details>
 <!-- Files Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/blob/Master/Files">Files/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Files/Data">Data/</a> <i>contains logging info (for monitoring)</i> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Files/scripts">scripts/</a> <i>contains lua scripts (for scripting)</i> <br>
-  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/Master/Files/XML">XML/</a> <i>contains XML documents(for tilemap data)</i> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Files">Files/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Files/Data">Data/</a> <i>contains logging info (for monitoring)</i> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Files/scripts">scripts/</a> <i>contains lua scripts (for scripting)</i> <br>
+  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Files/XML">XML/</a> <i>contains XML documents(for tilemap data)</i> <br>
 </details>
 
 ## 😲❓ Recent changes
