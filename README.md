@@ -1,6 +1,109 @@
-# SDL2-Project
-## Recent changes
+# SDL2-Project 🎮
+
+A modular C++ framework built on SDL2 for experimenting with game engine features including GUI systems, physics, vector math, Lua scripting, and multimedia handling. This project serves as a flexible foundation for developing 2D games or interactive applications.
+
+---
+## 🧰 Tools and Languages used
+[`SDL`](/Icons/SDL.png)
+[`OpenGL`](/Icons/OpenGL.png)
+[`zlib`](/Icons/zlib.png)
+[`ffmpeg`](/Icons/ffmpeg.png)
+[`lua`](/Icons/Lua.png)
+
+---
+## 📁 Project Structure
+<!-- Audio Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Audio">Audio/</a></strong></summary>
+  &nbsp &nbsp &nbsp &nbsp <i>Empty (for now)</i> <br>
+</details>
+<!-- Executables Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Executables">Executables/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Executables/UI_test1.exe">UI_test1.exe</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Executables/UI_test2.exe">UI_test2.exe</a> <br>
+  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Executables/UI_test3.exe">UI_test3.exe</a> <br>
+</details>
+<!-- Fonts Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Fonts">Fonts/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Fonts/ROCK.ttf">ROCK.ttf</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Fonts/ROCKB.ttf">ROCKB.ttf</a> <br>
+</details>
+<!-- Icons Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Icons">Icons/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Icons/Addis_Ababa_University_logo.ico">AAU.ico</a>
+</details>
+<!-- Images Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Images">Images/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - 
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Samples">Samples/</a> <br>  
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Samples/AAU.png">AAU.png</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Samples/CS.jpg">CS.jpg</a> <br>
+&nbsp &nbsp &nbsp &nbsp - 
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Stages">Stages/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Tilesets">Tilesets/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Tilesets/tileset_1bit.png">tileset_1bit.png</a> <br>
+&nbsp &nbsp &nbsp &nbsp - 
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Weapons">Weapons/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Weapons/AK 47">AK47/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Weapons/AK 47/AK_47.png">AK_47.png</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Weapons/fire">fire/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/blob/main/Images/Weapons/fire/fire.png">fire.png</a> <br>
+</details>
+<!-- Headers Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/headers">headers/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/Basic.hpp">Basic.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/BSDLF.hpp">BSDLF.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/vector2D.hpp">vector2D.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/command.hpp">command.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/GUI.hpp">GUI.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/physics.hpp">physics.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/rigid_body.hpp">rigid_body.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/Tilemap.hpp">Tilemap.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
+</details>
+<!-- Sample_codes Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/sample_codes">sample_codes/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <i>Non-functional (and old) sample source codes</i>
+</details>
+<!-- Source_codes Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/source_codes">source_codes/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/source_codes/UI_test.cpp">UI_test.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/source_codes/UI_test2.cpp">UI_test2.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/source_codes/UI_test3.cpp">UI_test3.cpp</a> <br>
+</details>
+<!-- SRC Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/src">src/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <i>Where SDL, FFMPEG, LUA and ZLIB reisde (open at your own risk)</i> <br>
+</details>
+<!-- Design Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/design">design/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/design/sample">sample/</a> <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/design/sample/game_class.puml">game_class.puml</a> <br>
+&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/design/sample/sample1.uml">sample1.uml</a> <br>
+</details>
+<!-- Files Files -->
+<details>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/main/Files">Files/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/Files/Data">Data/</a> <i>contains logging info (for monitoring)</i> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/Files/scripts">scripts/</a> <i>contains lua scripts (for scripting)</i> <br>
+  &nbsp &nbsp &nbsp &nbsp - <a href=https://github.com/Wildude/SDL2-Project/blob/main/Files/XML">XML/</a> <i>contains XML documents(for tilemap data)</i> <br>
+</details>
+
+## 😲❓ Recent changes
 - Added a docs and design folder for clean system design.
+- Added UI system
+- Added command system
+- Added scripting system
 ![TilemapTest15](https://github.com/user-attachments/assets/53e31a42-5e95-47dd-a227-a7ec776e3935)
 ![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
 ## New concepts
@@ -11,13 +114,5 @@
 - Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
 - Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Headers/rigid_body.hpp">rigid_body.hpp</a>
-### Running/Walking animation
-![ProjectionGPT](https://github.com/user-attachments/assets/ee35a0d5-60f9-4c76-beab-d5b42c19cc44)
-![ProjectionMine](https://github.com/user-attachments/assets/53918aca-7d63-454a-a6cf-933e6f3294f7)
-- a 3rd update to the walking/running animation based on a concept of math not expected to be used in the game.
-- 3D illusion using 2D projection
-- Using help of GPT, a projection algorithm was obtained and implemented.
-- The green trapezium controlled by a slider is from GPTs code.
-- The other one is from the project's code.
 ## How to use?
 open up executables folder and run the programs.
