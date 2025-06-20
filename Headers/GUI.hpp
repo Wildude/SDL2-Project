@@ -1,79 +1,13 @@
-// GUI of game
-/* Types of UI elements
-🔹 1. Text-Based Components
-Component	Purpose
-Label	Display static text
-Textbox / InputField	Accept typed input (text, numbers, etc.)
-Textarea	Multi-line input field
-Password Field	Like textbox, but hides characters
-
-🔹 2. Buttons & Interaction
-Component	Purpose
-Button	Triggers an action on click
-Toggle Button	On/off switch (like a checkbox visually)
-Radio Button	One of several mutually exclusive choices
-Checkbox	Independent boolean toggle
-Hyperlink	Clickable text that acts like a link
-
-🔹 3. Selection & Lists
-Component	Purpose
-Dropdown / ComboBox	Shows a list of options when clicked
-ListBox	Static list of selectable items
-Multi-select List	Allows selecting multiple items
-Autocomplete Box	Shows suggestions as user types
-
-🔹 4. Containers & Layouts
-Component	Purpose
-Panel	Groups other widgets
-Scroll View	Enables scrolling within a region
-Tabs	Switch between views
-Grid/Column Layouts	Organize widgets in structured layouts
-
-🔹 5. Sliders & Selectors
-Component	Purpose
-Slider	Drag a knob to choose a value
-SpinBox	Input number with +/− buttons
-Color Picker	Choose color interactively
-Date Picker	Pick a date from a calendar
-
-🔹 6. Feedback & Display
-Component	Purpose
-Progress Bar	Visual progress indicator
-Loading Spinner	Show busy/loading state
-Tooltip	Small popup text on hover
-Notification / Toast	Temporary popup message
-
-🔹 7. Canvas & Graphics
-Component	Purpose
-Canvas / Viewport	Custom-drawn area for rendering
-Image Viewer	Show and scale images
-Mini-map / Nav	Like a 2D preview or interactive overlay
-
-🔹 8. Windows and Dialogs
-Component	Purpose
-Window	A movable/closable container
-Modal Dialog	Blocks interaction until resolved
-Message Box	Shows alert/info messages
-File Picker	Choose files or directories
-
-🔹 9. Advanced (for scriptable apps/editors)
-Component	Purpose
-Property Inspector	Shows editable fields for selected object
-Hierarchy Panel	Shows parent-child tree (like scenes)
-Event Log Console	Text area for logging/debug messages
-Docking System	Repositionable tool windows
-*/
 class UIelement
 {
 public:
-    UIelement(): commands(NULL){}
+    UIelement(){}
     UIelement(const UIelement& ui){
         *this = ui;
     }
     UIelement& operator=(const UIelement& ui) {
         // Assignment operator implementation
         if (this != &ui) {
-            commands = ui.commands;
             // Copy the data members from ui to this object
         }
         return *this;
@@ -82,6 +16,9 @@ public:
         // Destructor implementation
         // Clean up any resources if needed
     }
+    virtual bool onFocus(const SDL_Point&, command<UIelement>&) = 0;
+    virtual bool onClick(const SDL_Point&, bool, command<UIelement>&) = 0;
+    virtual bool onHover(const SDL_Point&, command<UIelement>&) = 0;
     virtual void setPos(int, int) = 0;
     virtual void setCol1(const SDL_Color&) = 0;
     virtual void setCol2(const SDL_Color&) = 0;
@@ -91,26 +28,25 @@ public:
     virtual SDL_Color* getCol1() = 0;
     virtual SDL_Color* getCol2() = 0;
     virtual void render(SDL_Renderer*, SDL_Texture*&, int) = 0; // Pure virtual function for rendering the UI element
-    command<UIelement>** commands;
 };
 typedef command<UIelement> UICommand;
-typedef multiCommand<UICommand> UIMulticommand;
+typedef multiCommand<UIelement> UIMulticommand;
 struct UIColor : public UICommand{
     ChangeColorCommand<int> cmd;
     UIColor(): UICommand() , cmd(){}
-    UIColor(UIelement& uref) : UICommand(uref), cmd(*ref->getCol1(), *ref->getCol2()){}
+    UIColor(UIelement& uref) : UICommand(uref), cmd(*ref->getCol2(), *ref->getCol1()){}
     UIColor(const SDL_Color& nbg, const SDL_Color& nfg): UICommand(), cmd(nbg, nfg){}
     void setNew(const SDL_Color& bnew, const SDL_Color& fnew){
-        cout << " setting UI color news\n";
+        //cout << " setting UI color news\n";
         cmd.setNew(bnew, fnew);
     }
     void setref(UIelement& tref) override {
-        cout << " setting UI color references\n";
+        //cout << " setting UI color references\n";
         ref = &tref;
         cmd.setRef(*ref->getCol1(), *ref->getCol2());
     }
     void execute(){
-        cout << " executing UI color\n";
+        //cout << " executing UI color\n";
         cmd.execute();
     }
     ~UIColor(){}
@@ -121,41 +57,22 @@ struct UIFont : public UICommand{
     UIFont(UIelement& uref) : UICommand(uref), cmd(*ref->getFont()){}
     UIFont(const FONT& font): UICommand(), cmd(font){}
     void setNew(const FONT& font){
-        cout << " setting UI Font news\n";
+        //cout << " setting UI Font news\n";
         cmd.newFont = font;
     }
     void setref(UIelement& tref){
-        cout << " setting UI Font references\n";
+        //cout << " setting UI Font references\n";
         ref = &tref;
         cmd.setRef(*ref->getFont());
     }
     void execute(){
-        cout << " executing UI font\n";
+        //cout << " executing UI font\n";
         cmd.execute();
     }
 };
-
-/*
-🔹 1. Text-Based Components
-Component	Purpose
-Label	Display static text
-Textbox / InputField	Accept typed input (text, numbers, etc.)
-Textarea	Multi-line input field
-Password Field	Like textbox, but hides characters
-*/
-FONT GUIFONT;
-multiCommand<UIelement> GUIMultiCommand;
 class Label : public UIelement {
     public:
-    SDL_Point* mousepos;
-    bool click;
-    Label(): mousepos(NULL), click(false){
-        commands = new UICommand*[4];
-        commands[0] = NULL;
-        commands[1] = NULL;
-        commands[2] = NULL;
-        commands[3] = NULL;
-    }
+    Label(): labelText(){}
     Label(const char* str): Label(){
         labelText.settext(str);
     }
@@ -167,19 +84,13 @@ class Label : public UIelement {
     }
     Label(const string& text, int x, int y, int w, int h, const FONT& font, SDL_Color* col1 = NULL, SDL_Color* col2 = NULL) 
         : labelText(text, x, y, w, h, font, col1, col2){
-        mousepos = NULL;
-        click = false;
-        commands = new command<UIelement>*[4];
-        commands[0] = NULL;
-        commands[1] = NULL;
-        commands[2] = NULL;
-        commands[3] = NULL;
         // Initialize the label text with the provided parameters
     }
     void setPos(int x, int y){
         labelText.setboxpos(x, y);
     }
     void setFont(const FONT& font){
+        // cout <<" setting label font\n";
         labelText.setfont(font);
     }
     void setCol1(const SDL_Color& col){
@@ -188,24 +99,13 @@ class Label : public UIelement {
     void setCol2(const SDL_Color& col){
         labelText.setcol2(col.r, col.g, col.b, col.a);
     }
+    void settext(const char* str){
+        labelText.settext(str);
+    }
+    void settext(const string& str){
+        labelText.settext(str);
+    }
     void render(SDL_Renderer* renderer, SDL_Texture*& board, int drawtype = 2) override {
-        goto just_draw;
-        if(!commands[0]){
-            cout << " empty command 0\n";
-            commands[0] = new UIColor(*getCol1(), *getCol2());
-        }
-        cout << " quit commandeer 0\n";
-        if(onHover(*commands[0])){
-            if(!commands[1]){
-                cout << " empty command 1\n";
-                GUIFONT = *getFont();
-                GUIFONT.setStyle(TTF_STYLE_BOLD);
-                commands[1] = new UIFont(GUIFONT);
-            }
-            onClick(*commands[1]);
-        }
-        just_draw:
-        cout << " drawing\n";
         labelText.draw(renderer, board, drawtype);
         // Render the label text using the provided renderer
     }
@@ -214,43 +114,38 @@ class Label : public UIelement {
         const SDL_Rect& box = labelText.getBoxc();
         return SDL_PointInRect(&point, &box);
     }
-    bool isHovered(){
-        return isHovered(*mousepos);
-    }
     bool isCurrent(){
         return false;
     }
-    bool isFocus(){
-        return isHovered() || isCurrent();
+    bool isFocus(const SDL_Point& point){
+        return isHovered(point) || isCurrent();
     }
-    bool isClicked(){
+    bool isClicked(const SDL_Point& point, bool click){
         // Check if the label is clicked based on the mouse position
-        return isHovered() && click;
+        return isFocus(point) && click;
     }
     void revert(UICommand& cmd){
         if(cmd.getref() != this)cmd.setref(*this);
         cmd.execute();
     }
-    int onHover(UICommand& cmd){
-        if(isHovered()){
-            cout << " is hovered\n";
+    bool onHover(const SDL_Point& point, UICommand& cmd){
+        if(isHovered(point)){
             if(cmd.getref() != this)cmd.setref(*this);
             cmd.execute();
             return true;
         }
-        else{
-            cout << " not hovered\n";
-            return false;
-        }
+        return false;
     }
-    void onClick(UICommand& cmd){
-        if(isClicked()){
+    bool onClick(const SDL_Point& point, bool click, UICommand& cmd){
+        if(isClicked(point, click)){
             if(cmd.getref() != this)cmd.setref(*this);
             cmd.execute();
+            return true;
         }
+        return false;
     }
-    void onFocus(UICommand& cmd){
-        if(isFocus()){
+    bool onFocus(const SDL_Point& point, UICommand& cmd){
+        if(isFocus(point)){
             if(cmd.getref() != this)cmd.setref(*this);
             cmd.execute();
         }
@@ -270,16 +165,16 @@ class Label : public UIelement {
     private:
     TextBox labelText; // Text to display
 };
-class InputText : public UIelement {
-};
-class Textarea : public UIelement{
-};
-class PasswordField : public UIelement{
-};
 class UIContainer : public UIelement{
     vector<UIelement*> UIlist;
     public:
     UIContainer(){}
+    int getsize(){
+        return UIlist.size();
+    }
+    vector<UIelement*>& getList(){
+        return UIlist;
+    }
     const UIContainer& operator=(const vector<UIelement*>& UIC){
         if(&this->UIlist != &UIC){
             UIlist = UIC;
@@ -324,15 +219,6 @@ class UIContainer : public UIelement{
         applyFont();
         applyCol1();
         applyCol2();
-        applycommands();
-    }
-    void applycommands(UICommand** cmds = NULL){
-        int size = UIlist.size();
-        if(!size)return;
-        if(cmds)UIlist[0]->commands = cmds;
-        for(int i = 1; i < size - 1; i++){
-            UIlist[i]->commands = UIlist[0]->commands;
-        }
     }
     void applyFont(){
         int size = UIlist.size();
@@ -356,39 +242,47 @@ class UIContainer : public UIelement{
         }
     }
     void setFont(const FONT& font){
-        int size = UIlist.size();
-        if(!size)return;
-        for(int i = 0; i < size - 1; i++){
-            UIlist[i]->setFont(font);
+        if(!UIlist.size())return;
+        // cout << " setting all fonts\n";
+        vector<UIelement*>& List = UIlist;
+        for(UIelement* ui : List){
+            ui->setFont(font);
         }
     }
     void setCol1(const SDL_Color& col){
-        int size = UIlist.size();
-        if(!size)return;
-        for(int i = 0; i < size - 1; i++){
-            UIlist[i]->setCol1(col);
+        if(!UIlist.size())return;
+        // cout << " setting all fcolors\n";
+        vector<UIelement*>& List = UIlist;
+        for(UIelement* ui : List){
+            ui->setCol1(col);
         }
     }
     void setCol2(const SDL_Color& col){
-        int size = UIlist.size();
-        if(!size)return;
-        for(int i = 0; i < size - 1; i++){
-            UIlist[i]->setCol2(col);
+        if(!UIlist.size())return;
+        // cout << " setting all fcolors\n";
+        vector<UIelement*>& List = UIlist;
+        for(UIelement* ui : List){
+            ui->setCol2(col);
         }
     }
     void setPos(int x, int y){
         int size = UIlist.size();
         if(!size)return;
-        UIlist[0]->setPos(x, y);
-        for(int i = 1; i < size - 1; i++){
-            UIlist[i]->setPos(UIlist[0]->getBox()->x, UIlist[i - 1]->getBox()->y + UIlist[i - 1]->getBox()->h);
+        // cout << " setting all positions\n";
+        vector<UIelement*>& List = UIlist;
+        // cout << " p0\n";
+        List[0]->setPos(x, y);
+        for(int i = 1; i < size; i++){
+            List[i]->setPos(x, List[i - 1]->getBox()->h + List[i - 1]->getBox()->y);
         }
     }
-    void setCommands(UICommand** cmds){
-        int size = UIlist.size();
-        if(!size)return;
-        for(int i = 0; i < 2; i++)
-        UIlist[0]->commands[i] = cmds[i];
-        applycommands();
+    bool onFocus(const SDL_Point& point, UICommand& command){
+        return false;
+    }
+    bool onClick(const SDL_Point& point, bool click, UICommand& command){
+        return false;
+    }
+    bool onHover(const SDL_Point& point, UICommand& command){
+        return false;
     }
 };

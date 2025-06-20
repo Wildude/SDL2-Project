@@ -88,6 +88,9 @@ class script
             fs << "}\n";
         }
         // gets lua global variables and returns their value if they are the same type as inputted
+        int getglobalA(const char* globalvar){
+            return lua_getglobal(L, globalvar);
+        }
         const char* getglobal(const char* globalvar, const char* type = "string")
         {
             fs << "Getting global variable: \"" << globalvar << "\":";
@@ -217,6 +220,10 @@ class script
         void setfield(const char* field, int index = -1){
             lua_setfield(L, index, field);
             // remember that when setting field the value at the top of stack is popped.
+        }
+        // gets an array element at index -> index and returns the type of the element
+        int getEi(int index, int stacki = -1){
+            lua_rawgeti(L, stacki, index);
         }
         // gets field from the table in the lua stack
         int getfield(const char* field, int index = -1){

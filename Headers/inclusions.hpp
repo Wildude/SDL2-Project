@@ -15,3 +15,4 @@
 #include "Tilemap.hpp"
 #include "stage.hpp"
 #include "scriptProcessor.hpp"
+#include "States.hpp"

@@ -3,22 +3,30 @@ int main(int argn, char** args){
     WINDOW win("GUI Test");
     win.crtB();
     win.pstcol(255, 255, 255, 255);
+    cout << " creating play:\n";
     Label play("play");
     play.setPos(100, 100);
     SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 255, 255, 255};
-    FONT newFont("../Fonts/ROCKBI.ttf", 70);
-    FONT revFont = newFont;
-    newFont.setStyle(TTF_STYLE_BOLD);
-    play.setFont(newFont);
+    cout << " Creating new Font:\n";
+    FONT newFont("../Fonts/ROCKB.ttf", 70);
+    cout << " Creating rev Font:\n";
+    FONT revFont("../Fonts/nyala.ttf", 70);
+    cout << " setting play font:\n";
+    play.setFont(revFont);
     play.setCol1(rfg);
     play.setCol2(rbg);
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {0, 0, 255, 255};
+    //
     UIColor changeColor(nbg, nfg);
     UIFont changeFont(newFont);
     UIColor revertCol(rfg, rbg);
     UIFont revertFont(revFont);
     revertCol.setref(play);
     revertFont.setref(play);
+    UIMulticommand reverter;
+    reverter.push(revertCol);
+    reverter.push(revertFont);
+    reverter.setref(play);
     /*
     vector<Label> menu;
     menu.push_back(Label("Play"));
@@ -32,28 +40,26 @@ int main(int argn, char** args){
     */
     InputManager input;
     SDL_Texture* texture = NULL;
+    bool oldclick = false;
     while(!input.shouldQuit()){
-        cout << " running\n";
         input.update();
         SDL_Point point;
         bool click = false;
+        bool revert = true;
         SDL_GetMouseState(&point.x, &point.y);
         if(input.isMouseDown(SDL_BUTTON_LEFT)){
             click = true;
         }
-        //goto just_render;
-        play.mousepos = &point;
-        play.click = click;
-        if(play.onHover(changeFont)){
-            //goto just_render;
-            play.onClick(changeColor);
+        if(play.onHover(point, changeFont)){
+            if(!oldclick){
+                revert = false;
+            }
+            oldclick = play.onClick(point, click, changeColor);
         }
-        else {
-            //goto just_render;
-            revertFont.execute();
-            revertCol.execute();
+        else revert = true;
+        if(revert){
+            reverter.execute();
         }
-        just_render:
         play.render(win.getren(), texture, 3);
         //Mcon.render(win.getren(), texture);
         win.pst();

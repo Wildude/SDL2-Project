@@ -87,7 +87,7 @@ class InputManager {
             }
             else{
                 if(key == SDL_SCANCODE_INSERT){
-                    cout << " evaluated\n";
+                    // cout << " evaluated\n";
                 }
                 keyDelayCounters[key] = 0;
                 return true;
@@ -448,7 +448,7 @@ class RENDERER
 };
 class TEXTURE
 {
-    SDL_Texture* texture; // 4 bytes (pointer)
+    SDL_Texture* texture = NULL; // 4 bytes (pointer)
     // SDL_Renderer* renderer; // 4 bytes (pointer) // x
     SDL_Rect src = {0, 0, 0, 0}; // 16 bytes (4 * 4 int) // x
     SDL_FRect dst = {0, 0, 0, 0}; // 16 bytes (4 * 4 float) //x
@@ -459,7 +459,6 @@ class TEXTURE
     // total = 
     public:
     TEXTURE(){
-        texture = NULL;
         // renderer = NULL;
         INIT();
     }
@@ -549,17 +548,26 @@ class TEXTURE
     ~TEXTURE()
     {
         if(texture)SDL_DestroyTexture(texture);
+        if(path)delete[] path;
     }
     void setflip(const SDL_RendererFlip& flag_)
     {
         // flip = flag_;
     }
-    const char* setpath(const char* filepath)
+    const char* setpath(const char* fpath)
     {
         //cout<<" setting path: "<<filepath<<endl;
-        path = new char[strlen(filepath)];
-        strcpy(path, filepath);
-        return path;
+        if(fpath){
+            if(path && strcmp(fpath, path) == 0)return path; // no change
+            if(path)delete[] path;
+            path = new char[strlen(fpath) + 1];
+            strcpy(path, fpath);
+        }
+        else{
+            if(path)delete[] path;
+            path = NULL;
+            delTex();
+        }
     }
     const char* getpath()
     {
@@ -674,8 +682,15 @@ class TEXTURE
         setcenter();
         return query((src_ ? &(src_->w) : &src.w), (src_ ? &(src_->h) : &src.h));
     }
+    void delTex(){
+        if(texture){
+            SDL_DestroyTexture(texture);
+            texture = NULL;
+        }
+    }
     SDL_Texture* load(const char* filepath, SDL_Renderer* rend)
     {
+        delTex();
         texture = IMG_LoadTexture((rend), filepath ? filepath : path);
         if(!texture)texture_file << " Error loading texture: " << SDL_GetError() << endl;
         return texture;
@@ -787,27 +802,59 @@ class TEXTURE
 };
 class FONT
 {
-    #define DEF_FONT "../Fonts/ROCKB.ttf"
+    #define DEF_FONT "../Fonts/nyala.ttf"
     #define CHANGE_DEF_FONT(FONT_X) DEF_FONT = FONT_X
-    //static const string DEFONT = "../Fonts/nyala.ttf";
+    //static const string DEFONT = "../Fonts/nyala.ttf";    
     public:
+    FONT(){
+        // cout<<" constructor called for font\n";
+        INIT();
+        ptsize = 12;
+    }
     const FONT& operator=(const FONT& f)
     {
-        //cout<<" assignment called for font\n";
-        ptsize = f.ptsize;
-        //cout<<" ptsize: " << ptsize << endl;
-        setpath(f.path);
-        //cout<<" path: " << path << endl;
-        setfont(path);
+        // cout<<" assignment called for font\n";
+        if(this == &f)return *this;
+        int result = setpath(f.path);
+        if(result == 0 && ptsize != f.ptsize){
+            // cout << "\n pt assigned";
+            ptsize = f.ptsize;
+            setfont(path);
+        }
+        else if(result == 1){
+            ptsize = f.ptsize;
+            setfont(path);
+        }
+        // cout<<"\n ptsize: " << ptsize << endl;
+        // cout<<" path: " << (path ? path : "NULL") << endl;
         return *this;
     }
-    void setpath(const char* fpath = DEF_FONT){
-        if(!fpath){
-            if(path)delete path;
-            return;
+    void delfont(){
+        if(fontdata){
+            TTF_CloseFont(fontdata);
+            fontdata = NULL;
         }
-        path = new char[strlen(fpath)];
-        strcpy(path, fpath);
+    }
+    int setpath(const char* fpath){
+        // cout << " setting path: \n";
+        if(fpath){
+            if(path && strcmp(fpath, path) == 0){
+                // cout << " same pathes, quiting\n";
+                return 0;
+            }
+            // cout << " different pathes editing\n";
+            if(path)delete[] path;
+            path = new char[strlen(fpath) + 1];
+            strcpy(path, fpath);       
+            return 1;
+        }
+        else{
+            // cout << " new path empty, deleting path\n";
+            if(path)delete[] path;
+            path = NULL;
+            delfont();
+            return -1;
+        }
     }
     FONT(const FONT& f)
     {
@@ -834,18 +881,11 @@ class FONT
     {
         return TTF_SizeText(getfont(), thetext, w, h);
     }
-    void setptsize(int pt_size = 12) {ptsize = pt_size;}
-    TTF_Font* setfont(const char* fontpath = "../Fonts/nyala.ttf")
-    {
-        //cout<<" setting font: "<<fontpath<<" with ptsize: "<<pt_size<<endl;
-        fontdata = TTF_OpenFont(fontpath, ptsize);
-        if(!fontdata){font_file <<" font loading error: "<<SDL_GetError()<<endl; return NULL;}
-        return fontdata;
+    void setptsize(int pt_size) {
+        ptsize = pt_size;
     }
-    FONT(const char* fontpath = DEF_FONT, int pt_size = 12)
+    FONT(const char* fontpath, int pt_size): FONT()
     {
-        //cout<<" constructor called for font\n";
-        INIT();
         setpath(fontpath);
         setptsize(pt_size);
         setfont(path);
@@ -865,9 +905,20 @@ class FONT
     void setStyle(int style){
         TTF_SetFontStyle(fontdata, style);
     }
-    int getStyle(){
-        return TTF_GetFontStyle(fontdata);
+    int getStyle() {
+        int style = TTF_GetFontStyle(fontdata);
+        cout << " style:";
+        if (style == TTF_STYLE_NORMAL) cout << " NORMAL";
+        else {
+            if (style & TTF_STYLE_BOLD) cout << " BOLD";
+            if (style & TTF_STYLE_ITALIC) cout << " ITALIC";
+            if (style & TTF_STYLE_UNDERLINE) cout << " UNDERLINE";
+            if (style & TTF_STYLE_STRIKETHROUGH) cout << " STRIKETHROUGH";
+        }
+        cout << "\n";
+        return style;
     }
+
     /*
     Constant	                Effect
     TTF_STYLE_NORMAL	        Default
@@ -878,15 +929,24 @@ class FONT
     */
     ~FONT()
     {
+        font_file.close();
         TTF_CloseFont(fontdata);
-        delete path;
+        delete[] path;
     }
     friend ostream& operator<<(ostream&, const FONT&);
     private:
-    TTF_Font* fontdata; // 4 bytes
+    TTF_Font* fontdata = NULL; // 4 bytes
     char* path = NULL; // 4 bytes
     int ptsize; // 4 bytes
     // total = 12 bytes
+    TTF_Font* setfont(const char* fontpath = "../Fonts/nyala.ttf")
+    {
+        // cout<<" setting font: "<<fontpath<<" with ptsize: "<< ptsize <<endl;
+        delfont();
+        fontdata = TTF_OpenFont(fontpath, ptsize);
+        if(!fontdata){cout <<" font loading error: "<<SDL_GetError()<<endl; return NULL;}
+        return fontdata;
+    }
 };
 ostream& operator<<(ostream& os, const FONT& font){
     os << '<' << font.getpath() << ">(x" << font.getptsize() << ')';
@@ -1023,7 +1083,7 @@ class Box {
             padding.w = 
             padding.h = 
             max(max(padding.x, padding.y), max(padding.w, padding.h));
-            cout << " previous pad\n";
+            // cout << " previous pad\n";
             return;
         }
         else if(y == -1 && w == -1 && h == -1){
@@ -1031,20 +1091,20 @@ class Box {
             padding.y =
             padding.w =
             padding.h = x;
-            cout << " center pad\n";
+            // cout << " center pad\n";
             return;
         }
         else if(w == -1 && h == -1){
             padding.x = padding.w = x;
             padding.y = padding.h = y;
-            cout << " 2x center pad\n";
+            // cout << " 2x center pad\n";
             return;
         }
         else if(h == -1){
             padding.x = x;
             padding.y = padding.h = y;
             padding.w = w;
-            cout << " 3x pad\n";
+            // cout << " 3x pad\n";
             return;
         }
         else{
@@ -1052,7 +1112,7 @@ class Box {
             padding.y = y;
             padding.w = w;
             padding.h = h;
-            cout << " 4x pad\n";
+            // cout << " 4x pad\n";
             return;
         }
     }
@@ -1192,6 +1252,12 @@ class TextBox{
         box = {x, y, w, h};
     }
     public:
+    TextBox(): font(), text(""){
+        // cout << " creating textbox\n";
+        setbox(0, 0, 0, 0);
+        col1 = {0, 0, 0, 255};
+        col2 = {255, 255, 255, 255};
+    }
     SDL_Surface* solid_render(const char* text_ = NULL, SDL_Color* col = NULL)
     {
         return TTF_RenderText_Solid(font.getfont(), (text_ ? text_ : text.c_str()), (col ? *col : col1));
@@ -1214,7 +1280,7 @@ class TextBox{
     SDL_Surface* blended_render_unicode(const char* text_ = NULL, SDL_Color* col = NULL){
         return TTF_RenderUNICODE_Blended(font.getfont(), (const Uint16*)(text_ ? text_ : text.c_str()), (col ? *col : col1));
     }
-    TextBox(const string& text_, int x, int y, int w, int h, const FONT& font_, SDL_Color* cola = NULL, SDL_Color* colb = NULL)
+    TextBox(const string& text_, int x, int y, int w, int h, const FONT& font_, SDL_Color* cola = NULL, SDL_Color* colb = NULL) : TextBox()
     {
         text = text_;
         font = font_;
@@ -1222,7 +1288,7 @@ class TextBox{
         col2 = (colb ? *colb : SDL_Color({(Uint8)(255 - col1.r), (Uint8)(255 - col1.g), (Uint8)(255 - col1.b), (Uint8)(255 - col1.a)}));
         box = {x, y, w, h};
     }
-    TextBox(const string& text_, const FONT& font_){
+    TextBox(const string& text_, const FONT& font_): TextBox(){
         text = text_;
         font = font_;
         col1 = SDL_Color({0, 0, 0, 0});
@@ -1231,7 +1297,7 @@ class TextBox{
         box.x = 0;
         box.y = 0;
     }
-    TextBox(int ptsize = 12, const char* path = DEF_FONT){
+    TextBox(const char* path, int ptsize = 12): TextBox(){
         font = FONT(path, ptsize);
     }
     void setcol1(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
