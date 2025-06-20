@@ -4,11 +4,25 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 
 ---
 ## 🧰 Tools and Languages used
-[`SDL`](/Icons/SDL.png)
-[`OpenGL`](/Icons/OpenGL.png)
-[`zlib`](/Icons/zlib.png)
-[`ffmpeg`](/Icons/ffmpeg.png)
-[`lua`](/Icons/Lua.png)
+<p align="center">
+  <img src="Icons/SDL.png" width="100" alt="SDL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="Icons/OpenGL.png" width="100" alt="OpenGL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="Icons/zlib.png" width="100" alt="zlib"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="Icons/ffmpeg.png" width="100" alt="ffmpeg"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="Icons/Lua.png" width="100" alt="lua"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</p>
+
+---
+## 📓 Description
+### - SDL - Main driver of engine, allows cross-platform and low-level access to computer multi-media hardware components (audio, keyboard, mouse, joystick, graphics, etc).
+### - OpenGL - A popular cross-platform graphics library
+### - zlib - compression/decompression library (used in decompressing tilemaps)
+### - ffmpeg - video encoding/decoding library (helps view videos through program)
+### - lua - a general purpose programming language (used for scripting in this context)
+
+<blockquote> Other libraries </blockquote>
+<blockquote> tinyxml: for XML parsing (useful in reading tilemaps from XML files) </blockquote>
+<blockquote> base64: decoding/encoding library (useful in decoding XML files that has tilemap data) </blockquote>
 
 ---
 ## 📁 Project Structure
@@ -104,8 +118,11 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - Added UI system
 - Added command system
 - Added scripting system
+---
+## 🎥 Screen records
 ![TilemapTest15](https://github.com/user-attachments/assets/53e31a42-5e95-47dd-a227-a7ec776e3935)
 ![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
+---
 ## New concepts
 ### Rescaling images
 ![image](https://github.com/user-attachments/assets/189e9e9b-c481-4f18-a270-fda506be3a0b)
@@ -114,5 +131,11 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
 - Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Headers/rigid_body.hpp">rigid_body.hpp</a>
+---
 ## How to use?
+### Windows
 open up executables folder and run the programs.
+### Linux
+🤷compile and run
+### MacOS
+🤷‍♂️compile and run
