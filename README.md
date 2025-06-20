@@ -3,6 +3,14 @@
 A modular C++ framework built on SDL2 for experimenting with game engine features including GUI systems, physics, vector math, Lua scripting, and multimedia handling. This project serves as a flexible foundation for developing 2D games or interactive applications.
 
 ---
+## 🧰 Tools and Languages used
+[`SDL`](/Icons/SDL.png)
+[`OpenGL`](/Icons/OpenGL.png)
+[`zlib`](/Icons/zlib.png)
+[`ffmpeg`](/Icons/ffmpeg.png)
+[`lua`](/Icons/Lua.png)
+
+---
 ## 📁 Project Structure
 <!-- Audio Files -->
 <details>
