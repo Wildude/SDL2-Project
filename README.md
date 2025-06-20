@@ -121,6 +121,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 
 ---
 ## 🎥 Screen records
+
 ![TilemapTest15](https://github.com/user-attachments/assets/53e31a42-5e95-47dd-a227-a7ec776e3935)
 ![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
 
@@ -132,7 +133,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - The above image is an illustration of this concept.
 - Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
-- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "https://github.com/Wildude/SDL2-Project/blob/main/Headers/rigid_body.hpp">rigid_body.hpp</a>
+- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "Headers/rigid_body.hpp">rigid_body.hpp</a>
 ---
 ## How to use?
 ### Windows
