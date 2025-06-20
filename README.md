@@ -28,21 +28,21 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ## 📁 Project Structure
 <!-- Audio Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Audio">Audio/</a></strong></summary>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/">Audio/</a></strong></summary>
   &nbsp &nbsp &nbsp &nbsp <i>Empty (for now)</i> <br>
 </details>
 <!-- Executables Files -->
 <details>
 <summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables">Executables/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test1.exe">UI_test1.exe</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test.exe">UI_test.exe</a> <br>
 &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test2.exe">UI_test2.exe</a> <br>
   &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test3.exe">UI_test3.exe</a> <br>
 </details>
 <!-- Fonts Files -->
 <details>
 <summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts">Fonts/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCK.ttf">ROCK.ttf</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCKB.ttf">ROCKB.ttf</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCK.TTF">ROCK.ttf</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Fonts/ROCKB.TTF">ROCKB.ttf</a> <br>
 </details>
 <!-- Icons Files -->
 <details>
@@ -58,8 +58,8 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Samples/CS.jpg">CS.jpg</a> <br>
 &nbsp &nbsp &nbsp &nbsp - 
   <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Stages">Stages/</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Tilesets">Tilesets/</a>
-  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Tilesets/tileset_1bit.png">tileset_1bit.png</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Stages/Tilesets">Tilesets/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Stages/Tilesets/tileset_1bit.png">tileset_1bit.png</a> <br>
 &nbsp &nbsp &nbsp &nbsp - 
   <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons">Weapons/</a> <br>
   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/AK 47">AK47/</a>
@@ -69,17 +69,17 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 </details>
 <!-- Headers Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers">headers/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/Basic.hpp">Basic.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/BSDLF.hpp">BSDLF.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/vector2D.hpp">vector2D.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/command.hpp">command.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/GUI.hpp">GUI.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/physics.hpp">physics.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/rigid_body.hpp">rigid_body.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/Tilemap.hpp">Tilemap.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers">Headers/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/Basic.hpp">Basic.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/BSDLF.hpp">BSDLF.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/vector2D.hpp">vector2D.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/command.hpp">command.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/GUI.hpp">GUI.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/physics.hpp">physics.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/rigid_body.hpp">rigid_body.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/Tilemap.hpp">Tilemap.hpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
 </details>
 <!-- Sample_codes Files -->
 <details>
