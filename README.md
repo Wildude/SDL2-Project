@@ -1,28 +1,27 @@
-# SDL2-Project 🎮
+# <p align = "center"> SDL2-Project 🎮 </p>
 
 A modular C++ framework built on SDL2 for experimenting with game engine features including GUI systems, physics, vector math, Lua scripting, and multimedia handling. This project serves as a flexible foundation for developing 2D games or interactive applications.
 
 ---
 ## 🧰 Tools and Languages used
 <p align="center">
-  <img src="Icons/SDL.png" width="100" alt="SDL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/OpenGL.png" width="100" alt="OpenGL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/zlib.png" width="100" alt="zlib"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/ffmpeg.png" width="100" alt="ffmpeg"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/Lua.png" width="100" alt="lua"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.libsdl.org/"><img src="Icons/SDL.png" width="100" alt="SDL"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.opengl.org/"><img src="Icons/OpenGL.png" width="100" alt="OpenGL"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://zlib.net/"><img src="Icons/zlib.png" width="100" alt="zlib"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://ffmpeg.org/"><img src="Icons/ffmpeg.png" width="100" alt="ffmpeg"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.lua.org/"><img src="Icons/Lua.png" width="100" alt="lua"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
 ---
 ## 📓 Description
-### - SDL - Main driver of engine, allows cross-platform and low-level access to computer multi-media hardware components (audio, keyboard, mouse, joystick, graphics, etc).
-### - OpenGL - A popular cross-platform graphics library ([`in OpenGL branch`](https://github.com/Wildude/SDL2-Project/tree/OpenGL))
-### - zlib - compression/decompression library (used in decompressing tilemaps)
-### - ffmpeg - video encoding/decoding library (helps view videos through program)
-### - lua - a general purpose programming language (used for scripting in this context)
-
-<blockquote> Other libraries </blockquote>
-<blockquote> tinyxml: for XML parsing (useful in reading tilemaps from XML files) </blockquote>
-<blockquote> base64: decoding/encoding library (useful in decoding XML files that has tilemap data) </blockquote>
+### - [SDL](https://www.libsdl.org/) - Main driver of engine, allows cross-platform and low-level access to computer multi-media hardware components (audio, keyboard, mouse, joystick, graphics, etc).
+### - [OpenGL](https://www.opengl.org/) - A popular cross-platform graphics library ([`in OpenGL branch`](https://github.com/Wildude/SDL2-Project/tree/OpenGL))
+### - [zlib](https://zlib.net/) - compression/decompression library (used in decompressing tilemaps)
+### - [ffmpeg](https://ffmpeg.org/) - video encoding/decoding library (helps view videos through program)
+### - [lua](https://www.lua.org/) - a general purpose programming language (used for scripting in this context)
+### 📚 Other libraries
+### - [tinyxml](https://github.com/leethomason/tinyxml2): for XML parsing (useful in reading tilemaps from XML files) 
+### - [base64](https://github.com/ReneNyffenegger/cpp-base64): decoding/encoding library (useful in decoding XML files that has tilemap data)
 
 ---
 ## 📁 Project Structure
@@ -126,7 +125,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
 
 ---
-## New concepts
+## 👩‍🔬 New concepts
 ### Rescaling images
 ![image](https://github.com/user-attachments/assets/189e9e9b-c481-4f18-a270-fda506be3a0b)
 - This speeds up image generation process since drawing is not required.
@@ -135,7 +134,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
 - Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "Headers/rigid_body.hpp">rigid_body.hpp</a>
 ---
-## How to use?
+## 🤔 How to use?
 ### Windows
 open up executables folder and run the programs.
 ### Linux
