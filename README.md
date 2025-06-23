@@ -1,4 +1,4 @@
-# SDL2-Project 🎮
+# <p align = "center"> SDL2-Project 🎮 </p>
 
 A modular C++ framework built on SDL2 for experimenting with game engine features including GUI systems, physics, vector math, Lua scripting, and multimedia handling. This project serves as a flexible foundation for developing 2D games or interactive applications.
 
@@ -126,7 +126,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
 
 ---
-## New concepts
+## 👩‍🔬 New concepts
 ### Rescaling images
 ![image](https://github.com/user-attachments/assets/189e9e9b-c481-4f18-a270-fda506be3a0b)
 - This speeds up image generation process since drawing is not required.
@@ -135,7 +135,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
 - Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "Headers/rigid_body.hpp">rigid_body.hpp</a>
 ---
-## How to use?
+## 🤔 How to use?
 ### Windows
 open up executables folder and run the programs.
 ### Linux
