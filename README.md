@@ -5,24 +5,23 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🧰 Tools and Languages used
 <p align="center">
-  <img src="Icons/SDL.png" width="100" alt="SDL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/OpenGL.png" width="100" alt="OpenGL"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/zlib.png" width="100" alt="zlib"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/ffmpeg.png" width="100" alt="ffmpeg"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="Icons/Lua.png" width="100" alt="lua"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.libsdl.org/"><img src="Icons/SDL.png" width="100" alt="SDL"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.opengl.org/"><img src="Icons/OpenGL.png" width="100" alt="OpenGL"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://zlib.net/"><img src="Icons/zlib.png" width="100" alt="zlib"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://ffmpeg.org/"><img src="Icons/ffmpeg.png" width="100" alt="ffmpeg"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.lua.org/"><img src="Icons/Lua.png" width="100" alt="lua"/></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </p>
 
 ---
 ## 📓 Description
-### - SDL - Main driver of engine, allows cross-platform and low-level access to computer multi-media hardware components (audio, keyboard, mouse, joystick, graphics, etc).
-### - OpenGL - A popular cross-platform graphics library ([`in OpenGL branch`](https://github.com/Wildude/SDL2-Project/tree/OpenGL))
-### - zlib - compression/decompression library (used in decompressing tilemaps)
-### - ffmpeg - video encoding/decoding library (helps view videos through program)
-### - lua - a general purpose programming language (used for scripting in this context)
-
-<blockquote> Other libraries </blockquote>
-<blockquote> tinyxml: for XML parsing (useful in reading tilemaps from XML files) </blockquote>
-<blockquote> base64: decoding/encoding library (useful in decoding XML files that has tilemap data) </blockquote>
+### - [SDL](https://www.libsdl.org/) - Main driver of engine, allows cross-platform and low-level access to computer multi-media hardware components (audio, keyboard, mouse, joystick, graphics, etc).
+### - [OpenGL](https://www.opengl.org/) - A popular cross-platform graphics library ([`in OpenGL branch`](https://github.com/Wildude/SDL2-Project/tree/OpenGL))
+### - [zlib](https://zlib.net/) - compression/decompression library (used in decompressing tilemaps)
+### - [ffmpeg](https://ffmpeg.org/) - video encoding/decoding library (helps view videos through program)
+### - [lua](https://www.lua.org/) - a general purpose programming language (used for scripting in this context)
+### 📚 Other libraries
+### - [tinyxml](https://github.com/leethomason/tinyxml2): for XML parsing (useful in reading tilemaps from XML files) 
+### - [base64](https://github.com/ReneNyffenegger/cpp-base64): decoding/encoding library (useful in decoding XML files that has tilemap data)
 
 ---
 ## 📁 Project Structure
