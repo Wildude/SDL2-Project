@@ -6,6 +6,7 @@ const string font_path = "fonts.log";
 const string texture_path = "textures.log";
 const string audio_path = "audio.log";
 const string network_path = "network.log";
+const string textbox_path = "textbox.log";
 ofstream event_file(filepath + event_path);
 ofstream window_file(filepath + window_path);
 ofstream renderer_file(filepath + renderer_path);
@@ -13,6 +14,7 @@ ofstream font_file(filepath + font_path);
 ofstream texture_file(filepath + texture_path);
 ofstream audio_file(filepath + audio_path);
 ofstream network_file(filepath + network_path);
+ofstream textbox_file(filepath + textbox_path);
 using namespace SDL2;
 
 class InputManager {
@@ -57,8 +59,8 @@ class InputManager {
             }
 
             if (e.type == SDL_MOUSEMOTION) {
-                mouseX = e.motion.x;
-                mouseY = e.motion.y;
+                mouseXY.x = e.motion.x;
+                mouseXY.y = e.motion.y;
             }
 
             if (e.type == SDL_MOUSEWHEEL) {
@@ -101,8 +103,9 @@ class InputManager {
     //bool isMouseJustPressed(Uint8 button) const { return mousePressed[button]; }
     bool isMouseReleased(Uint8 button) const { return mouseReleased[button]; }
 
-    int getMouseX() const { return mouseX; }
-    int getMouseY() const { return mouseY; }
+    int getMouseX() const { return mouseXY.x; }
+    int getMouseY() const { return mouseXY.y; }
+    const SDL_Point& getMouseP() const { return mouseXY; }
     int getMouseWheelY() const { return mouseWheelY; }
     const array<int, SDL_NUM_SCANCODES>& getDelayCounters(){
         return keyDelayCounters;
@@ -128,8 +131,7 @@ class InputManager {
     array<bool, 8> mouseDown{};      // SDL_BUTTON_LEFT...SDL_BUTTON_X2
     //array<bool, 8> mousePressed{};
     array<bool, 8> mouseReleased{};
-    int mouseX = 0;
-    int mouseY = 0;
+    SDL_Point mouseXY = {0, 0};
     int mouseWheelY = 0;
     protected: SDL_Event e;
 };
@@ -173,8 +175,8 @@ class TextInputHandler : public InputManager {
                 mouseReleased[e.button.button] = true;
             }
             if (e.type == SDL_MOUSEMOTION) {
-                mouseX = e.motion.x;
-                mouseY = e.motion.y;
+                mouseXY.x = e.motion.x;
+                mouseXY.y = e.motion.y;
             }
             if (e.type == SDL_MOUSEWHEEL) {
                 mouseWheelY = e.wheel.y;
@@ -1254,9 +1256,16 @@ class TextBox{
     public:
     TextBox(): font(), text(""){
         // cout << " creating textbox\n";
+        checkfile();
+        textbox_file << " creating textbox\n";
         setbox(0, 0, 0, 0);
         col1 = {0, 0, 0, 255};
         col2 = {255, 255, 255, 255};
+    }
+    void checkfile(){
+        if(!textbox_file.is_open()){
+            textbox_file.open(filepath + textbox_path, ios::app);
+        }
     }
     SDL_Surface* solid_render(const char* text_ = NULL, SDL_Color* col = NULL)
     {
@@ -1339,22 +1348,29 @@ class TextBox{
     }
     void draw(SDL_Renderer* rend, SDL_Texture*& board, short drawtype = 2)
     {
+        checkfile();
+        textbox_file << " drawing textbox\n";
         SDL_Surface* surf;
         switch (drawtype)
         {
         case 0:
+            textbox_file << " solid render\n";
             surf = solid_render(text.c_str(), &col1);
             break;
         case 1:
+            textbox_file << " shaded render\n";
             surf = shaded_render(text.c_str(), &col1, &col2);
             break;
         case 2:
+            textbox_file << " blended render\n";
             surf = blended_render(text.c_str(), &col1);
             break;
         case 3:
+            textbox_file << " LCD render\n";
             surf = LCD_render(text.c_str(), &col1, &col2);
             break;
         default:
+            textbox_file << " blended render\n";
             surf = blended_render(text.c_str(), &col1);
             break;
         }
@@ -1364,9 +1380,19 @@ class TextBox{
         }
         if(!board)SDL_DestroyTexture(board);
         board = SDL_CreateTextureFromSurface(rend, surf);
-        SDL_RenderCopy(rend, board, NULL, &box);
+        if(!board){
+            textbox_file << " Texture creation error: " << SDL_GetError() << endl;
+            return;
+        }
+        else textbox_file << " Texture creation success\n";
+        if(SDL_RenderCopy(rend, board, NULL, &box) < 0){
+            textbox_file << " RenderCopy error: " << SDL_GetError() << endl;
+            return;
+        }
         SDL_DestroyTexture(board);
+        textbox_file << " destroyed texture\n";
         SDL_FreeSurface(surf);
+        textbox_file << " destroyed surface\n";
     }
     void printbox(){
         cout << box.x << ", " << box.y << ", " << box.w << ", " << box.h;
@@ -1410,6 +1436,10 @@ class TextBox{
     }
     const char* getText() const{
         return text.c_str();
+    }
+    ~TextBox(){
+        textbox_file << " destroying textbox\n";
+        textbox_file.close();
     }
     friend ostream& operator<<(ostream&, const TextBox&);
 };

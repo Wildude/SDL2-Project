@@ -64,11 +64,13 @@ Hierarchy Panel	Shows parent-child tree (like scenes)
 Event Log Console	Text area for logging/debug messages
 Docking System	Repositionable tool windows
 */
-/*
-class InputText : public UIelement {
-};
-class Textarea : public UIelement{
-};
-class PasswordField : public UIelement{
-};
+/* Implementation precedence
+1. Label x
+2. UIContainer x
+3. UIPanel
+4. IMGViewer
+5. Slider
+6. SpinBox
+7. LabelArea
+8. PopUp
 */

@@ -7,6 +7,7 @@
 #include "SDL2_namespace.hpp"
 #include "vector2D.hpp"
 #include "BSDLF.hpp"
+#include "gameobject.hpp"
 #include "command.hpp"
 #include "GUI.hpp"
 #include "physics.hpp"

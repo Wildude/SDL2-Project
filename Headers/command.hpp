@@ -108,10 +108,10 @@ struct multiCommand : public command<T>{
 // for simple commands
 template <class T>
 struct doCommand : public command<T>{
-    T (*cmd)();
+    void (*cmd)();
     doCommand(){}
-    doCommand(T (*cmd_)()) : cmd(cmd_) {}
-    const doCommand& operator=(T (*cmd_)()){
+    doCommand(void (*cmd_)()) : cmd(cmd_) {}
+    const doCommand& operator=(void (*cmd_)()){
         if(this->cmd != cmd_){
             cmd = cmd_;
         }

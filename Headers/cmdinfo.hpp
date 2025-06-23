@@ -1,5 +1,5 @@
 // command interface
-/*
+/* Basic UI Command Effects
 ✅ On Hover (mouse over)
 Effect	Purpose
 Text color change	Highlights interactiveness
@@ -24,4 +24,21 @@ Dashed or glowing border	Shows it’s ready to interact
 Keyboard input enabled	Accept text or commands
 Highlighted background	Matches other UI focus behaviors
 ARIA/accessibility cue	Important for screen readers
+*/
+/* Additional UI Command Effects
+Drag (start, move, end)
+
+Key press / key release
+
+Mouse wheel scroll
+
+Double click
+
+Resize
+
+Touch / multi-touch gestures
+
+Blur / Unfocus
+
+Mouse enter / leave
 */
