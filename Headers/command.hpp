@@ -1,3 +1,9 @@
+struct ICommand {
+    virtual void execute() = 0;
+    virtual void setref(void* ref) = 0; // generic ref if needed
+    virtual void* getref() const {}
+    virtual ~ICommand() {}
+};
 template <class T>
 struct command{
     T* ref;
@@ -5,6 +11,7 @@ struct command{
     command(T& uref){
         ref = &uref;
     }
+    command(T* uref): ref(uref){}
     virtual void setref(T& uref){
         //cout << " setting reference\n";
         ref = &uref;
@@ -70,8 +77,8 @@ struct ChangeColorCommand : public command<T>{
 template <class T>
 struct multiCommand : public command<T>{
     vector<command<T>*> commands;
-    mutliCommand(){}
-    mutliCommand(vector<command<T>*>& cmds){
+    multiCommand(T* ref = NULL) : command<T>(ref){}
+    multiCommand(vector<command<T>*>& cmds): multiCommand(){
         commands = cmds;
     }
     void setref(T& ref) override {
@@ -88,12 +95,15 @@ struct multiCommand : public command<T>{
         //cout << " pushing command\n";
         commands.push_back(cmd);
     }
+    command<T>*& getcmd(int index = 0){
+        return commands[index];
+    }
     void execute(){
+        // cout << " executing multicommand\n";
         if(!command<T>::ref){
             // cout << " no reference\n";
             return;
         }
-        // cout << " executing multicommand\n";
         int size = commands.size();
         if(!size){
             // cout << " no executions\n";

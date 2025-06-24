@@ -23,7 +23,7 @@ int main(int argn, char** argc){
     SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 255, 255, 255};
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {0, 0, 255, 255};
     vector<Label> menu;
-    vector<Label> diff;
+    vector<InputBox> diff;
     vector<Label> options;
     vector<Label> about;
     vector<Label> exit;
@@ -33,9 +33,9 @@ int main(int argn, char** argc){
     menu.push_back(Label("About"));
     menu.push_back(Label("Exit"));
     // diffculty labels
-    diff.push_back(Label("Easy"));
-    diff.push_back(Label("Medium"));
-    diff.push_back(Label("Hard"));
+    diff.push_back(InputBox("Easy"));
+    diff.push_back(InputBox("Medium"));
+    diff.push_back(InputBox("Hard"));
     //
     UIColor changeColor(nbg, nfg);
     // cout << " change font\n";
@@ -45,11 +45,14 @@ int main(int argn, char** argc){
     UIFont revertFont(revFont);
     // cout << " full reverter\n";
     ChangeStateCommand<UIelement> state_change(StMan, &diffst);
-    multiCommand<UIelement> reverter, state_changer;
+    multiCommand<UIelement> reverter, state_changer, inputer;
+    ChangeStringCmd<UIelement> stringchange(NULL, NULL, NULL);
     reverter.push(revertCol);
     reverter.push(revertFont);
     state_changer.push(changeFont);
     state_changer.push(state_change);
+    inputer.push(changeFont);
+    inputer.push(stringchange);
     for(UIelement& ui : menu){
         menust.getUICs()[0].push(ui);
     }
@@ -60,16 +63,20 @@ int main(int argn, char** argc){
     menust.getUICs()[0].setFont(revFont);
     diffst.getUICs()[0].setFont(revFont);
 
-    menust.getUICs()[0].onFocus(&changeColor);
-    diffst.getUICs()[0].onFocus(&changeColor);
+    menust.getUICs()[0].onFocus((&changeColor));
+    diffst.getUICs()[0].onFocus((&changeColor));
 
-    menust.getUICs()[0].onClick(&changeFont);
-    diffst.getUICs()[0].onClick(&changeFont);
+    menust.getUICs()[0].onClick((&changeFont));
+    cout << " Calling OnClick for at least once\n";
+    diffst.getUICs()[0].onClick((&changeFont));
 
-    menust.getUICs()[0].onRevert(&reverter);
-    diffst.getUICs()[0].onRevert(&reverter);
+    menust.getUICs()[0].onRevert((&reverter));
+    diffst.getUICs()[0].onRevert((&reverter));
+    diffst.getUICs()[0].getList()[0]->onClick((&inputer));
 
-    InputManager input;
+    TextInputHandler input;
+    stringchange.setInputer(input);
+    stringchange.textTo = &diff[0].gettextRef();
     bool oldclick = false;
     WINDOW win("GUI Test");
     menust.getUICs()[0].setPos(win.getw()/2, win.geth()/2);
@@ -81,15 +88,15 @@ int main(int argn, char** argc){
     multiCommand<UIelement> changestater;
     changestater.push(&changeColor);
     changestater.push(&dochange);
-    menust.getUICs()[0].getList()[0]->onClick(&state_changer);
+    menust.getUICs()[0].getList()[0]->onClick((&state_changer));
     while(!input.shouldQuit()){
+        win.clr();
         if(StMan.getCurrent() == &diffst && input.isKeyDown(SDL_SCANCODE_ESCAPE))StMan.popState();
         input.update();
         //UIcons[currentState].render(win.getren(), texture);
         StMan.update(input);
         StMan.render(win.getren());
         win.pst();
-        win.clr();
         SDL_Delay(33);
     }
     return 0;

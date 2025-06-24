@@ -232,6 +232,12 @@ namespace SDL2
 	{
 		return SDL_GetRenderDrawBlendMode(renderer, blendmode);
 	}
+	int setRenCol(SDL_Renderer* renderer, const SDL_Color& col){
+		return SDL_SetRenderDrawColor(renderer, col.r, col.g, col.b, col.a);
+	}
+	int setRenCol(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+		return SDL_SetRenderDrawColor(renderer, r, g, b, a);
+	}
 	int getRenCol(SDL_Renderer * renderer, Uint8 * r, Uint8 * g, Uint8 * b, Uint8 * a)
 	{
 		return SDL_GetRenderDrawColor(renderer, r, g, b, a);

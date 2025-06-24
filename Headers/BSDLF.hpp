@@ -24,6 +24,7 @@ class InputManager {
         //keyPressed.fill(false);
         keyReleased.fill(false);
         keyDelayCounters.fill(0);
+        mouseDelayCounters.fill(0);
     }
 
     void update() {
@@ -52,10 +53,12 @@ class InputManager {
 
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 mouseDown[e.button.button] = true;
+                //mouseDelayCounters[e.button.button]++;
                 //mousePressed[e.button.button] = true;
             } else if (e.type == SDL_MOUSEBUTTONUP) {
                 mouseDown[e.button.button] = false;
                 mouseReleased[e.button.button] = true;
+                mouseDelayCounters[e.button.button] = 0;
             }
 
             if (e.type == SDL_MOUSEMOTION) {
@@ -85,6 +88,7 @@ class InputManager {
     bool isKeyReady(SDL_Scancode key, int delayFrames = 10){
         if(keyDown[key]){
             if(keyDelayCounters[key] && keyDelayCounters[key] < delayFrames){
+                cout << " key not ready: " << keyDelayCounters[key] << endl;
                 return false;
             }
             else{
@@ -97,7 +101,22 @@ class InputManager {
         }
         else return false;
     }
-
+    bool isMouseReady(Uint8 button, int delayFrames = 30){
+        if(mouseDown[button]){
+            if(mouseDelayCounters[button] > 1 && mouseDelayCounters[button] < delayFrames){
+                //cout << " mouse not ready: " << mouseDelayCounters[button] << endl;
+                mouseDelayCounters[button]++;
+                return false;
+            }
+            else{
+                //cout << " mouse ready: " << endl;
+                mouseDelayCounters[button] = 0;
+                mouseDelayCounters[button] = 2; // Reset to 1 to avoid immediate re-triggering
+                return true;
+            }
+        }
+        else return false;
+    }
     // Mouse input
     bool isMouseDown(Uint8 button) const { return mouseDown[button]; }
     //bool isMouseJustPressed(Uint8 button) const { return mousePressed[button]; }
@@ -109,6 +128,9 @@ class InputManager {
     int getMouseWheelY() const { return mouseWheelY; }
     const array<int, SDL_NUM_SCANCODES>& getDelayCounters(){
         return keyDelayCounters;
+    }
+    array<bool, SDL_NUM_SCANCODES>& getKeyDowns(){
+        return keyDown;
     }
     protected:
     void updateDelays() {
@@ -127,7 +149,7 @@ class InputManager {
     // array<bool, SDL_NUM_SCANCODES> keyPressed;
     array<bool, SDL_NUM_SCANCODES> keyReleased;
     array<int, SDL_NUM_SCANCODES> keyDelayCounters;
-
+    array<int, 8> mouseDelayCounters{}; // SDL_BUTTON_LEFT...SDL_BUTTON_X2
     array<bool, 8> mouseDown{};      // SDL_BUTTON_LEFT...SDL_BUTTON_X2
     //array<bool, 8> mousePressed{};
     array<bool, 8> mouseReleased{};
@@ -137,12 +159,13 @@ class InputManager {
 };
 class TextInputHandler : public InputManager {
     public:
-    TextInputHandler(bool use = false) : useText(use) {
+    TextInputHandler(bool use = false, string* whichtext = NULL) : useText(use), textTo(whichtext), quitCase(SDL_SCANCODE_RETURN), InputManager(){
         if(useText)startText();
     }
     void setTextUse(bool use){
         useText = use;
     }
+    // checks if the input handler is on text input mode
     bool checkText(){
         if(!useText)SDL_StopTextInput();
         else SDL_StartTextInput();
@@ -160,6 +183,14 @@ class TextInputHandler : public InputManager {
         }
         // Only start text input once when entering text mode
         else if(SDL_IsTextInputActive()) SDL_StopTextInput();
+
+        // Reset transitional states
+        //keyPressed.fill(false);
+        keyReleased.fill(false);
+        //mousePressed.fill(false);
+        mouseReleased.fill(false);
+
+        // Poll all events
         // Clear all events in this mode
         while (SDL_PollEvent(&e)) {
             //cout << " still on text: "<< useText << endl;
@@ -167,12 +198,18 @@ class TextInputHandler : public InputManager {
                 quit = true;
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
+                //cout << " mouse button down\n";
+                //cout << " mouse: " << (int)e.button.button << endl;
                 mouseDown[e.button.button] = true;
+                mouseDelayCounters[e.button.button]++;
                 //mousePressed[e.button.button] = true;
             } 
             else if (e.type == SDL_MOUSEBUTTONUP) {
+                //cout << " mouse button up\n";
+                //cout << " mouse: " << (int)e.button.button << endl;
                 mouseDown[e.button.button] = false;
                 mouseReleased[e.button.button] = true;
+                mouseDelayCounters[e.button.button] = 0;
             }
             if (e.type == SDL_MOUSEMOTION) {
                 mouseXY.x = e.motion.x;
@@ -188,6 +225,7 @@ class TextInputHandler : public InputManager {
                 keyDelayCounters[sc] = 0;
             }
             if(!useText){
+                textTo = NULL;
                 if (e.type == SDL_KEYDOWN && !e.key.repeat) {
                     SDL_Scancode sc = e.key.keysym.scancode;
                     keyDown[sc] = true;
@@ -202,17 +240,22 @@ class TextInputHandler : public InputManager {
                     if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty()) {
                         inputText.pop_back();
                     } else if (
-                        e.key.keysym.sym == SDLK_RETURN || 
+                        e.key.keysym.sym == SDL_GetKeyFromScancode(quitCase) || 
                         e.key.keysym.sym == SDLK_ESCAPE
                     ) {
                         useText = false;
                         SDL_StopTextInput();  // stop when exiting
+                        textTo = NULL;
                     }
                 }
+                if(useText && !textTo)textTo = &inputText; // Update the textTo pointer to the current inputText
             }
             
         }
+        
+        // Update key repeat delay counters
         updateDelays();
+        mouseWheelY = 0; // Reset wheel each frame
     }
     const string& getText() const {
         return inputText;
@@ -220,6 +263,19 @@ class TextInputHandler : public InputManager {
 
     void clearText() {
         inputText.clear();
+    }
+    void setInput(){
+        textTo = NULL;
+    }
+    void setInput(string*& the_str){
+        if(!textTo)textTo  = &inputText;
+        the_str = textTo;
+    }
+    void setInput(string& the_str){
+        textTo = &the_str;
+    }
+    void setQuitCase(SDL_Scancode quiter = SDL_SCANCODE_RETURN){
+        quitCase = quiter;
     }
 
 private:
@@ -229,6 +285,8 @@ private:
     }
     bool useText;
     string inputText; // Stores the text input
+    string* textTo;
+    SDL_Scancode quitCase;
 };
 class WINDOW
 {
@@ -272,8 +330,9 @@ class WINDOW
     {
         return SDL2::pst(renderer);
     }
-    inline int clr()
+    inline int clr(const SDL_Color& col = {255, 255, 255, 255})
     {
+        set_rencol(col.r, col.b, col.g, col.a);
         return SDL2::clr(renderer);
     }
     SDL_Renderer* setRGB(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0)
@@ -286,14 +345,14 @@ class WINDOW
     }
     int pstcol(SDL_Color* color = NULL)
     {
-        SDL_Color colr = (color ? *color : col);
-        return pstcol(colr.r, colr.g, colr.b, colr.a);
+        if(!color)return 0;
+        return pstcol(color->r, color->g, color->b, color->a);
     }
     int pstcol(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         SDL_Color col = {r, g, b, a};
         int ret = set_rencol(&col);
-        clr();
+        clr(col);
         pst();
         return ret;
     }
@@ -310,6 +369,9 @@ class WINDOW
     int set_rencol(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         return SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    }
+    void set_clrcol(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+        col = SDL_Color({r, g, b, a});
     }
     SDL_Renderer* crtren(SDL_Window* window_ = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC)
     {
@@ -725,7 +787,7 @@ class TEXTURE
         return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
     }
     static int drawRect(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize = 1){
-        if(ptsize == 1){
+        if(ptsize <= 1){
             SDL_RenderDrawRect(rend, &rect);
         }
         SDL_Rect lines[4] = {
@@ -879,7 +941,7 @@ class FONT
     const char* getpath() const{
         return path;
     }
-    int TEXT_size(const char* thetext, int* w, int *h) const
+    inline int TEXT_size(const char* thetext, int* w, int *h) const
     {
         return TTF_SizeText(getfont(), thetext, w, h);
     }
@@ -1333,13 +1395,17 @@ class TextBox{
     }
     void settext(const char* text_)
     {
-        text = text_;
-        font.TEXT_size(text.c_str(), &box.w, &box.h);
+        if(text != string(text_)){
+            text = text_;
+            font.TEXT_size(text.c_str(), &box.w, &box.h);
+        }   
     }
     void settext(const string& text_)
     {
-        text = text_;
-        font.TEXT_size(text.c_str(), &box.w, &box.h);
+        if(text != text_){
+            text = text_;
+            font.TEXT_size(text.c_str(), &box.w, &box.h);
+        }
     }
     void setboxpos(int x, int y)
     {
@@ -1436,6 +1502,9 @@ class TextBox{
     }
     const char* getText() const{
         return text.c_str();
+    }
+    string& getTextRef(){
+        return text;
     }
     ~TextBox(){
         textbox_file << " destroying textbox\n";
