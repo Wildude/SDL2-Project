@@ -24,6 +24,11 @@ class UIelement : public GameObject
     UIelement& operator=(const UIelement& ui) {
         // Assignment operator implementation
         if (this != &ui) {
+            UIcmds = ui.UIcmds;
+            isfocus = ui.isfocus;
+            isrevert = ui.isrevert;
+            isclick = ui.isclick;
+            ishover = ui.ishover;
             // Copy the data members from ui to this object
         }
         return *this;
@@ -39,7 +44,54 @@ class UIelement : public GameObject
         // Destructor implementation
         // Clean up any resources if needed
     }
-    virtual void update(InputManager&) = 0;
+    virtual void update(InputManager& input){
+        static bool oldclick = false;
+        bool click = isClicked(input);
+        bool revert = true;
+        if(isfocus){
+            if(!oldclick){
+                // cout << " clicked\n";
+                revert = false;
+            }
+            oldclick = click;
+        }
+        else revert = true;
+        if(revert){
+            if(!isrevert){
+                if(UIcmds.revert){
+                    if(UIcmds.revert->getref() != this)UIcmds.revert->setref(*this);
+                    UIcmds.revert->execute();
+                }
+            }
+            isrevert = true;
+        }
+        else if(click)
+        {
+            isrevert = false;
+            // cout << " clicking\n";
+            if(UIcmds.click->getref() != this){
+                //cout << " was not ref\n";
+                UIcmds.click->setref(*this);
+            }
+            //else cout << " was refed\n";
+            //cout << " executing\n";
+            UIcmds.click->execute();
+            //cout << " executed\n";
+            /*
+            if(UIcmds.click){
+                cout << " clicked\n";
+                if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
+                cout << " executing\n";
+                UIcmds.click->execute();
+            }
+            */
+        }
+        else if(UIcmds.focus){
+            isrevert = false;
+            if(UIcmds.focus->getref() != this)UIcmds.focus->setref(*this);
+            UIcmds.focus->execute();
+        }
+    };
     virtual void onFocus(UICommand* focus = NULL){
         UIcmds.focus = focus;
     }
@@ -83,6 +135,12 @@ class UIelement : public GameObject
         return UIcmds.revert;
     }
     //
+    virtual bool isHovered(const InputManager& input){
+        const SDL_Point& mpos = input.getMouseP();
+        const SDL_Rect& mbox = *getBox();
+        ishover = SDL_PointInRect(&mpos, &mbox);
+        return ishover;
+    }
     virtual bool isClicked(InputManager&) = 0;
     virtual bool isFocused(const InputManager&) = 0;
 };
@@ -102,8 +160,12 @@ struct UIColor : public UICommand{
         ref = &tref;
         cmd.setRef(*ref->getCol1(), *ref->getCol2());
     }
-    void execute(){
+    void execute() override{
         //cout << " executing UI color\n";
+        if(!ref){
+            //cout << " no UI reference\n";
+            return;
+        }
         cmd.execute();
     }
     ~UIColor(){}
@@ -124,6 +186,10 @@ struct UIFont : public UICommand{
     }
     void execute(){
         //cout << " executing UI font\n";
+        if(!ref){
+            //cout << " no UI reference\n";
+            return;
+        }
         cmd.execute();
     }
 };
@@ -448,13 +514,6 @@ class Label : public UIelement {
         labelText.draw(renderer, board, drawtype);
         // Render the label text using the provided renderer
     }
-    bool isHovered(const InputManager& input) {
-        const SDL_Point& mpos = input.getMouseP();
-        // Check if the point is within the label's bounding box
-        const SDL_Rect& box = labelText.getBoxc();
-        ishover = SDL_PointInRect(&mpos, &box);
-        return ishover;
-    }
     bool isCurrent() const{
         return false;
     }
@@ -466,49 +525,6 @@ class Label : public UIelement {
         // Check if the label is clicked based on the mouse position
         isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT);
         return isclick;
-    }
-    void update(InputManager& input) override {
-        static bool oldclick = false;
-        bool click = isClicked(input);
-        bool revert = true;
-        if(isfocus){
-            if(!oldclick){
-                // cout << " clicked\n";
-                revert = false;
-            }
-            oldclick = click;
-        }
-        else revert = true;
-        if(revert){
-            if(!isrevert){
-                if(UIcmds.revert){
-                    if(UIcmds.revert->getref() != this)UIcmds.revert->setref(*this);
-                    UIcmds.revert->execute();
-                }
-            }
-            isrevert = true;
-        }
-        else if(click)
-        {
-            isrevert = false;
-            // cout << " clicking\n";
-            if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
-            // cout << " executing\n";
-            UIcmds.click->execute();
-            /*
-            if(UIcmds.click){
-                cout << " clicked\n";
-                if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
-                cout << " executing\n";
-                UIcmds.click->execute();
-            }
-            */
-        }
-        else if(UIcmds.focus){
-            isrevert = false;
-            if(UIcmds.focus->getref() != this)UIcmds.focus->setref(*this);
-            UIcmds.focus->execute();
-        }
     }
     string& getText(){
         return labelText.getTextRef();
@@ -663,26 +679,22 @@ struct ChangeLevelUIcmd : UICommand{
     void setRef(InputManager* input = NULL){
         inputHandler = input;
     }
+    inline void quitit(){
+        increase = NULL;
+        decrease = NULL;
+    }
     cond checkcond(){
-        cout << " checking condition\n";
+        // cout << " checking condition\n";
         cond ret = NTN;
-        if(!inputHandler)return ret;
-        if(inputHandler->isKeyReady(quitCase)){
-            increase = NULL;
-            decrease = NULL;
+        if(!increase || !decrease)return EXT;
+        if(!inputHandler)return EXT;
+        //cout << " checking quitcase:\n";
+        if(inputHandler->isKeyDown(quitCase)){
             ret = EXT;
-            return ret;
         }
         else{
-            if(increase){
-                if(*increase)ret = INC;
-                else if(decrease){
-                    if(*decrease)ret = DEC;
-                }
-            }
-            else if(decrease){
-                if(*decrease)ret = DEC;
-            }
+            if(*increase)ret = INC;
+            else if(*decrease)ret = DEC;
         }
         return ret;
     }
@@ -698,13 +710,14 @@ struct ChangeLevelUIcmd : UICommand{
     void execute(){
         //cout << " executionist\n";
         if(!inputHandler){
-            // cout << " input handler problem\n";
+             //cout << " input handler problem\n";
             return;
         }
-        else cout << " doing it\n";
+        //else cout << " doing it\n";
         array<bool, SDL_NUM_SCANCODES>& keyDowns = inputHandler->getKeyDowns();
         increase = &keyDowns[increaseCase];
         decrease = &keyDowns[decreaseCase];
+        //cout << " done\n";
     }
 };
 /*
@@ -721,6 +734,7 @@ class Slider : public UIelement{
     Slider(bool focus = false, bool hover = false, bool click = false, bool revert = true)
         : UIelement(UIcmdset({NULL, new multiCommand<UIelement>(this)}), focus, hover, click, revert), 
         multref(*static_cast<multiCommand<UIelement>*>(UIcmds.click)), portion(50){
+            //UIcmds.click->setref(*this);
             multref.push(new ChangeLevelUIcmd(NULL, this));
         }
     Slider(orient slideType): UIelement(UIcmdset({NULL, new multiCommand<UIelement>(this)})), 
@@ -766,55 +780,29 @@ class Slider : public UIelement{
     }
     void update(InputManager& input) override {
         static ChangeLevelUIcmd& refcheck = *static_cast<ChangeLevelUIcmd*>(multref.getcmd(0));
-        //refcheck.setRef(&input);
-        refcheck.execute();
-        static bool oldclick = false;
-        bool click = isClicked(input);
-        bool revert = true;
-        if(isfocus){
-            if(!oldclick){
-                // cout << " clicked\n";
-                revert = false;
-            }
-            oldclick = click;
-        }
-        else revert = true;
-        if(revert){
-            if(!isrevert){
-                if(UIcmds.revert){
-                    if(UIcmds.revert->getref() != this)UIcmds.revert->setref(*this);
-                    UIcmds.revert->execute();
-                }
-            }
-            isrevert = true;
-        }
-        else if(click)
-        {
-            isrevert = false;
-            //cout << " clicking\n";
-            //if(UIcmds.click)cout << " exist\n";
-            if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
-            //cout << " executing\n";
-            UIcmds.click->execute();
-            /*
-            if(UIcmds.click){
-                cout << " clicked\n";
-                if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
-                cout << " executing\n";
-                UIcmds.click->execute();
-            }
-            */
-        }
-        else if(UIcmds.focus){
-            isrevert = false;
-            if(UIcmds.focus->getref() != this)UIcmds.focus->setref(*this);
-            UIcmds.focus->execute();
-        }
+        refcheck.setRef(&input);
+        UIelement::update(input);
         cond curr = refcheck.checkcond();
         setascond(curr);
+        if(curr == EXT){
+            // cout << " slider exit\n";
+            refcheck.quitit();
+            return;
+        }
+        else{
+            int size = multref.commands.size();
+            for(int i = 1; i < size; i++){
+                multref.getcmd(i)->execute();
+            }
+            isrevert = false;
+        }
     }
     inline void checkportion(){
         if(portion > 100)portion = 100;
+        if(portion < 0)portion = 0;
+    }
+    inline short getportion() const {
+        return portion;
     }
     inline void setascond(cond curr){
         switch (curr){
@@ -823,22 +811,24 @@ class Slider : public UIelement{
             break;
             case DEC:
             portion -= 1;
-            break;
+            break;            
             default:
             break;
         }
         checkportion();
     }
-    void render(SDL_Renderer* rend, SDL_Texture*& tex, int drawtype = 2) override {
-        int width = type == HORI ? (int)(float)(box.w * portion * 0.01) - 1 : box.w - 1;
-        int height = type == VERT ? (int)(float)(box.h * portion * 0.01) - 1 : box.h - 1;
+    void render(SDL_Renderer* rend, SDL_Texture*& tex, int drawt = 2) override {
+        float percent = portion * 0.01;
+        int width = type == HORI ? (int)((float)box.w * percent) - 1 : box.w - 1;
+        int height = type == VERT ? (int)((float)box.h * percent) - 1 : box.h - 1;
         if(width < 0)width = 0;
         if(height < 0)height = 0;
-        SDL_Rect boxportion = {box.x + 1, box.y + 1, width, height};
+        SDL_Rect boxportion = {box.x + 1, type == HORI ? box.y + 1 : box.y + 1 + (int)((float)box.h * (1.0f - percent)), width, height};
         SDL2::setRenCol(rend, bg);
         SDL_RenderFillRect(rend, &boxportion);
         SDL2::setRenCol(rend, fg);
-        TEXTURE::drawRect(box, rend, drawtype/2);
+        int drawtype = drawt <= 2 ? type == HORI ? box.h/2 : box.w/2 : drawt;
+        TEXTURE::drawRect(box, rend, drawtype);
     }
     void setCol1(const SDL_Color& col) override {
         fg = col;
@@ -851,11 +841,6 @@ class Slider : public UIelement{
     }
     bool isCurrent(){
         return false;
-    }
-    bool isHovered(const InputManager& input){
-        const SDL_Point& mpos = input.getMouseP();
-        ishover = SDL_PointInRect(&mpos, &box);
-        return ishover;
     }
     bool isFocused(const InputManager& input){
         isfocus = isHovered(input) || isCurrent();

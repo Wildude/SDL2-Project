@@ -29,7 +29,7 @@ struct ChangeFontCommand : public command<T>{
     FONT newFont;
     ChangeFontCommand() : command<T>(), fontRef(NULL) {}
     ChangeFontCommand(FONT& font) : command<T>(), fontRef(&font) {}
-    ChangeFontCommand(const FONT& nFont): newFont(nFont){}
+    ChangeFontCommand(const FONT& nFont): newFont(nFont), fontRef(NULL){}
     void setRef(FONT& font){
         //cout << " setting font references\n";
         fontRef = &font;
@@ -40,10 +40,10 @@ struct ChangeFontCommand : public command<T>{
     }
     void execute() override {
         if(!fontRef){
-            // cout << " no execution\n";
+            // cout << " no font execution\n";
             return;
         }
-        //cout << " executing font change\n";
+        // cout << " executing font change\n";
         *fontRef = newFont; // Change the font to the new value
     } 
 };
@@ -53,7 +53,7 @@ struct ChangeColorCommand : public command<T>{
     SDL_Color nb, nf;
     ChangeColorCommand() : bg(NULL), fg(NULL), command<T>(){}
     ChangeColorCommand(SDL_Color& bref, SDL_Color& fref) : bg(&bref), fg(&fref){}
-    ChangeColorCommand(const SDL_Color& nbg, const SDL_Color& nfg): nb(nbg), nf(nfg){}
+    ChangeColorCommand(const SDL_Color& nbg, const SDL_Color& nfg): nb(nbg), nf(nfg), bg(NULL), fg(NULL){}
     void setRef(SDL_Color& bref, SDL_Color& fref){
         //cout << " setting color references\n";
         bg = &bref;
@@ -66,10 +66,10 @@ struct ChangeColorCommand : public command<T>{
     }
     void execute() override {
         if(!bg || !fg){
-            // cout << " no execution\n";
+            // cout << " no color execution\n";
             return;
         }
-        //cout << " executing color change\n";
+        // cout << " executing color change\n";
         *bg = nb;
         *fg = nf;
     }
@@ -101,16 +101,17 @@ struct multiCommand : public command<T>{
     void execute(){
         // cout << " executing multicommand\n";
         if(!command<T>::ref){
-            // cout << " no reference\n";
+             // cout << " no reference\n";
             return;
         }
         int size = commands.size();
         if(!size){
-            // cout << " no executions\n";
+             // cout << " no executions\n";
             return;
         }
         for(int i = 0; i < size; i++){
             // cout << " executing cmd " << i << endl;
+            if(!commands[i]->getref())commands[i]->setref(*command<T>::ref);
             commands[i]->execute();
         }
     }

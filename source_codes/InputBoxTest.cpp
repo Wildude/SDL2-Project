@@ -26,27 +26,22 @@ int main(int argn, char** argc){
     // cout << " revert font\n";
     UIFont revertFont(revFont);
     // cout << " full reverter\n";
-    multiCommand<UIelement> reverter, inputer;
-
-    ChangeStringUIcmd stringchange(NULL, NULL);
+    multiCommand<UIelement> reverter;
 
     reverter.push(revertCol);
     reverter.push(revertFont);
-    inputer.push(changeFont);
-    inputer.push(stringchange);
 
     InputBox thebox("Easy Comer");
-    inputer.setref(thebox);
+    //changeFont.setref(thebox);
     thebox.setFont(revFont);
 
     thebox.onFocus((&changeColor));
 
-    thebox.onClick((&inputer));
+    thebox.onClick((&changeFont));
 
     thebox.onRevert((&reverter));
 
     TextInputHandler input;
-    stringchange.setInputer(input);
 
     WINDOW win("GUI Test");
     win.crtB();

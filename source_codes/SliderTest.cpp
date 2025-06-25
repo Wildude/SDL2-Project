@@ -16,11 +16,10 @@ int main(int argn, char** argc){
     // cout << " full reverter\n";
     multiCommand<UIelement> reverter;
     reverter.push(revertCol);
-
     Slider theSlider;
     theSlider.setCol1(rfg);
     theSlider.setCol2(rbg);
-    theSlider.setBox(30, 10);
+    theSlider.setBox(90, 30);
     theSlider.onFocus((&changeColor1));
 
     theSlider.onClick((&changeColor2));
@@ -41,7 +40,7 @@ int main(int argn, char** argc){
         win.clr();
         input.update();
         //UIcons[currentState].render(win.getren(), texture);
-        boxied.settext(input.getText() == "" ? to_string(theSlider.getBox()->w) + " x " + to_string(theSlider.getBox()->h) : input.getText());
+        boxied.settext(to_string(theSlider.getportion()) + " : " + to_string(theSlider.getBox()->w) + " x " + to_string(theSlider.getBox()->h));
         boxied.draw(win.getren(), texture);
         theSlider.update(input);
         theSlider.render(win.getren(), texture);

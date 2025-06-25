@@ -80,7 +80,10 @@ class InputManager {
     bool shouldQuit() const { return quit; }
 
     // Keyboard input
-    bool isKeyDown(SDL_Scancode key) const { return keyDown[key]; }
+    bool isKeyDown(SDL_Scancode key) const {
+        //cout << " checking key: " << keyDown[key] <<endl; 
+        return keyDown[key]; 
+    }
     //bool isKeyJustPressed(SDL_Scancode key) const { return keyPressed[key]; }
     bool isKeyReleased(SDL_Scancode key) const { return keyReleased[key]; }
 
@@ -227,9 +230,14 @@ class TextInputHandler : public InputManager {
             if(!useText){
                 textTo = NULL;
                 if (e.type == SDL_KEYDOWN && !e.key.repeat) {
+                SDL_Scancode sc = e.key.keysym.scancode;
+                keyDown[sc] = true;
+                //keyPressed[sc] = true;
+                } else if (e.type == SDL_KEYUP) {
                     SDL_Scancode sc = e.key.keysym.scancode;
-                    keyDown[sc] = true;
-                    //keyPressed[sc] = true;
+                    keyDown[sc] = false;
+                    keyReleased[sc] = true;
+                    keyDelayCounters[sc] = 0;
                 }
             }   
             else{
