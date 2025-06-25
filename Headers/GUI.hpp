@@ -12,37 +12,27 @@ class UIelement : public GameObject
         UICommand* revert;
     } UIcmds;
     public:
-    UIelement(const UIcmdset& cmd = UIcmdset{NULL, NULL, NULL}, 
-        bool focus = false, bool hover = false, bool click = false, bool revert = true) 
-        : UIcmds(cmd), isfocus(focus), ishover(hover), isclick(click), isrevert(revert){
-        checkfile();
-        uilog << " created UIelement\n";
+    // abstract imps
+    virtual void setPos(int, int) = 0;
+    virtual void setCol1(const SDL_Color&) = 0;
+    virtual void setCol2(const SDL_Color&) = 0;
+    virtual void setFont(const FONT&) = 0;
+    virtual SDL_Rect* getBox() = 0;
+    virtual FONT* getFont() = 0;
+    virtual SDL_Color* getCol1() = 0;
+    virtual SDL_Color* getCol2() = 0;
+    virtual void render(SDL_Renderer*, SDL_Texture*&, int) = 0; // Pure virtual function for rendering the UI element
+    // repeated imps
+    virtual bool isFocused(InputManager& input){
+        isfocus = isHovered(input) || isCurrent(input);
+        return isfocus;
     }
-    UIelement(const UIelement& ui): UIelement(){
-        *this = ui;
+    virtual bool isClicked(InputManager& input){
+        isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT);
+        return isclick;
     }
-    UIelement& operator=(const UIelement& ui) {
-        // Assignment operator implementation
-        if (this != &ui) {
-            UIcmds = ui.UIcmds;
-            isfocus = ui.isfocus;
-            isrevert = ui.isrevert;
-            isclick = ui.isclick;
-            ishover = ui.ishover;
-            // Copy the data members from ui to this object
-        }
-        return *this;
-    }
-    inline void checkfile(){
-        if(!uilog.is_open()){
-            uilog.open("../Files/Data/GUI.log", ios::app);
-        }
-    }
-    ~UIelement() {
-        uilog << " destroying UIelement\n";
-        uilog.close();
-        // Destructor implementation
-        // Clean up any resources if needed
+    virtual bool isCurrent(InputManager& input) {
+        return false;
     }
     virtual void update(InputManager& input){
         static bool oldclick = false;
@@ -101,17 +91,16 @@ class UIelement : public GameObject
     virtual void onRevert(UICommand* revert = NULL){
         UIcmds.revert = revert;
     }
-    virtual void setPos(int, int) = 0;
-    virtual void setCol1(const SDL_Color&) = 0;
-    virtual void setCol2(const SDL_Color&) = 0;
-    virtual void setFont(const FONT&) = 0;
-    virtual SDL_Rect* getBox() = 0;
-    virtual FONT* getFont() = 0;
-    virtual SDL_Color* getCol1() = 0;
-    virtual SDL_Color* getCol2() = 0;
+    virtual bool isHovered(const InputManager& input){
+        const SDL_Point& mpos = input.getMouseP();
+        const SDL_Rect& mbox = *getBox();
+        ishover = SDL_PointInRect(&mpos, &mbox);
+        return ishover;
+    }
+    // meaningless imps
     virtual void settext(const string& text){}
     virtual string& getText() {}
-    virtual void render(SDL_Renderer*, SDL_Texture*&, int) = 0; // Pure virtual function for rendering the UI element
+    // important imps
     bool gethover() const {
         return ishover;
     }
@@ -124,7 +113,6 @@ class UIelement : public GameObject
     bool getrevert() const {
         return isrevert;
     }
-
     UICommand* getFocusCmd() const {
         return UIcmds.focus;
     }
@@ -134,15 +122,38 @@ class UIelement : public GameObject
     UICommand* getRevertCmd() const{
         return UIcmds.revert;
     }
-    //
-    virtual bool isHovered(const InputManager& input){
-        const SDL_Point& mpos = input.getMouseP();
-        const SDL_Rect& mbox = *getBox();
-        ishover = SDL_PointInRect(&mpos, &mbox);
-        return ishover;
+    // constructors and such
+    UIelement(const UIcmdset& cmd = UIcmdset{NULL, NULL, NULL}, 
+        bool focus = false, bool hover = false, bool click = false, bool revert = true) 
+        : UIcmds(cmd), isfocus(focus), ishover(hover), isclick(click), isrevert(revert){
+        checkfile();
+        uilog << " created UIelement\n";
     }
-    virtual bool isClicked(InputManager&) = 0;
-    virtual bool isFocused(const InputManager&) = 0;
+    UIelement(const UIelement& ui): UIelement(){
+        *this = ui;
+    }
+    UIelement& operator=(const UIelement& ui) {
+        if (this != &ui) {
+            UIcmds = ui.UIcmds;
+            isfocus = ui.isfocus;
+            isrevert = ui.isrevert;
+            isclick = ui.isclick;
+            ishover = ui.ishover;
+        }
+        return *this;
+    }
+    inline void checkfile(){
+        if(!uilog.is_open()){
+            uilog.open("../Files/Data/GUI.log", ios::app);
+        }
+    }
+    ~UIelement() {
+        uilog << " destroying UIelement\n";
+        uilog.close();
+        // Destructor implementation
+        // Clean up any resources if needed
+    }
+    
 };
 typedef command<UIelement> UICommand;
 typedef multiCommand<UIelement> UIMulticommand;
@@ -193,34 +204,15 @@ struct UIFont : public UICommand{
         cmd.execute();
     }
 };
-class UIPanel : public UIelement{
-
-};
 class UIContainer : public UIelement{
+    protected:
     vector<UIelement*> UIlist;
     SDL_Rect box;
+    SDL_Color fg, bg;
     public:
     UIContainer(): box(SDL_Rect{0, 0, 0, 0}), UIelement(){}
     int getsize(){
         return UIlist.size();
-    }
-    bool isHovered(const InputManager& input) {
-        const SDL_Point& mpos = input.getMouseP();
-        // Check if the point is within the label's bounding box
-        const SDL_Rect& box = *getBox();
-        ishover = SDL_PointInRect(&mpos, &box);
-        return ishover;
-    }
-    bool isCurrent(){
-        return false;
-    }
-    bool isFocused(const InputManager& input){
-        isfocus = isHovered(input) || isCurrent();
-        return isfocus;
-    }
-    bool isClicked(InputManager& input){
-        isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT);
-        return isclick;
     }
     vector<UIelement*>& getList(){
         return UIlist;
@@ -254,29 +246,16 @@ class UIContainer : public UIelement{
     }
     void render(SDL_Renderer* renderer, SDL_Texture*& board, int drawtype = 2) override {
         checkfile();
-        uilog << " Rending UIelements:\n";
+        uilog << " Rendering UIelements:\n";
         for (UIelement* ui : UIlist) {
             ui->render(renderer, board, drawtype);
         }
     }
-    void setbox(){
-        box.w = 0;
-        box.h = 0;
-        int size = UIlist.size();
-        if(!size){
-            return;
-        }
-        for(UIelement* ui : UIlist){
-            SDL_Rect* rect = ui->getBox();
-            if(rect->w > box.w) box.w = rect->w;
-            box.h += rect->h;
-        }
-    }
     SDL_Color* getCol1(){
-        return (UIlist.size() ? UIlist[0]->getCol1() : NULL);
+        return &fg;
     }
     SDL_Color* getCol2(){
-        return (UIlist.size() ? UIlist[0]->getCol2() : NULL);
+        return &bg;
     }
     FONT* getFont(){
         return (UIlist.size() ? UIlist[0]->getFont() : NULL);
@@ -311,59 +290,85 @@ class UIContainer : public UIelement{
             UIlist[i]->setCol2(*UIlist[0]->getCol2());
         }
     }
-    void setFont(const FONT& font){
+    void setFont(const FONT& font) override {
         if(!UIlist.size())return;
         // cout << " setting all fonts\n";
         for(UIelement* ui : UIlist){
             ui->setFont(font);
         }
     }
-    void setCol1(const SDL_Color& col){
+    void setCol1(const SDL_Color& col) override {
         if(!UIlist.size())return;
         // cout << " setting all fcolors\n";
         for(UIelement* ui : UIlist){
             ui->setCol1(col);
         }
     }
-    void setCol2(const SDL_Color& col){
+    void setCol2(const SDL_Color& col) override {
         if(!UIlist.size())return;
         // cout << " setting all fcolors\n";
         for(UIelement* ui : UIlist){
             ui->setCol2(col);
         }
     }
-    void setPos(int x, int y){
-        int size = UIlist.size();
-        if(!size)return;
-        // cout << " setting all positions\n";
-        vector<UIelement*>& List = UIlist;
-        // cout << " p0\n";
-        List[0]->setPos(x, y);
-        for(int i = 1; i < size; i++){
-            List[i]->setPos(x, List[i - 1]->getBox()->h + List[i - 1]->getBox()->y);
-        }
-    }
-    
-    void onClick(UICommand* cmd = NULL){
+    void onClick(UICommand* cmd = NULL) override {
         UIelement::onClick(cmd);
         int size = UIlist.size();
         if(!size)return;
         for(int i = 0; i < size; i++)
         if(!UIlist[i]->getClickCmd())UIlist[i]->onClick(cmd);
     }
-    void onFocus(UICommand* cmd = NULL){
+    void onFocus(UICommand* cmd = NULL) override {
         UIelement::onFocus(cmd);
         int size = UIlist.size();
         if(!size)return;
         for(int i = 0; i < size; i++)
         if(!UIlist[i]->getFocusCmd())UIlist[i]->onFocus(cmd);
     }
-    void onRevert(UICommand* cmd = NULL){
+    void onRevert(UICommand* cmd = NULL) override {
         UIelement::onRevert(cmd);
         int size = UIlist.size();
         if(!size)return;
         for(int i = 0; i < size; i++)
         if(!UIlist[i]->getRevertCmd())UIlist[i]->onRevert(cmd);
+    }
+    //
+    virtual void setPos(int x, int y) override {
+        int size = UIlist.size();
+        if(!size)return;
+        UIlist[0]->setPos(x, y);
+        for(int i = 1; i < size; i++){
+           UIlist[i]->setPos(x, UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y);
+        }
+    }
+    virtual void setbox(){
+        box.w = 0;
+        box.h = 0;
+        for(UIelement* ui : UIlist){
+            SDL_Rect* rect = ui->getBox();
+            if(rect->w > box.w) box.w = rect->w;
+            box.h += rect->h;
+        }
+    }
+};
+class UIPanel : public UIContainer{
+    public:
+    void setPos(int x, int y) override {
+        int size = UIlist.size();
+        if(!size)return;
+        UIlist[0]->setPos(x, y);
+        for(int i = 1; i < size; i++){
+           UIlist[i]->setPos(UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y, y);
+        }
+    }
+    void setbox() override {
+        box.w = 0;
+        box.h = 0;
+        for(UIelement* ui : UIlist){
+            SDL_Rect* rect = ui->getBox();
+            if(rect->h > box.h) box.h = rect->h;
+            box.w += rect->w;
+        }
     }
 };
 /*
@@ -839,17 +844,6 @@ class Slider : public UIelement{
     void setFont(const FONT& font) override {
         return;
     }
-    bool isCurrent(){
-        return false;
-    }
-    bool isFocused(const InputManager& input){
-        isfocus = isHovered(input) || isCurrent();
-        return isfocus;
-    }
-    bool isClicked(InputManager& input){
-        isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT);
-        return isclick;
-    }
     void onClick(UICommand* cmd = NULL) override {
         multref.push(cmd);
     }
@@ -887,13 +881,319 @@ class Notification : public LabelArea{
 class Canvas : public UIelement{
 
 };
+struct ChangeNameUICmd : public UICommand{
+    string* nameref;
+    string newImage;
+    ChangeNameUICmd() : UICommand(), nameref(NULL), newImage(""){}
+    ChangeNameUICmd(const char* newName = ""): newImage(newName), nameref(NULL){}
+    ChangeNameUICmd(UIelement& ref, const char* newname = ""): UICommand(ref), 
+    newImage(newname), nameref(&ref.getText()){}
+    void setref(UIelement& ref) override {
+        UICommand::setref(ref);
+        setNameRef(ref.getText());
+    }
+    inline void setNameRef(string& ref){
+        nameref = &ref;
+    }
+    inline void setNameRef(string* ref = NULL){
+        nameref = ref;
+    }
+    inline void setnewName(const string& name = "")
+    {
+        newImage = name;
+    }
+    void execute(){
+        if(!ref){
+            //cout << " no ref\n";
+            return;
+        }
+        if(!nameref){
+            // cout << " no name ref\n";
+            return;
+        }    
+        *nameref = newImage;
+    }
+};
 class ImageViewer : public UIelement{
+    protected:
+    inline void delTex(){
+        if(imgtexture)SDL_DestroyTexture(imgtexture);
+        imgtexture = NULL;
+    }
+    inline void delpath(){
+        if(path)delete[] path;
+        path = NULL;
+    }
+    inline bool checkpath(){
+        if(!path){
+            delTex();
+            return false;
+        }
+        return true;
+    }
     SDL_Rect Box;
-    SDL_Texture* texture;
+    SDL_Texture* imgtexture;
+    FONT font;
+    SDL_Color fg, bg;
     string imgname;
     char* path;
     public:
-    ImageViewer(): UIelement(){}
+    virtual void setPos(int x, int y) override {
+        Box.x = x;
+        Box.y = y;
+    }
+    virtual void setCol1(const SDL_Color& col) override {
+        fg = col;
+        return;
+    }
+    virtual void setCol2(const SDL_Color& col) override {
+        bg = col;
+        return;
+    }
+    virtual void setFont(const FONT& font_) override{ 
+        font = font_;
+        return;
+    }
+    virtual SDL_Rect* getBox() override{
+        return &Box;    
+    } 
+    virtual FONT* getFont() override{
+        return &font;
+    }
+    virtual SDL_Color* getCol1() override {
+        return &fg;   
+    }
+    virtual SDL_Color* getCol2() override {
+        return &bg;
+    }
+    virtual void render(SDL_Renderer* rend, SDL_Texture*& texture, int drawtype = 2) override {
+        int type = checkText();
+        switch (type){
+            case -1:
+            {
+                delTex();
+                setBoxDim(50, 50);
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &Box);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(Box, rend);
+                break;
+            }
+            case -2:
+            {
+                delTex();
+                SDL_Surface* surf = renderText(font.getfont(), "<img>", fg, bg, 1);
+                imgtexture = SDL_CreateTextureFromSurface(rend, surf);
+                SDL_FreeSurface(surf);
+                setquery();
+                SDL_Rect newBox = {Box.x - (font.getptsize() / 5), Box.y - (font.getptsize() / 5), Box.w + ((font.getptsize() / 5) * 2), Box.h + ((font.getptsize() / 5) * 2)};
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &newBox);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
+                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                break;
+            }
+            case 0:
+            {
+                SDL_Rect newBox = {Box.x - drawtype / 2, Box.y - drawtype / 2, Box.w + drawtype, Box.h + drawtype};
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &newBox);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(newBox, rend, drawtype);
+                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                break;
+            }
+            case 1:
+            {
+                // cout << " case reload\n";
+                loadImg(rend);
+                render(rend, texture, drawtype);    
+                break;
+            }
+            default:
+            {
+                delTex();
+                SDL_Surface* surf = renderText(font.getfont(), imgname.c_str(), fg, bg, 1);
+                imgtexture = SDL_CreateTextureFromSurface(rend, surf);
+                SDL_FreeSurface(surf);
+                setquery();
+                SDL_Rect newBox = {Box.x - (font.getptsize() / 5), Box.y - (font.getptsize() / 5), Box.w + ((font.getptsize() / 5) * 2), Box.h + ((font.getptsize() / 5) * 2)};
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &newBox);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
+                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                break;
+            }
+        }
+    } 
+    //
+    void settext(const string& text) override { 
+        imgname = text;
+    }
+    string& getText() override {
+        return imgname;
+    }
+    void update(InputManager& input){
+        UIelement::update(input);
+    }
+    // important imps
+    bool checkTexture(){
+        if(!imgtexture){
+            delpath();
+            return false;
+        }
+        return true;
+    }
+    int setpath(const char* fpath = NULL){
+        if(fpath){
+            if(path && strcmp(fpath, path) == 0)return 0; // no change
+            if(path)delete[] path;
+            path = new char[strlen(fpath) + 1];
+            strcpy(path, fpath);
+            return 1;
+        }
+        else{
+            delpath();
+            delTex();
+            return -1;
+        }
+    }
+    int loadImgPath(SDL_Renderer* rend, const char* fpath = NULL){
+        uilog << " ImageViewer: Image loading: " << (fpath ? fpath : "NULL") << " > ";
+        int ret = setpath(fpath);
+        if(ret < 0){
+            uilog << " path cleared\n";
+            return 0;
+        }
+        else if(ret > 0 || !imgtexture){
+            delTex();
+            imgtexture = IMG_LoadTexture(rend, path);
+            if(!imgtexture){
+                uilog << "failed: " << SDL_GetError() << endl;
+                if(path)delete[] path;
+                path = NULL;
+                return -1;
+            }
+        }
+        else{
+            uilog << " denied (same image)\n";
+            return -2;
+        }
+        uilog << " loaded\n"; 
+        setquery();
+        return 1;
+    }
+    inline int loadImg(SDL_Renderer* rend){
+        return loadImgPath(rend, path);
+    }
+    void setquery(){
+        uilog << " setting query\n";
+        if(!path && !imgtexture){
+            uilog << " ImageViewer: no image loaded\n";
+            return;
+        }
+        if(!SDL_QueryTexture(imgtexture, NULL, NULL, &Box.w, &Box.h)){
+            uilog << " ImageViewer: image loaded successfully\n";
+        }
+        else{
+            uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
+        }
+    }
+    SDL_Point getquery(){
+        uilog << " getting query to point\n";
+        SDL_Point dim = {-1, -1};
+        if(!path || !imgtexture){
+            uilog << " ImageViewer: no image loaded\n";
+            return dim;
+        }
+        if(!SDL_QueryTexture(imgtexture, NULL, NULL, &dim.x, &dim.y)){
+            uilog << " ImageViewer: image loaded successfully\n";
+        }
+        else{
+            uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
+            dim = {-2, -2};
+        }
+        return dim;
+    }
+    void getquery(SDL_Rect& rect){
+        uilog << " getting query to rect\n";
+        if(!path || !imgtexture){
+            uilog << " ImageViewer: no image loaded\n";
+            return;
+        }
+        if(!SDL_QueryTexture(imgtexture, NULL, NULL, &rect.w, &rect.h)){
+            uilog << " ImageViewer: image loaded successfully\n";
+        }
+        else{
+            uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
+        }
+    }
+    inline const char* getpath() const {
+        return path;
+    }
+    inline const char* getname() const {
+        return imgname.c_str();
+    }
+    inline void setBox(const SDL_Rect& SBox){
+        Box = SBox;
+    }
+    inline void setBoxDimP(const SDL_Point& point){
+        Box.w = point.x;
+        Box.h = point.y;
+    }
+    inline void setBoxDim(int w, int h){
+        Box.w = w;
+        Box.h = h;
+    }
+    int checkText(){
+        uilog << " ImageViewer: checking Image for text label option\n";
+        if(!imgtexture && !path){
+            uilog << " no image loaded, showing text\n";
+        }
+        else if(imgtexture && path){
+            uilog << " ImageViewer: path exists: is an image\n";
+            return 0;
+        }
+        else if(!imgtexture){
+            uilog << " ImageViewer: path exists: maybe an image\n";
+            return 1;
+        }
+        else{
+            uilog << " ImageViewer: font already loaded on texture\n";
+            return !imgname.empty() ? 2 : -2;
+        }
+        //
+        if(!font.checkfont()){
+            uilog << " ImageViewer: Font not initalized\n";
+            return -1;
+        }
+        if(!imgname.empty()){
+            uilog << " ImageViewer: font loading on texture\n";
+            return 2;
+        }
+        else{
+            uilog << " ImageViewer: image name empty\n";
+            return -2;
+        }
+    }
+    //
+    ImageViewer(): UIelement(), Box(SDL_Rect{0, 0, 0, 0}), imgtexture(NULL), 
+    font(FONT()), fg(SDL_Color{0, 0, 0, 255}), bg(SDL_Color{255, 255, 255, 255}), imgname(""), path(NULL) {
+        checkfile();
+        uilog << " created ImageViewer\n";
+    }
+    ImageViewer(const char* fpath): ImageViewer() {
+        setpath(fpath);
+    }
+    ImageViewer(const SDL_Rect& box): ImageViewer() {
+        Box = box;
+    }
+    //
+    ~ImageViewer(){
+        if(path)delete[] path;
+    }
 };
 class MiniMap : public UIelement{
 

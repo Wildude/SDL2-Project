@@ -262,6 +262,14 @@ namespace SDL2
 	{
 		SDL_DestroyRenderer(ren);
 	}
+	const char* GetAccessName(int access) {
+		switch (access) {
+			case SDL_TEXTUREACCESS_STATIC:   return "STATIC";
+			case SDL_TEXTUREACCESS_STREAMING:return "STREAMING";
+			case SDL_TEXTUREACCESS_TARGET:   return "TARGET";
+			default:                         return "UNKNOWN";
+		}
+	}
 	int Quer_TEX(SDL_Texture * texture, Uint32 * format, int * access, int * w, int * h)
 	{
 		return SDL_QueryTexture(texture, format, access, w, h);
@@ -500,6 +508,53 @@ namespace SDL2
 		return IMG_Quit(); //Deinitializeds SDL_image
 	}
 	//
+	//SDL_TTF.h
+	inline SDL_Surface* solid_renderText(TTF_Font* font, const char* text, const SDL_Color& fg){
+		return TTF_RenderText_Solid(font, text, fg);
+	}
+	inline SDL_Surface* shaded_renderText(TTF_Font* font, const char* text, const SDL_Color& fg, const SDL_Color& bg){
+		return TTF_RenderText_Shaded(font, text, fg, bg);
+	}
+	inline SDL_Surface* blended_renderText(TTF_Font* font, const char* text, const SDL_Color& fg){
+		return TTF_RenderText_Blended(font, text, fg);
+	}
+	inline SDL_Surface* LCD_renderText(TTF_Font* font, const char* text, const SDL_Color& fg, const SDL_Color& bg){
+		return TTF_RenderText_LCD(font, text, fg, bg);
+	}
+	SDL_Surface* renderText(TTF_Font* font, const char* text, const SDL_Color& fg, int drawtype = 1){
+		switch (drawtype){
+			case 0:
+			return solid_renderText(font, text, fg);
+			case 1:
+			return blended_renderText(font, text, fg);
+			case 2:
+			{
+				SDL_Color bg = SDL_Color({(Uint8)(fg.r - (Uint8)255), (Uint8)(fg.g - (Uint8)255), (Uint8)(fg.b - (Uint8)255), (Uint8)(fg.a - (Uint8)255)});
+				return shaded_renderText(font, text, fg, bg);
+			}
+			case 3:
+			{
+				SDL_Color bg = SDL_Color({(Uint8)(fg.r - (Uint8)255), (Uint8)(fg.g - (Uint8)255), (Uint8)(fg.b - (Uint8)255), (Uint8)(fg.a - (Uint8)255)});
+				return LCD_renderText(font, text, fg, bg);
+			}
+			default:
+			return blended_renderText(font, text, fg);
+		}
+	}
+	SDL_Surface* renderText(TTF_Font* font, const char* text, const SDL_Color& fg, const SDL_Color& bg, int drawtype = 2){
+		switch (drawtype){
+			case 0:
+			return renderText(font, text, fg, 0);
+			case 1:
+			return renderText(font, text, fg, 1);
+			case 2:
+			return shaded_renderText(font, text, fg, bg);
+			case 3:
+			return LCD_renderText(font, text, fg, bg);
+			default:
+			return LCD_renderText(font, text, fg, bg);
+		}
+	}
 	//SDL_mixer.h
 	//channels
 	void Pause_chann(int chann_no)

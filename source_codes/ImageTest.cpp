@@ -1,6 +1,6 @@
 // testing states and transitions between states:
 #include "../Headers/inclusions.hpp"
-WINDOW win("Menu State Test");
+WINDOW win("ImageUI Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
     // cout << " revfont\n";
@@ -18,39 +18,44 @@ int main(int argn, char** argc){
     // cout << " revert font\n";
     UIFont revertFont(revFont);
     // cout << " full reverter\n";
-    multiCommand<UIelement> reverter;
+    ChangeNameUICmd nameChange("FUCKERS");
+    // multicommands
+    multiCommand<UIelement> reverter, clicker;
 
     reverter.push(revertCol);
     reverter.push(revertFont);
 
-    InputBox thebox("Easy Comer");
-    //changeFont.setref(thebox);
-    thebox.setFont(revFont);
+    clicker.push(changeFont);
+    clicker.push(nameChange);
+    ImageViewer theImage("../Images/Samples/AAU.pn");
+    theImage.settext("AAU");
+    theImage.setCol1(rfg);
+    theImage.setCol2(rbg);
+    theImage.setFont(revFont);
 
-    thebox.onFocus((&changeColor));
+    theImage.onFocus((&changeColor));
 
-    thebox.onClick((&changeFont));
+    theImage.onClick((&clicker));
 
-    thebox.onRevert((&reverter));
+    theImage.onRevert((&reverter));
 
     TextInputHandler input;
 
     WINDOW win("GUI Test");
     win.crtB();
-    win.pstcol(255, 255, 255, 255);
-    thebox.setPos(win.getw()/8, win.getw()/8);
+    SDL_Color clearcol = {255, 255, 255, 255};
+    theImage.setPos(win.getw()/8, win.getw()/8);
     //texture = texturei[0];
     TextBox boxied("Boxied");
     boxied.setfont(newFont);
     boxied.setboxpos(0, 0);
     while(!input.shouldQuit()){
-        win.clr();
+        win.clr(clearcol);
         input.update();
-        //UIcons[currentState].render(win.getren(), texture);
-        boxied.settext(input.getText() == "" ? to_string(thebox.getBox()->w) + " x " + to_string(thebox.getBox()->h) : input.getText());
+        boxied.settext(input.getText() == "" ? to_string(theImage.getBox()->w) + " x " + to_string(theImage.getBox()->h) : input.getText());
         boxied.draw(win.getren(), texture);
-        thebox.update(input);
-        thebox.render(win.getren(), texture);
+        theImage.update(input);
+        theImage.render(win.getren(), texture);
         win.pst();
         SDL_Delay(33);
     }

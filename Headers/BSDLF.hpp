@@ -901,7 +901,11 @@ class FONT
         // cout<<" path: " << (path ? path : "NULL") << endl;
         return *this;
     }
-    void delfont(){
+    inline void delpath(){
+        if(path)delete[] path;
+        path = NULL;
+    }
+    inline void delfont(){
         if(fontdata){
             TTF_CloseFont(fontdata);
             fontdata = NULL;
@@ -966,11 +970,28 @@ class FONT
     {
         return (TTF_WasInit() ? TTF_WasInit() : TTF_Init());
     }
-    bool checkfont() const{
-        return fontdata;
+    bool checkpath(){
+        font_file << " checking font path: ";
+        if(!path){
+            font_file << "fontpath is NULL\n";
+            delfont();
+            return false;
+        }
+        font_file << " good\n";
+        return true;
+    }
+    bool checkfont(){
+        font_file << " checking font: ";
+        if(!fontdata){
+            font_file << "fontdata is NULL\n";
+            delpath();
+            return false;
+        }
+        font_file << " good\n";
+        return true;
     }
     void display() const{
-        cout << " checkfont: " << (checkfont() ? "true\n" : "false\n");
+        cout << " checkfont: " << (fontdata != NULL ? "true\n" : "false\n");
         cout << " ptsize: " << ptsize << endl;
         cout << " path: " << path << endl;
     }
@@ -1016,7 +1037,12 @@ class FONT
         // cout<<" setting font: "<<fontpath<<" with ptsize: "<< ptsize <<endl;
         delfont();
         fontdata = TTF_OpenFont(fontpath, ptsize);
-        if(!fontdata){cout <<" font loading error: "<<SDL_GetError()<<endl; return NULL;}
+        if(!fontdata){
+            cout <<" font loading error: "<<SDL_GetError()<<endl; 
+            font_file << " font loading error: " << SDL_GetError() << endl;
+            
+            return NULL;
+        }
         return fontdata;
     }
 };
