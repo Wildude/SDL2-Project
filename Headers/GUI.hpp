@@ -58,23 +58,12 @@ class UIelement : public GameObject
         else if(click)
         {
             isrevert = false;
-            // cout << " clicking\n";
-            if(UIcmds.click->getref() != this){
-                //cout << " was not ref\n";
-                UIcmds.click->setref(*this);
-            }
-            //else cout << " was refed\n";
-            //cout << " executing\n";
-            UIcmds.click->execute();
-            //cout << " executed\n";
-            /*
             if(UIcmds.click){
-                cout << " clicked\n";
-                if(UIcmds.click->getref() != this)UIcmds.click->setref(*this);
-                cout << " executing\n";
+                if(UIcmds.click->getref() != this){
+                    UIcmds.click->setref(*this);
+                }
                 UIcmds.click->execute();
             }
-            */
         }
         else if(UIcmds.focus){
             isrevert = false;
@@ -195,6 +184,10 @@ struct UIFont : public UICommand{
         ref = &tref;
         cmd.setRef(*ref->getFont());
     }
+    const UIelement* getref() const override {
+        //cout << " UI font change get ref called\n";
+        return UICommand::getref();
+    }
     void execute(){
         //cout << " executing UI font\n";
         if(!ref){
@@ -210,7 +203,8 @@ class UIContainer : public UIelement{
     SDL_Rect box;
     SDL_Color fg, bg;
     public:
-    UIContainer(): box(SDL_Rect{0, 0, 0, 0}), UIelement(){}
+    UIContainer(): box(SDL_Rect{0, 0, 0, 0}), UIelement(){
+    }
     int getsize(){
         return UIlist.size();
     }
@@ -334,41 +328,63 @@ class UIContainer : public UIelement{
     }
     //
     virtual void setPos(int x, int y) override {
+        uilog << " setting UIContainer pos:\n";
+        box.x = x;
+        box.y = y;
         int size = UIlist.size();
-        if(!size)return;
+        if(!size){
+            uilog << " Empty container\n";
+            return;
+        }
+        uilog << " pos0 " << x << " , " << y << endl;
         UIlist[0]->setPos(x, y);
         for(int i = 1; i < size; i++){
-           UIlist[i]->setPos(x, UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y);
+            int yp = UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y;
+            uilog << " pos " << i << " " << x << " , " << yp << endl;
+            UIlist[i]->setPos(x, yp);
         }
     }
     virtual void setbox(){
+        uilog << " setting UIContainer box\n";
         box.w = 0;
         box.h = 0;
         for(UIelement* ui : UIlist){
             SDL_Rect* rect = ui->getBox();
             if(rect->w > box.w) box.w = rect->w;
+            uilog << " rbox: " << rect->w << ", " << rect->h << endl;
             box.h += rect->h;
         }
+        uilog << " box: " << box.w << ", " << box.h << endl;
     }
 };
 class UIPanel : public UIContainer{
     public:
     void setPos(int x, int y) override {
+        uilog << " setting UIPanel pos:\n";
         int size = UIlist.size();
-        if(!size)return;
+        if(!size){
+            uilog << " Empty panel\n";
+            return;
+        }
+        uilog << " pos0 " << x << " , " << y << endl;
         UIlist[0]->setPos(x, y);
         for(int i = 1; i < size; i++){
-           UIlist[i]->setPos(UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y, y);
+            int xp = UIlist[i - 1]->getBox()->w + UIlist[i - 1]->getBox()->x;
+            uilog << " pos " << i << " " << xp << " , " << y << endl;
+            UIlist[i]->setPos(xp, y);
         }
     }
     void setbox() override {
+        uilog << " setting UIPanel Box\n";
         box.w = 0;
         box.h = 0;
         for(UIelement* ui : UIlist){
             SDL_Rect* rect = ui->getBox();
             if(rect->h > box.h) box.h = rect->h;
+            uilog << " rbox: " << rect->w << ", " << rect->h << endl;
             box.w += rect->w;
         }
+        uilog << " box: " << box.w << ", " << box.h << endl;
     }
 };
 /*
@@ -901,6 +917,10 @@ struct ChangeNameUICmd : public UICommand{
     inline void setnewName(const string& name = "")
     {
         newImage = name;
+    }
+    const UIelement* getref() const override{
+        //cout << " Change name cmd get ref called\n";
+        return UICommand::getref();
     }
     void execute(){
         if(!ref){

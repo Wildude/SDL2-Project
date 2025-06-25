@@ -46,6 +46,10 @@ struct ChangeFontCommand : public command<T>{
         // cout << " executing font change\n";
         *fontRef = newFont; // Change the font to the new value
     } 
+    const T* getref() const override {
+        //cout << " Font command ref get called\n";
+        return command<T>::getref();
+    }
 };
 template <class T>
 struct ChangeColorCommand : public command<T>{
@@ -111,7 +115,7 @@ struct multiCommand : public command<T>{
         }
         for(int i = 0; i < size; i++){
             // cout << " executing cmd " << i << endl;
-            if(!commands[i]->getref())commands[i]->setref(*command<T>::ref);
+            commands[i]->setref(*command<T>::ref);
             commands[i]->execute();
         }
     }
