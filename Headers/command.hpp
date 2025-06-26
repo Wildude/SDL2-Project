@@ -8,15 +8,20 @@ template <class T>
 struct command{
     T* ref;
     command(): ref(NULL){}
-    command(T& uref){
-        ref = &uref;
-    }
+    command(T& uref): ref(&uref){}
     command(T* uref): ref(uref){}
     virtual void setref(T& uref){
         //cout << " setting reference\n";
         ref = &uref;
     }
+    virtual void setref(T* uref = NULL){
+        ref = uref;
+    }
     virtual const T* getref() const {
+        //cout << " getting reference\n";
+        return ref;
+    }
+    virtual T* getref(){
         //cout << " getting reference\n";
         return ref;
     }
@@ -76,6 +81,136 @@ struct ChangeColorCommand : public command<T>{
         // cout << " executing color change\n";
         *bg = nb;
         *fg = nf;
+    }
+};
+template <class T>
+struct ChangeStringCommand : public command<T>{
+    string* stringref;
+    string newstring;
+    ChangeStringCommand(): command<T>(), stringref(NULL), newstring("") {}
+    ChangeStringCommand(T& ref, string* strref = NULL): command<T>(ref), stringref(strref), newstring("") {}
+    ChangeStringCommand(T* ref, string* strref = NULL): command<T>(ref), stringref(strref), newstring("") {}
+    ChangeStringCommand(const char* str): command<T>(), stringref(NULL), newstring(str){}
+    inline void setStrRef(string* strref){
+        stringref = strref;
+    }
+    inline void setStrRef(string& strref){
+        stringref = &strref;
+    }
+    inline void setNewString(const string& newstr){
+        newstring = newstr;
+    }
+    inline void setNewString(const char* newstr = ""){
+        newstring = newstr;
+    }
+    inline string* getStrRef(){
+        return stringref;
+    }
+    inline string& getNewStrRef(){
+        return newstring;
+    }
+    void execute(){
+        // cout << " executing string change command\n";
+        if(!command<T>::ref){
+           // cout << " no ref\n";
+            return;
+        }
+        if(!stringref){
+            // cout << " no string ref\n";
+            return;
+        }
+        // cout << "before: " << *stringref << ", after: " << newstring << endl;
+        *stringref = newstring;
+    }
+};
+template <class T>
+struct InputStringCommand : public command<T> {
+    ChangeStringCommand<T> changestr;
+    SDL_Scancode quitCase;
+    TextInputHandler* inputHandler;
+    InputStringCommand(TextInputHandler* input = NULL, T* ref = NULL, 
+        string* textN = NULL, SDL_Scancode quiter = SDL_SCANCODE_ESCAPE) : 
+        command<T>(ref), inputHandler(input), quitCase(quiter), changestr(ref, textN){
+
+    }
+    void setquitCase(SDL_Scancode quiter = SDL_SCANCODE_ESCAPE){
+        quitCase = quiter;
+    }
+    void setInputer(TextInputHandler& inputH){
+        inputHandler = &inputH;
+    }
+    void setInputer(TextInputHandler* inputH = NULL){
+        inputHandler = inputH;
+    }
+    inline TextInputHandler* getInputer() const{
+        return inputHandler;
+    }
+    inline bool iswriting() {
+        return (inputHandler && inputHandler->getTextState());
+    }
+    inline bool iswritingON(){
+        return inputHandler && inputHandler->getInputref() == &changestr.getNewStrRef();
+    }
+    void checktext(){
+        if(!iswriting()){
+            // cout << " quitcase\n";
+            setwriting(false);
+        }
+        else if(iswritingON()){
+            changestr.execute();
+        }
+    }
+    inline void stopwriting(){
+        inputHandler->setTextUse(false);
+        inputHandler->setInput(NULL);
+    }
+    void setwriting(bool write){
+        // cout << " setting writing to false/true\n";
+        if(!write){
+            // cout << " quit textmode\n";
+            if(iswritingON()){
+                stopwriting();
+            }
+        }
+        else if(inputHandler){
+            inputHandler->setTextUse(true);
+        }
+    }
+    inline string* getStrRef() {
+        return changestr.getStrRef();
+    }
+    inline void setStrRef(string* textto = NULL){
+        changestr.setStrRef(textto);
+    }
+    inline void setStrRef(string& textto){
+        changestr.setStrRef(textto);
+    }
+    inline void setInput(){
+        if(!inputHandler)return;
+        inputHandler->setInput(changestr.getNewStrRef());
+    }
+    string& getNewStrRef(){
+        return changestr.getNewStrRef();
+    }
+    void execute() override {
+        // cout << " exec inbox\n";
+        if(!inputHandler){
+            //cout << " cmd error no inputer\n";
+            return;
+        }
+        if(!command<T>::ref){
+            //cout << " no ref\n";
+            return;
+        }
+        //else cout << " there's reference\n";
+        //cout << " cmd writing\n";
+        if(!iswritingON()){
+            setInput();
+            inputHandler->clearText();
+        }
+        setwriting(true);
+        //else cout << " just writing\n";
+        changestr.execute();
     }
 };
 template <class T>

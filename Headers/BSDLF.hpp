@@ -256,11 +256,9 @@ class TextInputHandler : public InputManager {
                         textTo = NULL;
                     }
                 }
-                if(useText && !textTo)textTo = &inputText; // Update the textTo pointer to the current inputText
+                if(textTo)*textTo = inputText; // Update the textTo content to the current inputText
             }
-            
         }
-        
         // Update key repeat delay counters
         updateDelays();
         mouseWheelY = 0; // Reset wheel each frame
@@ -272,20 +270,18 @@ class TextInputHandler : public InputManager {
     void clearText() {
         inputText.clear();
     }
-    void setInput(){
-        textTo = NULL;
-    }
-    void setInput(string*& the_str){
-        if(!textTo)textTo  = &inputText;
-        the_str = textTo;
-    }
-    void setInput(string& the_str){
+    inline void setInput(string& the_str){
         textTo = &the_str;
+    }
+    inline void setInput(string* the_str = NULL){
+        textTo = the_str;
     }
     void setQuitCase(SDL_Scancode quiter = SDL_SCANCODE_RETURN){
         quitCase = quiter;
     }
-
+    string* getInputref() const {
+        return textTo;
+    }
 private:
     void startText(){
         SDL_StartTextInput(); // Start listening for text input

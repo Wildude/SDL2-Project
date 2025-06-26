@@ -390,106 +390,99 @@ class UIPanel : public UIContainer{
 /*
 🔹 1. Text-Based Components
 */
-template <class T>
-struct ChangeStringCmd : public command<T>{
-    string* textTo;
-    SDL_Scancode quitCase;
-    bool iswriting;
-    TextInputHandler* inputHandler;
-    ChangeStringCmd(TextInputHandler* input = NULL, T* ref = NULL, string* textp = NULL) : command<T>(ref), inputHandler(input), textTo(textp), iswriting(false), quitCase(SDL_SCANCODE_RETURN){
-        
+struct ChangeStringUICmd : public UICommand{
+    ChangeStringCommand<UIelement> cmd;
+    ChangeStringUICmd(UIelement* ref = NULL, string* textp = NULL) : UICommand(ref), cmd(ref, textp){
+
     }
-    void setInputer(TextInputHandler& inputH){
-        inputHandler = &inputH;
+    void setref(UIelement& ref) override {
+        UICommand::setref(ref);
+        cmd.setref(ref);
     }
-    void setInputer(TextInputHandler* inputH = NULL){
-        inputHandler = inputH;
+    void setref(UIelement* ref) override {
+        UICommand::setref(ref);
+        cmd.setref(ref);
     }
     void setTextP(string* textp = NULL){
-        textTo = textp;
+        cmd.setStrRef(textp);
     }
-    void setwriting(bool write){
-        iswriting = write;
-        if(!iswriting)inputHandler->setInput();
+    void setNewStr(const string& newstr){
+        cmd.setNewString(newstr);
+    }
+    void setNewStr(const char* newstr = ""){
+        cmd.setNewString(newstr);
     }
     virtual void execute(){
-        if(!textTo){
+        if(!ref){
             // cout << " cmd error no textTo\n";
             return;
         }
-        if(!inputHandler){
-            // cout << " cmd error no inputer\n";
-            return;
-        }
-        //if(!command<T>::ref)cout << " no ref though\n";
-        //else cout << " there's reference\n";
-        //cout << " cmd writing\n";
-        //if(textTo)cout << " text before: " << *textTo << endl;
-        if(!iswriting){
-            //cout << " rewriting\n";
-            inputHandler->clearText();
-        }
-        //cout << " writing\n";
-        inputHandler->setInput(textTo);
-        inputHandler->setQuitCase(quitCase);
-        //cout << " text pointer set\n";
-        if(!inputHandler->checkText())inputHandler->setTextUse(true);
-        //cout << " textuse checked\n";
-        iswriting = true;
+        // cout << " executing main command\n";
+        cmd.execute();
     }
 };
-struct ChangeStringUIcmd : public UICommand {
-    string* textTo;
-    SDL_Scancode quitCase;
-    bool iswriting;
-    TextInputHandler* inputHandler;
-    ChangeStringUIcmd(TextInputHandler* input = NULL, UIelement* ref = NULL, string* textN = NULL) : command<UIelement>(ref), inputHandler(input), iswriting(false), quitCase(SDL_SCANCODE_RETURN), textTo(textN){
+struct InputStringUIcmd : public UICommand {
+    InputStringCommand<UIelement> cmd;
+    InputStringUIcmd(TextInputHandler* input = NULL, UIelement* ref = NULL, string* textN = NULL, 
+        SDL_Scancode quitCase = SDL_SCANCODE_ESCAPE) : command<UIelement>(ref), cmd(input, ref, textN){
 
     }
+    void setref(UIelement& ref){
+        UICommand::setref(ref);
+        cmd.setref(ref);
+    }
+    void setref(UIelement* ref = NULL){
+        UICommand::setref(ref);
+        cmd.setref(ref);
+    }
     void setInputer(TextInputHandler& inputH){
-        inputHandler = &inputH;
+        cmd.setInputer(inputH);
     }
     void setInputer(TextInputHandler* inputH = NULL){
-        inputHandler = inputH;
+        cmd.setInputer(inputH);
+    }
+    inline TextInputHandler* getInputer() const {
+        return cmd.getInputer();
+    }
+    inline bool iswriting(){
+        return cmd.iswriting();
+    }
+    inline bool iswritingON(){
+        return cmd.iswritingON();
+    }
+    inline void stopwriting(){
+        cmd.stopwriting();
     }
     void checktext(){
-        if(!inputHandler->getTextState()){
+        if(!iswritingON()){
+            setStrRef(NULL);
+            return;
+        }
+        if(!iswriting()){
             // cout << " quitcase\n";
-            setwriting(false);
+            setStrRef(NULL);
+            stopwriting();
+            return;
         }
+        if(!cmd.getStrRef())setStrRef(UICommand::getref()->getText());
+        cmd.execute();
     }
-    void setwriting(bool write){
-        // cout << " setting writing to false/true\n";
-        iswriting = write;
-        if(!iswriting){
-            // cout << " quit textmode\n";
-            inputHandler->setTextUse(false);
-            setTextTo();
-        }
+    inline void setwriting(bool write){
+        cmd.setwriting(write);
     }
-    void setTextTo(string* textto = NULL){
-        textTo = (textto ? textto : ref ? &ref->getText() : NULL);
+    inline void setStrRef(string* textto = NULL){
+        cmd.setStrRef(textto);
+    }
+    inline void setStrRef(string& textto){
+        cmd.setStrRef(textto);
     }
     void execute() override{
         // cout << " exec inbox\n";
-        if(!inputHandler){
-            //cout << " cmd error no inputer\n";
+        if(!UICommand::ref){
+            //cout << " cmd error no ref\n";
             return;
         }
-        if(!command<UIelement>::ref){
-            //cout << " no ref\n";
-            return;
-        }
-        //else cout << " there's reference\n";
-        //cout << " cmd writing\n";
-        if(!iswriting){
-            // cout << " rewriting\n";
-            inputHandler->clearText();
-        }
-        else cout << " just writing\n";
-        inputHandler->setInput(textTo);
-        if(!inputHandler->checkText())inputHandler->setTextUse(true);
-        iswriting = true;
+        cmd.execute();
     }
 };
 class Label : public UIelement {
@@ -580,7 +573,7 @@ public:
     multref(*static_cast<multiCommand<UIelement>*>(UIcmds.click)), boxColor(SDL_Color({0, 0, 0, 0})){
         //cout << " input boxing\n";
         //if(UIcmds.click == NULL)cout << " click not okay\n";
-        multref.push((new ChangeStringUIcmd(NULL, this)));
+        multref.push((new InputStringUIcmd(NULL, this)));
         //ChangeStringCmd<UIelement>* temp = new ChangeStringCmd<UIelement>(NULL, this, &labelText.getTextRef());
         //multcom.push(static_cast<UICommand*>(temp));
     }
@@ -606,15 +599,17 @@ public:
     }
     void update(InputManager& input) override {
         TextInputHandler& inputT = *static_cast<TextInputHandler*>(&input);
-        static ChangeStringUIcmd& inputSetter = *static_cast<ChangeStringUIcmd*>(multref.getcmd(0));
+        static InputStringUIcmd& inputSetter = *static_cast<InputStringUIcmd*>(multref.getcmd(0));
         //static ChangeStringCmd<UIelement>* inputSetter = reinterpret_cast<ChangeStringCmd<UIelement>*>(multcom.getcmd(0));
         inputSetter.setInputer(inputT);
+        string thetext = getText();
+        inputSetter.setStrRef(thetext);
         //cout << " checking click\n";
         //if(UIcmds.click == NULL)cout << " click okay\n";;
         Label::update(input);
         inputSetter.checktext();
-        settext(inputSetter.textTo ? *inputSetter.textTo : labelText.getText());
-        if(!isfocus && input.isMouseReady(SDL_BUTTON_LEFT, 60) || input.isMouseReady(SDL_BUTTON_RIGHT, 60))inputSetter.setwriting(false);
+        settext(thetext);
+        //if(!isfocus && input.isMouseReady(SDL_BUTTON_LEFT) || input.isMouseReady(SDL_BUTTON_RIGHT))inputSetter.setwriting(false);
     }
     void render(SDL_Renderer* rend, SDL_Texture*& board, int drawtype = 2) override {
         const SDL_Color& bk = boxColor;
@@ -897,67 +892,46 @@ class Notification : public LabelArea{
 class Canvas : public UIelement{
 
 };
-struct ChangeNameUICmd : public UICommand{
-    string* nameref;
-    string newImage;
-    ChangeNameUICmd() : UICommand(), nameref(NULL), newImage(""){}
-    ChangeNameUICmd(const char* newName = ""): newImage(newName), nameref(NULL){}
-    ChangeNameUICmd(UIelement& ref, const char* newname = ""): UICommand(ref), 
-    newImage(newname), nameref(&ref.getText()){}
-    void setref(UIelement& ref) override {
-        UICommand::setref(ref);
-        setNameRef(ref.getText());
-    }
-    inline void setNameRef(string& ref){
-        nameref = &ref;
-    }
-    inline void setNameRef(string* ref = NULL){
-        nameref = ref;
-    }
-    inline void setnewName(const string& name = "")
-    {
-        newImage = name;
-    }
-    const UIelement* getref() const override{
-        //cout << " Change name cmd get ref called\n";
-        return UICommand::getref();
-    }
-    void execute(){
-        if(!ref){
-            //cout << " no ref\n";
-            return;
-        }
-        if(!nameref){
-            // cout << " no name ref\n";
-            return;
-        }    
-        *nameref = newImage;
-    }
-};
 class ImageViewer : public UIelement{
     protected:
-    inline void delTex(){
-        if(imgtexture)SDL_DestroyTexture(imgtexture);
-        imgtexture = NULL;
-    }
-    inline void delpath(){
-        if(path)delete[] path;
-        path = NULL;
-    }
-    inline bool checkpath(){
-        if(!path){
-            delTex();
-            return false;
+    int setpath(const string& imgpath){
+        if(path == imgpath){
+            return 0;
         }
-        return true;
+        if(imgpath == ""){
+            path.clear();
+            return -1;
+        }
+        path = imgpath;
+        return 1;
+    }
+    int setpath(const char* imgpath = NULL){
+        if(!imgpath){
+            path.clear();
+            return -1;
+        }
+        if(path == imgpath){
+            return 0;
+        }
+        path = imgpath;
+        return 1;
+    }
+    void resize(){
+        if(Box.w > 320)Box.w /= 4;
+        if(Box.h > 300)Box.h /= 4;
     }
     SDL_Rect Box;
-    SDL_Texture* imgtexture;
     FONT font;
     SDL_Color fg, bg;
     string imgname;
-    char* path;
+    string path, pathholder;
     public:
+    void givepath(const char* thepath = NULL){
+        pathholder = thepath;
+    }
+    void givepath(const string& thepath){
+        pathholder = thepath;
+    }
     virtual void setPos(int x, int y) override {
         Box.x = x;
         Box.y = y;
@@ -987,11 +961,14 @@ class ImageViewer : public UIelement{
         return &bg;
     }
     virtual void render(SDL_Renderer* rend, SDL_Texture*& texture, int drawtype = 2) override {
-        int type = checkText();
+        int type = checkText(loadImgPath(rend, texture, pathholder.c_str()));
         switch (type){
             case -1:
             {
-                delTex();
+                if(texture){
+                    SDL_DestroyTexture(texture);
+                    texture = NULL;
+                }
                 setBoxDim(50, 50);
                 setRenCol(rend, bg);
                 SDL_RenderFillRect(rend, &Box);
@@ -1001,49 +978,63 @@ class ImageViewer : public UIelement{
             }
             case -2:
             {
-                delTex();
+                if(texture)SDL_DestroyTexture(texture);
                 SDL_Surface* surf = renderText(font.getfont(), "<img>", fg, bg, 1);
-                imgtexture = SDL_CreateTextureFromSurface(rend, surf);
+                texture = SDL_CreateTextureFromSurface(rend, surf);
                 SDL_FreeSurface(surf);
-                setquery();
+                setquery(texture);
+                resize();
                 SDL_Rect newBox = {Box.x - (font.getptsize() / 5), Box.y - (font.getptsize() / 5), Box.w + ((font.getptsize() / 5) * 2), Box.h + ((font.getptsize() / 5) * 2)};
                 setRenCol(rend, bg);
                 SDL_RenderFillRect(rend, &newBox);
                 setRenCol(rend, fg);
                 TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
-                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                if(!texture)uilog << " no texture to draw to\n";
+                if(SDL_RenderCopy(rend, texture, NULL, &Box))uilog << " rendering error occured\n";
                 break;
             }
             case 0:
             {
+                uilog << " redraw\n";
+                resize();
                 SDL_Rect newBox = {Box.x - drawtype / 2, Box.y - drawtype / 2, Box.w + drawtype, Box.h + drawtype};
                 setRenCol(rend, bg);
                 SDL_RenderFillRect(rend, &newBox);
                 setRenCol(rend, fg);
                 TEXTURE::drawRect(newBox, rend, drawtype);
-                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                if(!texture)uilog << " no texture to draw to\n";
+                if(SDL_RenderCopy(rend, texture, NULL, &Box) < 0)uilog << " rendering error occured" << SDL_GetError() << endl;
                 break;
             }
             case 1:
             {
+                uilog << " reload redraw\n";
                 // cout << " case reload\n";
-                loadImg(rend);
-                render(rend, texture, drawtype);    
+                resize();
+                SDL_Rect newBox = {Box.x - drawtype / 2, Box.y - drawtype / 2, Box.w + drawtype, Box.h + drawtype};
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &newBox);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(newBox, rend, drawtype);
+                if(!texture)uilog << " no texture to draw to\n";
+                if(SDL_RenderCopy(rend, texture, NULL, &Box) < 0)uilog << " rendering error occured" << SDL_GetError() << endl;
                 break;
             }
             default:
             {
-                delTex();
-                SDL_Surface* surf = renderText(font.getfont(), imgname.c_str(), fg, bg, 1);
-                imgtexture = SDL_CreateTextureFromSurface(rend, surf);
+                if(texture)SDL_DestroyTexture(texture);
+                SDL_Surface* surf = renderText(font.getfont(), imgname.c_str(), fg, bg, 3);
+                texture = SDL_CreateTextureFromSurface(rend, surf);
                 SDL_FreeSurface(surf);
-                setquery();
+                setquery(texture);
+                resize();
                 SDL_Rect newBox = {Box.x - (font.getptsize() / 5), Box.y - (font.getptsize() / 5), Box.w + ((font.getptsize() / 5) * 2), Box.h + ((font.getptsize() / 5) * 2)};
-                setRenCol(rend, bg);
-                SDL_RenderFillRect(rend, &newBox);
                 setRenCol(rend, fg);
                 TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
-                SDL_RenderCopy(rend, imgtexture, NULL, &Box);
+                Box.w = newBox.w;
+                Box.h = newBox.h;
+                if(!texture)uilog << " no texture to draw to\n";
+                if(SDL_RenderCopy(rend, texture, NULL, &Box) < 0)uilog << " rendering error occured" << SDL_GetError() << endl;
                 break;
             }
         }
@@ -1059,41 +1050,19 @@ class ImageViewer : public UIelement{
         UIelement::update(input);
     }
     // important imps
-    bool checkTexture(){
-        if(!imgtexture){
-            delpath();
-            return false;
-        }
-        return true;
-    }
-    int setpath(const char* fpath = NULL){
-        if(fpath){
-            if(path && strcmp(fpath, path) == 0)return 0; // no change
-            if(path)delete[] path;
-            path = new char[strlen(fpath) + 1];
-            strcpy(path, fpath);
-            return 1;
-        }
-        else{
-            delpath();
-            delTex();
-            return -1;
-        }
-    }
-    int loadImgPath(SDL_Renderer* rend, const char* fpath = NULL){
+    int loadImgPath(SDL_Renderer* rend, SDL_Texture* imgtexture, const char* fpath = NULL){
         uilog << " ImageViewer: Image loading: " << (fpath ? fpath : "NULL") << " > ";
         int ret = setpath(fpath);
-        if(ret < 0){
+        if(ret == -1){
             uilog << " path cleared\n";
             return 0;
         }
         else if(ret > 0 || !imgtexture){
-            delTex();
-            imgtexture = IMG_LoadTexture(rend, path);
+            if(imgtexture)SDL_DestroyTexture(imgtexture);
+            imgtexture = IMG_LoadTexture(rend, path.c_str());
             if(!imgtexture){
                 uilog << "failed: " << SDL_GetError() << endl;
-                if(path)delete[] path;
-                path = NULL;
+                path.clear();
                 return -1;
             }
         }
@@ -1102,15 +1071,15 @@ class ImageViewer : public UIelement{
             return -2;
         }
         uilog << " loaded\n"; 
-        setquery();
+        setquery(imgtexture);
         return 1;
     }
-    inline int loadImg(SDL_Renderer* rend){
-        return loadImgPath(rend, path);
+    inline int loadImg(SDL_Renderer* rend, SDL_Texture* imgtexture){
+        return loadImgPath(rend, imgtexture, path.c_str());
     }
-    void setquery(){
+    void setquery(SDL_Texture* imgtexture){
         uilog << " setting query\n";
-        if(!path && !imgtexture){
+        if(path.empty() && !imgtexture){
             uilog << " ImageViewer: no image loaded\n";
             return;
         }
@@ -1121,37 +1090,11 @@ class ImageViewer : public UIelement{
             uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
         }
     }
-    SDL_Point getquery(){
-        uilog << " getting query to point\n";
-        SDL_Point dim = {-1, -1};
-        if(!path || !imgtexture){
-            uilog << " ImageViewer: no image loaded\n";
-            return dim;
-        }
-        if(!SDL_QueryTexture(imgtexture, NULL, NULL, &dim.x, &dim.y)){
-            uilog << " ImageViewer: image loaded successfully\n";
-        }
-        else{
-            uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
-            dim = {-2, -2};
-        }
-        return dim;
-    }
-    void getquery(SDL_Rect& rect){
-        uilog << " getting query to rect\n";
-        if(!path || !imgtexture){
-            uilog << " ImageViewer: no image loaded\n";
-            return;
-        }
-        if(!SDL_QueryTexture(imgtexture, NULL, NULL, &rect.w, &rect.h)){
-            uilog << " ImageViewer: image loaded successfully\n";
-        }
-        else{
-            uilog << " ImageViewer: error loading image: " << SDL_GetError() << "\n";
-        }
+    inline string& getpathref(){
+        return path;
     }
     inline const char* getpath() const {
-        return path;
+        return path.c_str();
     }
     inline const char* getname() const {
         return imgname.c_str();
@@ -1167,22 +1110,18 @@ class ImageViewer : public UIelement{
         Box.w = w;
         Box.h = h;
     }
-    int checkText(){
+    int checkText(int ret){
         uilog << " ImageViewer: checking Image for text label option\n";
-        if(!imgtexture && !path){
-            uilog << " no image loaded, showing text\n";
-        }
-        else if(imgtexture && path){
-            uilog << " ImageViewer: path exists: is an image\n";
-            return 0;
-        }
-        else if(!imgtexture){
-            uilog << " ImageViewer: path exists: maybe an image\n";
+        if(ret == 1){
+            uilog << " image recreated\n";
             return 1;
         }
-        else{
-            uilog << " ImageViewer: font already loaded on texture\n";
-            return !imgname.empty() ? 2 : -2;
+        if(ret == -1 || ret == 0){
+            uilog << " no image loaded, showing text\n";
+        }
+        else if(ret == -2){
+            uilog << " ImageViewer: path exists: is an image\n";
+            return 0;
         }
         //
         if(!font.checkfont()){
@@ -1199,8 +1138,8 @@ class ImageViewer : public UIelement{
         }
     }
     //
-    ImageViewer(): UIelement(), Box(SDL_Rect{0, 0, 0, 0}), imgtexture(NULL), 
-    font(FONT()), fg(SDL_Color{0, 0, 0, 255}), bg(SDL_Color{255, 255, 255, 255}), imgname(""), path(NULL) {
+    ImageViewer(): UIelement(), Box(SDL_Rect{0, 0, 0, 0}), 
+    font(FONT()), fg(SDL_Color{0, 0, 0, 255}), bg(SDL_Color{255, 255, 255, 255}), imgname(""), path(""), pathholder("") {
         checkfile();
         uilog << " created ImageViewer\n";
     }
@@ -1212,7 +1151,7 @@ class ImageViewer : public UIelement{
     }
     //
     ~ImageViewer(){
-        if(path)delete[] path;
+        
     }
 };
 class MiniMap : public UIelement{

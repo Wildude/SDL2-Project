@@ -42,3 +42,78 @@ Blur / Unfocus
 
 Mouse enter / leave
 */
+ChangeStringCommand<T> changestr;
+    SDL_Scancode quitCase;
+    TextInputHandler* inputHandler;
+    InputStringCommand(TextInputHandler* input = NULL, T* ref = NULL, 
+        string* textN = NULL, SDL_Scancode quiter = SDL_SCANCODE_ESCAPE) : 
+        command<T>(ref), inputHandler(input), quitCase(quiter), changestr(ref, textN){
+
+    }
+    void setquitCase(SDL_Scancode quiter = SDL_SCANCODE_ESCAPE){
+        quitCase = quiter;
+    }
+    void setInputer(TextInputHandler& inputH){
+        inputHandler = &inputH;
+    }
+    void setInputer(TextInputHandler* inputH = NULL){
+        inputHandler = inputH;
+    }
+    TextInputHandler* getInputer() const{
+        return inputHandler;
+    }
+    inline bool iswriting() {
+        return (inputHandler && inputHandler->getTextState());
+    }
+    inline bool iswritingON(){
+        return inputHandler && inputHandler->getInputref() == &changestr.getNewStrRef();
+    }
+    void checktext(){
+        if(!iswriting())
+            // cout << " quitcase\n";
+            setwriting(false);
+        }
+        else if(iswritingON()){
+            changestr.execute();
+        }
+    }
+    void setwriting(bool write){
+        // cout << " setting writing to false/true\n";
+        if(!write){
+            // cout << " quit textmode\n";
+            if(iswritingON()){
+                inputHandler->setTextUse(false);
+                inputHandler->setInput(NULL);
+            }
+        }
+    }
+    inline void setStrRef(string* textto = NULL){
+        changestr.setStrRef(textto);
+    }
+    inline void setStrRef(string& textto){
+        changestr.setStrRef(textto);
+    }
+    string& getNewStrRef(){
+        return changestr.getNewStrRef();
+    }
+    void execute() override {
+        // cout << " exec inbox\n";
+        if(!inputHandler){
+            //cout << " cmd error no inputer\n";
+            return;
+        }
+        if(!command<T>::ref){
+            //cout << " no ref\n";
+            return;
+        }
+        //else cout << " there's reference\n";
+        //cout << " cmd writing\n";
+        if(!iswriting() || !iswritingON()){
+            // cout << " rewriting\n";
+            inputHandler->clearText();
+        }
+        //else cout << " just writing\n";
+        inputHandler->setInput(&changestr.getNewStrRef());
+        if(!inputHandler->checkText())inputHandler->setTextUse(true);
+        changestr.execute();
+    }
