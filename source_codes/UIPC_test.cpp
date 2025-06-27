@@ -35,7 +35,6 @@ int main(int argn, char** argc){
     uilog << " setting font\n";
     fullpanel.setFont(revFont);
     //
-    ChangeNameUICmd nameChange("FUCKERS");
     // multicommands
     multiCommand<UIelement> reverter, clicker;
 
@@ -43,10 +42,7 @@ int main(int argn, char** argc){
     reverter.push(revertFont);
 
     clicker.push(changeFont);
-    clicker.push(nameChange);
     
-    
-    theImage.settext("AAU");
     theImage.setCol1(rfg);
     theImage.setCol2(rbg);
     theImage.setFont(revFont);
@@ -76,7 +72,7 @@ int main(int argn, char** argc){
         boxied.settext(input.getText() == "" ? to_string(fullpanel.getBox()->w) + " x " + to_string(fullpanel.getBox()->h) : input.getText());
         boxied.draw(win.getren(), texture);
         fullpanel.update(input);
-        fullpanel.render(win.getren(), texture);
+        fullpanel.render(win.getren());
         win.pst();
         SDL_Delay(33);
     }

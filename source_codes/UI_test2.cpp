@@ -28,11 +28,14 @@ int main(int argn, char** args){
     }
     // cout << " setting font\n";
     Mcon.setFont(revFont);
+    Mcon.onFocus(&changeColor);
+    Mcon.onClick(&changeFont);
+    Mcon.onRevert(&reverter);
     InputManager input;
     SDL_Texture* texture;
     bool oldclick = false;
     int size = Mcon.getsize();
-    WINDOW win("GUI Test");
+    WINDOW win("UIContainer Test");
     Mcon.setPos(win.getw()/2, win.geth()/2);
     win.crtB();
     win.pstcol(255, 255, 255, 255);
@@ -40,36 +43,9 @@ int main(int argn, char** args){
     while(!input.shouldQuit()){
         input.update();
         SDL_Point point;
-        bool click = false;
-        bool revert = true;
         SDL_GetMouseState(&point.x, &point.y);
-        if(input.isMouseDown(SDL_BUTTON_LEFT)){
-            click = true;
-        }
-        for(int i = 0; i < size; i++){
-            // cout << " event " << i << endl;
-            if(UIlist[i]->onHover(point, changeFont)){
-                // cout << " hovered\n";
-                if(!oldclick){
-                    // cout << " clicked\n";
-                    revert = false;
-                }
-                oldclick = UIlist[i]->onClick(point, click, changeColor);
-                //if(!oldclick)// cout << " not clicked\n";
-            }
-            else{
-                // cout << " not hovered\n";
-                revert = true;
-            } 
-            if(revert){
-                // cout << " reverting\n";
-                reverter.setref(*UIlist[i]);
-                // cout << " ref set\n";
-                reverter.execute();
-                // cout << " executed\n";
-            }
-        }
-        Mcon.render(win.getren(), texture, 3);
+        Mcon.update(input);
+        Mcon.render(win.getren());
         //Mcon.render(win.getren(), texture);
         win.pst();
         win.clr();

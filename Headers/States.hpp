@@ -96,7 +96,6 @@ struct ChangeStateCommand : public command <T> {
 };
 class MenuState : public State{
     vector<UIContainer> UICs;
-    vector<SDL_Texture*> textures;
     public:
     MenuState(const char* id = "Menu State"): State(id) {}
     int size(){
@@ -107,15 +106,10 @@ class MenuState : public State{
     }
     void push(const UIContainer& uic){
         UICs.push_back(uic);
-        textures.push_back(NULL);
     }
     void pop(){
         if(!UICs.empty()){
             UICs.pop_back();
-            if(!textures.empty()){
-                SDL_DestroyTexture(textures.back());
-                textures.pop_back();
-            }
         }
     }
     void update(InputManager& input) override {
@@ -129,7 +123,7 @@ class MenuState : public State{
             return;
         }
         for(int i = 0; i < size; i++)
-        UICs[i].render(rend, textures[i]);
+        UICs[i].render(rend);
     }
     void init() override {
         // Initialization logic for menu state
@@ -139,12 +133,6 @@ class MenuState : public State{
             uic.getList().clear();
         }
         UICs.clear();
-        for(SDL_Texture* tex : textures){
-            if(tex){
-                SDL_DestroyTexture(tex);
-            }
-        }
-        textures.clear();
         // Cleanup logic for menu state
     }
     void onEnter() override {

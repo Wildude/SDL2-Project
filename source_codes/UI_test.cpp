@@ -27,6 +27,9 @@ int main(int argn, char** args){
     reverter.push(revertCol);
     reverter.push(revertFont);
     reverter.setref(play);
+    play.onFocus(&changeColor);
+    play.onClick(&changeFont);
+    play.onRevert(&reverter);
     /*
     vector<Label> menu;
     menu.push_back(Label("Play"));
@@ -47,20 +50,8 @@ int main(int argn, char** args){
         bool click = false;
         bool revert = true;
         SDL_GetMouseState(&point.x, &point.y);
-        if(input.isMouseDown(SDL_BUTTON_LEFT)){
-            click = true;
-        }
-        if(play.onHover(point, changeFont)){
-            if(!oldclick){
-                revert = false;
-            }
-            oldclick = play.onClick(point, click, changeColor);
-        }
-        else revert = true;
-        if(revert){
-            reverter.execute();
-        }
-        play.render(win.getren(), texture, 3);
+        play.update(input);
+        play.render(win.getren());
         //Mcon.render(win.getren(), texture);
         win.pst();
         win.clr();

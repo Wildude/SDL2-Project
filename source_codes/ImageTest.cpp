@@ -18,7 +18,6 @@ int main(int argn, char** argc){
     // cout << " revert font\n";
     UIFont revertFont(revFont);
     // cout << " full reverter\n";
-    ChangeNameUICmd nameChange("FUCKERS");
     // multicommands
     multiCommand<UIelement> reverter, clicker;
 
@@ -26,8 +25,7 @@ int main(int argn, char** argc){
     reverter.push(revertFont);
 
     clicker.push(changeFont);
-    clicker.push(nameChange);
-    ImageViewer theImage("../Images/Samples/AAU.pn");
+    ImageViewer theImage("../Images/Samples/AAU.png");
     theImage.settext("AAU");
     theImage.setCol1(rfg);
     theImage.setCol2(rbg);
@@ -55,7 +53,7 @@ int main(int argn, char** argc){
         boxied.settext(input.getText() == "" ? to_string(theImage.getBox()->w) + " x " + to_string(theImage.getBox()->h) : input.getText());
         boxied.draw(win.getren(), texture);
         theImage.update(input);
-        theImage.render(win.getren(), texture);
+        theImage.render(win.getren());
         win.pst();
         SDL_Delay(33);
     }
