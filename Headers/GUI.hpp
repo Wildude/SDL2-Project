@@ -208,6 +208,12 @@ class UIContainer : public UIelement{
     int getsize(){
         return UIlist.size();
     }
+    void setBoxW(int width){
+        box.w = width;
+    }
+    void setBoxH(int height){
+        box.h = height;
+    }
     vector<UIelement*>& getList(){
         return UIlist;
     }
@@ -239,6 +245,10 @@ class UIContainer : public UIelement{
         UIlist.push_back(ui);
     }
     void render(SDL_Renderer* renderer, int drawtype = 2) override {
+        setRenCol(renderer, bg);
+        SDL_RenderFillRect(renderer, &box);
+        setRenCol(renderer, fg);
+        TEXTURE::drawRect(box, renderer, drawtype / 2);
         checkfile();
         uilog << " Rendering UIelements:\n";
         for (UIelement* ui : UIlist) {
@@ -292,6 +302,7 @@ class UIContainer : public UIelement{
         }
     }
     void setCol1(const SDL_Color& col) override {
+        fg = col;
         if(!UIlist.size())return;
         // cout << " setting all fcolors\n";
         for(UIelement* ui : UIlist){
@@ -299,6 +310,7 @@ class UIContainer : public UIelement{
         }
     }
     void setCol2(const SDL_Color& col) override {
+        bg = col;
         if(!UIlist.size())return;
         // cout << " setting all fcolors\n";
         for(UIelement* ui : UIlist){
@@ -328,7 +340,7 @@ class UIContainer : public UIelement{
     }
     //
     virtual void setPos(int x, int y) override {
-        cout << " setting UIContainer pos:\n";
+        uilog << " setting UIContainer pos:\n";
         box.x = x;
         box.y = y;
         int size = UIlist.size();
@@ -336,11 +348,11 @@ class UIContainer : public UIelement{
             cout << " Empty container\n";
             return;
         }
-        cout << " pos0 " << x << " , " << y << endl;
+        uilog << " pos0 " << x << " , " << y << endl;
         UIlist[0]->setPos(x, y);
         for(int i = 1; i < size; i++){
             int yp = UIlist[i - 1]->getBox()->h + UIlist[i - 1]->getBox()->y;
-            cout << " pos " << i << " " << x << " , " << yp << endl;
+            uilog << " pos " << i << " " << x << " , " << yp << endl;
             UIlist[i]->setPos(x, yp);
         }
     }
@@ -361,6 +373,8 @@ class UIPanel : public UIContainer{
     public:
     void setPos(int x, int y) override {
         uilog << " setting UIPanel pos:\n";
+        box.x = x;
+        box.y = y;
         int size = UIlist.size();
         if(!size){
             uilog << " Empty panel\n";
@@ -487,9 +501,23 @@ struct InputStringUIcmd : public UICommand {
 };
 class Label : public UIelement {
     public:
-    Label(const UIcmdset& cmd = UIcmdset{NULL, NULL, NULL})
-        : UIelement(cmd), fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})),
-        text(""), box(SDL_Rect({0, 0, 0, 0})), font(FONT()), texture(NULL){}
+    const Label& operator=(const Label& label) {
+        if (this != &label) {
+            UIelement::operator=(label);
+            fg = label.fg;
+            bg = label.bg;
+            text = label.text;
+            box = label.box;
+            font = label.font;
+            texture = label.texture;
+        }
+        return *this;
+    }
+    Label(const UIcmdset& cmd = UIcmdset{NULL, NULL, NULL}, const SDL_Color& fcolor = SDL_Color({0, 0, 0, 255})
+        , const SDL_Color& bcolor = SDL_Color({255, 255, 255, 255}), const string& ttext = ""
+        , const SDL_Rect& rbox = SDL_Rect({0, 0, 0, 0}), const FONT& ffont = FONT(), SDL_Texture* tex = NULL)
+        : UIelement(cmd), fg(fcolor), bg(bcolor), text(ttext), box(rbox), font(ffont), texture(tex) {
+        }
     Label(const char* str): Label(){
         settext(str);
     }
@@ -505,13 +533,22 @@ class Label : public UIelement {
     }
     inline void setFont(const FONT& newfont){
         // cout <<" setting label font\n";
+        if(font.getfont() == newfont.getfont()){
+            return;
+        }
         font = newfont;
+        if(font.getfont()){
+            font.TEXT_size(text.c_str(), &box.w, &box.h);
+            delTex();
+        }
     }
     inline void setCol1(const SDL_Color& col){
         fg = col;
+        delTex();
     }
     inline void setCol2(const SDL_Color& col){
         bg = col;
+        delTex();
     }
     void setquery(){
         if(!texture){
@@ -539,6 +576,9 @@ class Label : public UIelement {
             return;
         }
         text = str;
+        if(font.getfont()){
+            font.TEXT_size(text.c_str(), &box.w, &box.h);
+        }
         delTex();
     }
     inline void settext(const string& str) override {
@@ -546,6 +586,9 @@ class Label : public UIelement {
             return;
         }
         text = str;
+        if(font.getfont()){
+            font.TEXT_size(text.c_str(), &box.w, &box.h);
+        }
         delTex();
     }
     void render(SDL_Renderer* renderer, int drawtype = 2) override {
@@ -562,13 +605,13 @@ class Label : public UIelement {
                 return;
             }
             else if(!text.empty()){
-                SDL_Surface* surf = renderText(font.getfont(), text.c_str(), fg, bg, drawtype);
+                SDL_Surface* surf = renderText(font.getfont(), text.c_str(), fg, bg, drawtype / 2);
                 texture = SDL_CreateTextureFromSurface(renderer, surf);
                 SDL_FreeSurface(surf);
                 setquery();
             }
             else{
-                SDL_Surface* surf = renderText(font.getfont(), "<label>", fg, bg, drawtype);
+                SDL_Surface* surf = renderText(font.getfont(), "<label>", fg, bg, drawtype / 2);
                 texture = SDL_CreateTextureFromSurface(renderer, surf);
                 SDL_FreeSurface(surf);
                 setquery();
@@ -605,7 +648,415 @@ class Label : public UIelement {
     SDL_Color fg, bg;
     SDL_Texture* texture;
 };
-
+class LabelPanel : public UIelement {
+    protected:
+    vector<Label> labelList;
+    SDL_Rect box;
+    SDL_Color fg, bg;
+    public:
+    LabelPanel(): box(SDL_Rect{0, 0, 0, 0}), UIelement(){
+    }
+    int getsize(){
+        return labelList.size();
+    }
+    vector<Label>& getList(){
+        return labelList;
+    }
+    const LabelPanel& operator=(const vector<Label>& UIC){
+        if(&this->labelList != &UIC){
+            labelList = UIC;
+        }
+        return *this;
+    }
+    const LabelPanel& operator=(const LabelPanel& UIC){
+        if(this != &UIC){
+            labelList = UIC.labelList;
+        }
+        return *this;
+    }
+    void update(InputManager& input) override {
+        for(Label& ui : labelList)
+        ui.update(input);
+    }
+    LabelPanel(vector<Label>& UIs): LabelPanel(){
+        for (Label& UI : UIs){
+            labelList.push_back(UI);
+        }
+    }
+    void push(const Label& ui){
+        labelList.push_back(ui);
+    }
+    void push(Label* ui){
+        labelList.push_back(*ui);
+    }
+    void render(SDL_Renderer* renderer, int drawtype = 2) override {
+        checkfile();
+        uilog << " Rendering Labels:\n";
+        for (Label& ui : labelList) {
+            ui.render(renderer, drawtype);
+        }
+    }
+    SDL_Color* getCol1(){
+        return &fg;
+    }
+    SDL_Color* getCol2(){
+        return &bg;
+    }
+    FONT* getFont(){
+        return (labelList.size() ? labelList[0].getFont() : NULL);
+    }
+    SDL_Rect* getBox(){
+        setbox();
+        return &box;
+    }
+    void apply(){
+        applyFont();
+        applyCol1();
+        applyCol2();
+    }
+    void applyFont(){
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 1; i < size - 1; i++){
+            labelList[i].setFont(*labelList[0].getFont());
+        }
+    }
+    void applyCol1(){
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 1; i < size - 1; i++){
+            labelList[i].setCol1(*labelList[0].getCol1());
+        }
+    }
+    void applyCol2(){
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 1; i < size - 1; i++){
+            labelList[i].setCol2(*labelList[0].getCol2());
+        }
+    }
+    void setFont(const FONT& font) override {
+        if(!labelList.size())return;
+        // cout << " setting all fonts\n";
+        for(Label& ui : labelList){
+            ui.setFont(font);
+        }
+    }
+    void setCol1(const SDL_Color& col) override {
+        if(!labelList.size())return;
+        // cout << " setting all fcolors\n";
+        for(Label& ui : labelList){
+            ui.setCol1(col);
+        }
+    }
+    void setCol2(const SDL_Color& col) override {
+        if(!labelList.size())return;
+        // cout << " setting all fcolors\n";
+        for(Label& ui : labelList){
+            ui.setCol2(col);
+        }
+    }
+    void onClick(UICommand* cmd = NULL) override {
+        UIelement::onClick(cmd);
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++)
+        if(!labelList[i].getClickCmd())labelList[i].onClick(cmd);
+    }
+    void onFocus(UICommand* cmd = NULL) override {
+        UIelement::onFocus(cmd);
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++)
+        if(!labelList[i].getFocusCmd())labelList[i].onFocus(cmd);
+    }
+    void onRevert(UICommand* cmd = NULL) override {
+        UIelement::onRevert(cmd);
+        int size = labelList.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++)
+        if(!labelList[i].getRevertCmd())labelList[i].onRevert(cmd);
+    }
+    //
+    virtual void setPos(int x, int y) override {
+        cout << " setting UIContainer pos:\n";
+        box.x = x;
+        box.y = y;
+        int size = labelList.size();
+        if(!size){
+            cout << " Empty container\n";
+            return;
+        }
+        cout << " pos0 " << x << " , " << y << endl;
+        labelList[0].setPos(x, y);
+        for(int i = 1; i < size; i++){
+            int yp = labelList[i - 1].getBox()->h + labelList[i - 1].getBox()->y;
+            cout << " pos " << i << " " << x << " , " << yp << endl;
+            labelList[i].setPos(x, yp);
+        }
+    }
+    virtual void setbox(){
+        uilog << " setting UIContainer box\n";
+        box.w = 0;
+        box.h = 0;
+        for(Label& ui : labelList){
+            SDL_Rect* rect = ui.getBox();
+            if(rect->w > box.w) box.w = rect->w;
+            uilog << " rbox: " << rect->w << ", " << rect->h << endl;
+            box.h += rect->h;
+        }
+        uilog << " box: " << box.w << ", " << box.h << endl;
+    }
+};
+class UITab : public UIelement{
+    protected:
+    void setbox(){
+        int size = tabs.size();
+        if(!size){
+            Box.w = 0;
+            Box.h = 0;
+            return;
+        }
+        Box.w = max(tabs[currenttab]->getBox()->w, calcWidthSum());
+        Box.h = tabs[currenttab]->getBox()->h + getLargestLabelHeight();
+    }
+    int calcWidthSum(){
+        vector<Label>& LabelBoxes = labelList.getList();
+        int width = 0;
+        int size = tabnames.size();
+        if(!size)return width;
+        for(int i = 0; i < size; i++){
+            width += LabelBoxes[i].getBox()->w;
+        }
+        return width;
+    }
+    void setLabels(){
+        int size = tabnames.size();
+        if(!size)return;
+        vector<Label>& LabelBoxes = labelList.getList();
+        for(int i = 0; i < size; i++){
+            LabelBoxes[i].settext(tabnames[i] != "" ? 
+                tabnames[i] : (i == (int)currenttab) ? "tabc" : "tab" + to_string(i + 1));
+        }
+    }
+    void setallwidths(){
+        vector<Label>& LabelBoxes = labelList.getList();
+        int size = tabnames.size();
+        if(!size)return;
+        int width = calcWidthSum();
+        for(int i = 0; i < size; i++){
+            LabelBoxes[i].getBox()->w = width / size;
+            LabelBoxes[i].getBox()->x = i * (width / size);
+        }
+    }
+    int getLargestLabelHeight(){
+        vector<Label>& LabelBoxes = labelList.getList();
+        int height = 0;
+        int size = tabnames.size();
+        if(!size)return height;
+        for(int i = 0; i < size; i++){
+            Label& label = LabelBoxes[i];
+            if(label.getBox()->h > height)height = label.getBox()->h;
+        }
+        return height;
+    }
+    int getLargestUICwidth(){
+        int width = 0;
+        for(UIContainer* ui : tabs)
+        if(width < ui->getBox()->w)width = ui->getBox()->w;
+        return width;
+    }
+    int getLargestUICheight(){
+        int height = 0;
+        for(UIContainer* ui : tabs)
+        if(height < ui->getBox()->h)height = ui->getBox()->h;
+        return height;
+    }
+    LabelPanel labelList;
+    vector<UIContainer*> tabs;
+    vector<string> tabnames;
+    vector<SDL_Rect> boxes;
+    SDL_Rect Box;
+    short currenttab;
+    SDL_Color fg, bg;
+    FONT font;
+    public:
+    UITab(): UIelement(), currenttab(0), labelList(LabelPanel()), 
+    Box(SDL_Rect({0, 0, 0, 0})), fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})), font(FONT()){}
+    //
+    void update(InputManager& input) override {
+        tabs[currenttab]->update(input);
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        int size = tabnames.size();
+        if(!size)return;
+        setbox();
+        //setRenCol(rend, fg);
+        //TEXTURE::drawRect(Box, rend, drawtype/2);
+        vector<Label>& labelboxes = labelList.getList();
+        setLabels();
+        int labheight = getLargestLabelHeight();
+        int labswidth = calcWidthSum();
+        int currtabwidth = tabs[currenttab]->getBox()->w;
+        boxes[0].x = Box.x;
+        if(labswidth > currtabwidth){
+            tabs[currenttab]->setBoxW(labswidth);
+            boxes[0].w = labelboxes[0].getBox()->w;
+            for(int i = 1; i < size; i++){
+                boxes[i].w = labelboxes[i].getBox()->w;
+                boxes[i].x = boxes[i - 1].x + boxes[i - 1].w;
+            }
+        }
+        else{
+            int width = labswidth / size;
+            boxes[0].w = width;
+            for(int i = 1; i < size; i++){
+                boxes[i].w = width;
+                boxes[i].x = boxes[i - 1].x + boxes[i - 1].w;
+            }
+        }
+        tabs[currenttab]->setPos(Box.x, Box.y + labheight - drawtype / 2);
+        tabs[currenttab]->render(rend, drawtype);
+        for(int i = 0; i < size; i++){
+            boxes[i].h = labheight;
+            SDL_Rect boxy = boxes[i];
+            if(i == currenttab){
+                boxy.y += 1;
+                setRenCol(rend, bg);
+                SDL_RenderFillRect(rend, &boxy);
+                setRenCol(rend, fg);
+                SDL_RenderDrawLine(rend, boxes[i].x, boxes[i].y, boxes[i].x + boxes[i].w, boxes[i].y);
+                if(!i)SDL_RenderDrawLine(rend, boxes[i].x, boxes[i].y, boxes[i].x, boxes[i].y + labheight);
+                if(i == size - 1)SDL_RenderDrawLine(rend, boxes[i].x + boxes[i].w, boxes[i].y, boxes[i].x + boxes[i].w, boxes[i].y + labheight);
+            }
+            else{
+                // (1.0 - t) * (float)(bg.r) + ,
+                float t = 0.5;
+                SDL_Color col = {
+                    (Uint8)((float)bg.r * (1.0 - t) + (t * 128.0)),
+                    (Uint8)((float)bg.b * (1.0 - t) + (t * 128.0)),
+                    (Uint8)((float)bg.g * (1.0 - t) + (t * 128.0)),
+                    (Uint8)((float)bg.a * (1.0 - t) + (t * 128.0))
+                }; // greyish color
+                setRenCol(rend, col);
+                SDL_RenderFillRect(rend, &boxy);
+                setRenCol(rend, fg);
+                TEXTURE::drawRect(boxy, rend, drawtype/2);
+            }
+            labelboxes[i].setPos(boxes[i].x, boxes[i].y);
+            labelboxes[i].render(rend, drawtype);
+        }
+    }
+    void setPos(int x, int y) override {
+        Box.x = x;
+        Box.y = y;
+        if (!tabs.empty()) {
+            for(UIContainer* uic : tabs)
+            uic->setPos(x, y);
+            for(SDL_Rect& box: boxes)
+            {
+                box.x = x;
+                box.y = y;
+            }
+            
+        }
+    }
+    void setCol1(const SDL_Color& col) override {
+        fg = col;
+        labelList.setCol1(fg);
+        for (auto* tab : tabs) {
+            tab->setCol1(col);
+        }
+    }
+    void setCol2(const SDL_Color& col) override {
+        bg = col;
+        labelList.setCol2(bg);
+        for (auto* tab : tabs) {
+            tab->setCol2(col);
+        }
+    }
+    void setFont(const FONT& font_) override {
+        font = font_;
+        for (auto* tab : tabs) {
+            tab->setFont(font);
+        }
+        labelList.setFont(font);
+    }
+    SDL_Rect* getBox() override {
+        if (!tabs.empty()) {
+            return tabs[currenttab]->getBox();
+        }
+        static SDL_Rect dummy = {0, 0, 0, 0};
+        return &dummy;
+    }
+    FONT* getFont() override {
+        if (!tabs.empty()) {
+            return tabs[currenttab]->getFont();
+        }
+        return nullptr;
+    }
+    SDL_Color* getCol1() override {
+        if (!tabs.empty()) {
+            return tabs[currenttab]->getCol1();
+        }
+        return nullptr;
+    }
+    SDL_Color* getCol2() override {
+        if (!tabs.empty()) {
+            return tabs[currenttab]->getCol2();
+        }
+        return nullptr;
+    }
+    void onFocus(UICommand* cmd = NULL) override {
+        UIelement::onFocus(cmd);
+        for (auto* tab : tabs) {
+            tab->onFocus(cmd);
+        }
+    }
+    void onClick(UICommand* cmd = NULL) override {
+        UIelement::onClick(cmd);
+        for (auto* tab : tabs) {
+            tab->onClick(cmd);
+        }
+    }
+    void onRevert(UICommand* cmd = NULL) override {
+        UIelement::onRevert(cmd);
+        for (auto* tab : tabs) {
+            tab->onRevert(cmd);
+        }
+    }
+    //
+    inline void push(UIContainer& tab, const char* name = NULL){
+        tabs.push_back(&tab);
+        tabnames.push_back(name ? name : "");
+        labelList.push(Label());
+        boxes.push_back(SDL_Rect({0, 0, 0, 0}));
+    }
+    inline void push(UIContainer* tab, const char* name = NULL){
+        tabs.push_back(tab);
+        tabnames.push_back(name ? name : "");
+        labelList.push(Label(tabnames.back().c_str()));
+        boxes.push_back(SDL_Rect({0, 0, 0, 0}));
+    }
+    inline void settabname(int i, const char* name = NULL){
+        tabnames[i] = (name ? name : "");
+    }
+    inline void settabname(int i, const string& name){
+        tabnames[i] = name;
+    }
+    inline void setCurrentTab(int i){
+        if(i < 0 || i >= tabs.size())return;
+        currenttab = i;
+    }
+    inline int getCurrentTab() const {
+        return currenttab;
+    }
+    inline UIContainer* getCurrentTabContainer() const {
+        if(currenttab < 0 || currenttab >= tabs.size())return NULL;
+        return tabs[currenttab];
+    }
+    
+};
 class InputBox : public Label{
     multiCommand<UIelement>& multref;
     SDL_Point dims;
@@ -1206,6 +1657,9 @@ class ImageUI : public ImageViewer{
     ImageUI(): ImageViewer(), pathholder(""){}
     ImageUI(const char* fpath): ImageViewer(fpath), pathholder(fpath){}
     ImageUI(const SDL_Rect& tbox): ImageViewer(tbox), pathholder("") {}
+    string& getpathholder() {
+        return pathholder;
+    }
 };
 class MiniMap : public UIelement{
 

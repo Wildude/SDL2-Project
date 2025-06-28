@@ -5,8 +5,8 @@ int main(int argn, char** args){
     // cout << " newfont\n";
     FONT newFont("../Fonts/ROCKBI.ttf", 15);
     UIContainer Mcon;
-    SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 255, 255, 255};
-    SDL_Color nfg = {255, 0, 0, 255}, nbg = {0, 0, 255, 255};
+    SDL_Color rfg = {255, 0, 0, 255}, rbg = {0, 255, 255, 255};
+    SDL_Color nfg = {255, 255, 0, 255}, nbg = {255, 0, 255, 255};
     vector<Label> menu;
     // cout <<" adding play\n";
     menu.push_back(Label("Play"));
@@ -27,6 +27,8 @@ int main(int argn, char** args){
         Mcon.push(ui);
     }
     // cout << " setting font\n";
+    Mcon.setCol1(rfg);
+    Mcon.setCol2(rbg);
     Mcon.setFont(revFont);
     Mcon.onFocus(&changeColor);
     Mcon.onClick(&changeFont);

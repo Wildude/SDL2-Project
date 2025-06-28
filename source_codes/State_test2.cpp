@@ -29,7 +29,7 @@ int main(int argn, char** argc){
     diff.push_back(Label("Medium"));
     diff.push_back(Label("Hard"));
     UIContainer optionscont;
-    ImageViewer theImage;
+    ImageUI theImage("../Images/Samples/AAU.png");
     for(Label& lb : diff)optionscont.push(lb);
     UIPanel fullpanel;
     fullpanel.push(optionscont);
@@ -65,16 +65,16 @@ int main(int argn, char** argc){
     //
     // image changing code //
     /***********************************/
-    string pathholder = "../Images/Samples/AAU.png";
+
     ChangeStringUICmd 
     //
-    changepath1(NULL, &pathholder), 
+    changepath1(NULL, &theImage.getpathholder()), 
     //
-    changepath2(NULL, &pathholder),
+    changepath2(NULL, &theImage.getpathholder()),
     //
-    changepath3(NULL, &pathholder);
+    changepath3(NULL, &theImage.getpathholder());
     //
-    //imageChanger1.push(changepath1);
+    imageChanger1.push(changepath1);
     imageChanger2.push(changepath2);
     imageChanger3.push(changepath3);
     ///
@@ -116,7 +116,6 @@ int main(int argn, char** argc){
         if(StMan.getCurrent() == &diffst )
         {
             if(input.isKeyDown(SDL_SCANCODE_ESCAPE))StMan.popState();
-            else theImage.givepath(pathholder);
         }
         input.update();
         boxied.settext(string(theImage.getpath()) + " "  + to_string(theImage.getBox()->w) + ", " + to_string(theImage.getBox()->h));
