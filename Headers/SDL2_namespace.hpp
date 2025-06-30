@@ -555,6 +555,67 @@ namespace SDL2
 			return LCD_renderText(font, text, fg, bg);
 		}
 	}
+	// color manipulations:
+	SDL_Color brightenColor(const SDL_Color& color, float intensity = 0.5) {
+		intensity = clamp(intensity, 0.0f, 1.0f);
+		SDL_Color result;
+		result.r = static_cast<Uint8>(clamp(color.r + (255 - color.r) * intensity, 0.0f, 255.0f));
+		result.g = static_cast<Uint8>(clamp(color.g + (255 - color.g) * intensity, 0.0f, 255.0f));
+		result.b = static_cast<Uint8>(clamp(color.b + (255 - color.b) * intensity, 0.0f, 255.0f));
+		result.a = color.a; // Preserve alpha
+		return result;
+	}
+	SDL_Color greenToRed(const SDL_Color& color, float t = 1.0) {
+		t = clamp(t, 0.0f, 1.0f);
+		SDL_Color result;
+		result.r = color.g * t;
+		result.g = color.r * t;
+		result.b = color.b;                                
+		result.a = color.a;                                  
+		return result;
+	}
+	SDL_Color darken(const SDL_Color& color, float t = 0.5){
+		float brightness = (color.r + color.g + color.b) / 3.0f;
+		SDL_Color result;
+		result.r = static_cast<Uint8>((1.0f - t) * color.r + t * brightness + 0.5f);
+		result.g = static_cast<Uint8>((1.0f - t) * color.g + t * brightness + 0.5f);
+		result.b = static_cast<Uint8>((1.0f - t) * color.b + t * brightness + 0.5f);
+		result.a = color.a;
+		return result;
+	}
+	SDL_Color addGreyTint(const SDL_Color& color, float t = 0.5) {
+		// Clamp t between 0 and 1
+		t = clamp(t, 0.0f, 1.0f);
+
+		Uint8 grey = 128; // You can change this to any grey level
+
+		SDL_Color result;
+		result.r = static_cast<Uint8>((1.0f - t) * color.r + t * grey + 0.5f);
+		result.g = static_cast<Uint8>((1.0f - t) * color.g + t * grey + 0.5f);
+		result.b = static_cast<Uint8>((1.0f - t) * color.b + t * grey + 0.5f);
+		result.a = color.a; // Preserve alpha
+
+		return result;
+	}
+	// Draw thick line between (x1, y1) and (x2, y2)
+	void DrawThickLine(SDL_Renderer* renderer, int x1, int y1, int x2, int y2, int thickness = 1) {
+		float dx = x2 - x1;
+		float dy = y2 - y1;
+		float len = sqrtf(dx * dx + dy * dy);
+		float nx = -dy / len * thickness / 2.0f;
+		float ny = dx / len * thickness / 2.0f;
+
+		SDL_Vertex verts[4] = {
+			{{x1 + nx, y1 + ny}, {255, 0, 0, 255}, {0, 0}},
+			{{x1 - nx, y1 - ny}, {255, 0, 0, 255}, {0, 0}},
+			{{x2 - nx, y2 - ny}, {255, 0, 0, 255}, {0, 0}},
+			{{x2 + nx, y2 + ny}, {255, 0, 0, 255}, {0, 0}}
+		};
+
+		int indices[6] = {0, 1, 2, 0, 2, 3};
+
+		SDL_RenderGeometry(renderer, nullptr, verts, 4, indices, 6);
+	}
 	//SDL_mixer.h
 	//channels
 	void Pause_chann(int chann_no)

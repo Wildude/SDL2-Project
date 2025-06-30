@@ -4,11 +4,11 @@ WINDOW win("UItab Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
     // cout << " revfont\n";
-    FONT revFont("../Fonts/ROCKB.ttf", 50);
+    FONT revFont("../Fonts/ROCKB.ttf", 25);
     // cout << " newfont\n";
-    FONT newFont("../Fonts/ROCKBI.ttf", 50);
+    FONT newFont("../Fonts/ROCKBI.ttf", 25);
 
-    SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 0, 255, 255};
+    SDL_Color rfg = {0, 0, 0, 255}, rbg = {200, 200, 255, 255};
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {0, 0, 255, 255};
     //
     uilog << " Change colors|\n";
@@ -46,11 +46,13 @@ int main(int argn, char** argc){
     reverter.push(revertCol);
     reverter.push(revertFont);
     UITab theTab;
+    UIContainer emptycon;
     theTab.push(menucont);
     theTab.push(fullpanel);
-    theTab.push(fullpanel);
-    theTab.push(fullpanel);
-    theTab.push(fullpanel);
+    theTab.push(emptycon);
+    theTab.push(emptycon);
+    theTab.push(emptycon);
+    theTab.push(emptycon);
     theTab.setFont(revFont);
     theTab.setCol1(rfg);
     theTab.setCol2(rbg);
