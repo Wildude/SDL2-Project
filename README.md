@@ -120,24 +120,24 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🎥 Screen records
 <p align="left">
-  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "420" alt = "InputBox test"></img></a> 
-  <a href="source_codes/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "420" alt = "InputBox test"></img></a> 
-  <a href="source_codes/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "420" alt = "Menu State test"></img></a> 
-  <a href="source_codes/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "420" alt = "CheckBox test"></img></a> 
-  <a href="source_codes/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "420" alt = "Difficulty state test"></img></a> 
-  <a href="source_codes/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "420" alt = "UITab test"></img></a> 
-  <a href="source_codes/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "420" alt = "UI test"></img></a> 
+  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "410" alt = "InputBox test"></img></a> 
+  <a href="source_codes/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "410" alt = "InputBox test"></img></a> 
+  <a href="source_codes/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "410" alt = "Menu State test"></img></a> 
+  <a href="source_codes/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "410" alt = "CheckBox test"></img></a> 
+  <a href="source_codes/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "410" alt = "Difficulty state test"></img></a> 
+  <a href="source_codes/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "410" alt = "UITab test"></img></a> 
+  <a href="source_codes/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "410" alt = "UI test"></img></a> 
 </p>
 
 ---
 ## 📷 Screen shots
 <p align="left">
-  <a href="source_codes/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "420" alt = "bounding box test"></img></a> 
-    <a href="source_codes/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "420" alt = "ImageUI test"></img></a> 
-    <a href="source_codes/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "420" alt = "UI test1"></img></a>
-    <a href="source_codes/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "420" alt = "UI Panel and Container test"></img></a> 
-  <a href="source_codes/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "420" alt = "UI Container test"></img></a>
-  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "420" alt = "InputBox test"></img></a> 
+  <a href="source_codes/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "410" alt = "bounding box test"></img></a> 
+    <a href="source_codes/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "410" alt = "ImageUI test"></img></a> 
+    <a href="source_codes/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "410" alt = "UI test1"></img></a>
+    <a href="source_codes/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "410" alt = "UI Panel and Container test"></img></a> 
+  <a href="source_codes/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "410" alt = "UI Container test"></img></a>
+  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "410" alt = "InputBox test"></img></a> 
 </p>
 
 ---
