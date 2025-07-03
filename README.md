@@ -120,7 +120,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🎥 Screen records
 <p align="left">
-  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "410" alt = "InputBox test"></img></a> 
+  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "820" alt = "InputBox test"></img></a> 
   <a href="source_codes/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "410" alt = "InputBox test"></img></a> 
   <a href="source_codes/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "410" alt = "Menu State test"></img></a> 
   <a href="source_codes/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "410" alt = "CheckBox test"></img></a> 
