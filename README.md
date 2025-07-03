@@ -120,8 +120,9 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🎥 Screen records
 
-![TilemapTest15](https://github.com/user-attachments/assets/53e31a42-5e95-47dd-a227-a7ec776e3935)
-![Armed_MeAN](https://github.com/user-attachments/assets/6de1b8ee-4d19-474b-b468-967450f37415)
+---
+## 📷 Screen shots
+
 ![Bounding Box Test 7_1_2025 9_22_51 PM](https://github.com/user-attachments/assets/fa103798-97ee-4848-8762-4bc54e70ffe2)
 ![GUI Test 7_1_2025 9_25_22 PM](https://github.com/user-attachments/assets/2e87dfa9-3cfb-48fd-b564-dcd5304de812)
 ![GUI Test 7_1_2025 9_25_30 PM](https://github.com/user-attachments/assets/c825e84f-14d9-49a6-8cd7-0eaaacdbdf9c)
