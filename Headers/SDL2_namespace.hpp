@@ -616,6 +616,61 @@ namespace SDL2
 
 		SDL_RenderGeometry(renderer, nullptr, verts, 4, indices, 6);
 	}
+	void drawHorizontalLine(SDL_Renderer* renderer, int x1, int x2, int y) {
+		if (x1 > x2) std::swap(x1, x2);
+		SDL_RenderDrawLine(renderer, x1, y, x2, y);
+	}
+
+	void fillFlatBottomTriangle(SDL_Renderer* renderer, SDL_Point v0, SDL_Point v1, SDL_Point v2) {
+		float invslope1 = (float)(v1.x - v0.x) / (v1.y - v0.y);
+		float invslope2 = (float)(v2.x - v0.x) / (v2.y - v0.y);
+
+		float curx1 = v0.x;
+		float curx2 = v0.x;
+
+		for (int y = v0.y; y <= v1.y; ++y) {
+			drawHorizontalLine(renderer, (int)curx1, (int)curx2, y);
+			curx1 += invslope1;
+			curx2 += invslope2;
+		}
+	}
+
+	void fillFlatTopTriangle(SDL_Renderer* renderer, SDL_Point v0, SDL_Point v1, SDL_Point v2) {
+		float invslope1 = (float)(v2.x - v0.x) / (v2.y - v0.y);
+		float invslope2 = (float)(v2.x - v1.x) / (v2.y - v1.y);
+
+		float curx1 = v2.x;
+		float curx2 = v2.x;
+
+		for (int y = v2.y; y > v0.y; --y) {
+			drawHorizontalLine(renderer, (int)curx1, (int)curx2, y);
+			curx1 -= invslope1;
+			curx2 -= invslope2;
+		}
+	}
+
+	void fillTriangle(SDL_Renderer* renderer, SDL_Point p0, SDL_Point p1, SDL_Point p2) {
+		// Sort points by Y (ascending)
+		if (p0.y > p1.y) std::swap(p0, p1);
+		if (p0.y > p2.y) std::swap(p0, p2);
+		if (p1.y > p2.y) std::swap(p1, p2);
+
+		if (p1.y == p2.y) {
+			// Flat-bottom triangle
+			fillFlatBottomTriangle(renderer, p0, p1, p2);
+		}
+		else if (p0.y == p1.y) {
+			// Flat-top triangle
+			fillFlatTopTriangle(renderer, p0, p1, p2);
+		}
+		else {
+			// General triangle: split into two
+			int splitX = p0.x + (float)(p2.x - p0.x) * (p1.y - p0.y) / (float)(p2.y - p0.y);
+			SDL_Point split = { splitX, p1.y };
+			fillFlatBottomTriangle(renderer, p0, p1, split);
+			fillFlatTopTriangle(renderer, p1, split, p2);
+		}
+	}
 	//SDL_mixer.h
 	//channels
 	void Pause_chann(int chann_no)

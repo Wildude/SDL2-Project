@@ -1179,14 +1179,42 @@ class LabelArea : public Label{
 class InputArea : public LabelArea{
 
 };
-class PasswordBox : InputBox{
+class PasswordBox : public InputBox {
 
 };
 /*
 🔹 2. Buttons & Interaction
 */
 class Button : public UIelement {
+    protected:
+    SDL_Rect Box;
+    SDL_Color fg, bg;
+    public:
+    // overriden functions (abstract)
+    inline virtual void setPos(int x, int y) override {
+        Box.x = x; Box.y = y;
+    }
+    inline virtual void setCol1(const SDL_Color& col) override {
+        fg = col;
+    }
+    inline virtual void setCol2(const SDL_Color& col) override {
+        bg = col;
+    }
+    inline virtual void setFont(const FONT& font) override {}
+    inline virtual SDL_Rect* getBox() override {return &Box;}
+    inline virtual FONT* getFont() {return NULL;}
+    inline virtual SDL_Color* getCol1() override {return &fg;}
+    inline virtual SDL_Color* getCol2() override {return &bg;}
+    //void update(InputManager& input) override {}
+    virtual void render(SDL_Renderer*, int) = 0;
+    // overriden functions (non-abstract)
+
     // Button implementation
+    Button() : UIelement(), fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})) {}
+    void setBoxDim(int w, int h){
+        Box.w = w;
+        Box.h = h;
+    }
 };
 class ToggleButton : public Button {
     // Toggle button implementation
@@ -1196,41 +1224,23 @@ enum checkType{
     FLIPBOX,
     TICKBOX
 };
-class CheckBox : public UIelement{ // maybe should inherit from Button later.
-    SDL_Color fg, bg;
+class CheckBox : public Button{ // maybe should inherit from Button later.
     bool clickstate;
-    SDL_Rect Box;
     checkType type;
     public:
     // abstract imps
-    virtual void setPos(int x , int y) override {
-        Box.x = x;
-        Box.y = y;
-    }
-    virtual void setCol1(const SDL_Color& col){
-        fg = col;
-    }
-    virtual void setCol2(const SDL_Color& col){
-        bg = col;
-    }
-    virtual void setFont(const FONT& font){}
-    virtual SDL_Rect* getBox(){
-        return &Box;
-    }
-    virtual FONT* getFont(){
-        return NULL;
-    }
-    virtual SDL_Color* getCol1(){
-        return &fg;
-    }
-    virtual SDL_Color* getCol2(){
-        return &bg;
-    }
+    // virtual void setPos(int x , int y) override {}
+    // virtual void setCol1(const SDL_Color& col){}
+    // virtual void setCol2(const SDL_Color& col){}
+    // virtual void setFont(const FONT& font){}
+    // virtual SDL_Rect* getBox(){}
+    // virtual FONT* getFont(){}
+    // virtual SDL_Color* getCol1(){}
+    // virtual SDL_Color* getCol2(){}
     virtual void update(InputManager& input) override {
         //cout << " updating\n";
-        UIelement::update(input);
+        Button::update(input);
         if(getclick())clickstate = !clickstate;
-        if(clickstate)cout << " clicked\n";
     }
     virtual void render(SDL_Renderer* rend, int drawtype = 2) override {
         //cout << " rendering\n";
@@ -1296,12 +1306,10 @@ class CheckBox : public UIelement{ // maybe should inherit from Button later.
         }
     }
     //
-    CheckBox(checkType typei = CLASSIC): UIelement(), fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})), 
-    clickstate(false), Box(SDL_Rect{0, 0, 0, 0}), type(typei){
+    CheckBox(checkType typei = CLASSIC): Button(), clickstate(false), type(typei){
         settype(type);
     }
     const CheckBox& operator=(const CheckBox& sbox){
-        cout << "ass\n";
         if(this != &sbox){
             fg = sbox.fg;
             bg = sbox.bg;
@@ -1387,7 +1395,7 @@ class RadioButton : public UIelement{
     }
     virtual void update(InputManager& input) override {
         UIelement::update(input);
-        setPos(Box.x, Box.y);
+        //setPos(Box.x, Box.y);
         int size = checkboxes.size();
         if(!size)return;
         for(int i = 0; i < size; i++){
@@ -1426,7 +1434,8 @@ class RadioButton : public UIelement{
         for(auto& cbox: checkboxes)
         cbox.onRevert(cmd);
     }
-    RadioButton(): UIelement(), current(-1), Box(SDL_Rect({0, 0, 0, 0})), fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})){}
+    RadioButton(): UIelement(), current(-1), Box(SDL_Rect({0, 0, 0, 0})), 
+    fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})){}
     inline void push(const CheckBox& cbox){
         checkboxes.push_back(cbox);
     }
@@ -1446,6 +1455,204 @@ class RadioButton : public UIelement{
     }
     inline vector<CheckBox>& getList(){
         return checkboxes;
+    }
+};
+enum Orientation{INC_HORI, INC_VERT, DEC_HORI, DEC_VERT};
+class IncDecButton : public Button {
+    protected:
+    Orientation type;
+    // abstract imps
+    public:
+    void render(SDL_Renderer* rend, int drawtype = 2){
+        switch (type){
+            case INC_HORI:{
+                def:
+                if(getfocus()){
+                    if(getclick())setRenCol(rend, fg);
+                    else setRenCol(rend, bg);
+                    SDL_Point 
+                    p0 = {Box.x, Box.y}, 
+                    p1 = {Box.x, Box.y + Box.h},
+                    p2 = {Box.x + Box.w, Box.y + Box.h / 2};
+                    fillTriangle(rend, p0, p1, p2);
+                }
+                setRenCol(rend, fg);
+                DrawThickLine(rend, Box.x, Box.y, Box.x, Box.y + Box.h, drawtype / 2);
+                DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h / 2, drawtype / 2);
+                DrawThickLine(rend, Box.x + Box.w, Box.y + Box.h / 2, Box.x, Box.y, drawtype / 2);
+                break;
+            }
+            case DEC_HORI:{
+                if(getfocus()){
+                    if(getclick())setRenCol(rend, fg);
+                    else setRenCol(rend, bg);
+                    SDL_Point 
+                    p0 = {Box.x + Box.w, Box.y}, 
+                    p1 = {Box.x + Box.w, Box.y + Box.h},
+                    p2 = {Box.x, Box.y + Box.h / 2};
+                    fillTriangle(rend, p0, p1, p2);
+                }
+                setRenCol(rend, fg);
+                DrawThickLine(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y, drawtype / 2);
+                DrawThickLine(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+                DrawThickLine(rend, Box.x + Box.w, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+                break;
+            }
+            case INC_VERT:{
+                if(getfocus()){
+                    if(getclick())setRenCol(rend, fg);
+                    else setRenCol(rend, bg);
+                    SDL_Point 
+                    p0 = {Box.x + Box.w / 2, Box.y}, 
+                    p1 = {Box.x + Box.w, Box.y + Box.h},
+                    p2 = {Box.x, Box.y + Box.h};
+                    fillTriangle(rend, p0, p1, p2);
+                }
+                setRenCol(rend, fg);
+                DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+                DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w / 2, Box.y, drawtype / 2);
+                DrawThickLine(rend, Box.x + Box.w / 2, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+                break;
+            }
+            case DEC_VERT:{
+                if(getfocus()){
+                    if(getclick())setRenCol(rend, fg);
+                    else setRenCol(rend, bg);
+                    SDL_Point 
+                    p0 = {Box.x, Box.y}, 
+                    p1 = {Box.x + Box.w, Box.y},
+                    p2 = {Box.x + Box.w / 2, Box.y + Box.h};
+                    fillTriangle(rend, p0, p1, p2);
+                }
+                setRenCol(rend, fg);
+                DrawThickLine(rend, Box.x, Box.y, Box.x + Box.w, Box.y, drawtype / 2);
+                DrawThickLine(rend, Box.x, Box.y, Box.x + Box.w / 2, Box.y + Box.h, drawtype / 2);
+                DrawThickLine(rend, Box.x + Box.w / 2, Box.y + Box.h, Box.x + Box.w, Box.y, drawtype / 2);
+                break;
+            }
+            default: {
+                goto def;
+                break;
+            }
+        }
+    }
+    // imps
+    IncDecButton(Orientation typei = INC_HORI) : Button(), type(typei) {}
+    inline void setType(Orientation typei){
+        type = typei;
+    }
+    inline Orientation getType() const {return type;}
+};
+class TextSwitch: public UIelement{
+    protected:
+    vector<string> texts;
+    int current;
+    Label theText;
+    SDL_Color fg, bg;
+    SDL_Rect Box;
+    IncDecButton inc, dec;
+    public:
+    //
+    void setPos(int x , int y) override {
+        setBox();
+        Box.x = x;
+        Box.y = y;
+        //inc.setType(INC_HORI);
+        //dec.setType(DEC_HORI);
+        dec.setPos(x, y);
+        theText.setPos(dec.getBox()->x + dec.getBox()->w, y);
+        inc.setPos(theText.getBox()->x + theText.getBox()->w, y);
+    }
+    void setCol1(const SDL_Color& col) override {
+        fg = col;
+        theText.setCol1(col);
+        inc.setCol1(col);
+        dec.setCol1(col);
+    }
+    void setCol2(const SDL_Color& col) override {
+        bg = col;
+        theText.setCol2(col);
+        inc.setCol2(col);
+        dec.setCol2(col);
+    }
+    void setFont(const FONT& font) override {
+        theText.setFont(font);
+    }
+    SDL_Rect* getBox() override {
+        setBox();
+        return &Box;
+    }
+    FONT* getFont() override {
+        return theText.getFont();
+    }
+    SDL_Color* getCol1() override {
+        return &fg;
+    }
+    SDL_Color* getCol2() override {
+        return &bg;
+    }
+    void update(InputManager& input) override {
+        dec.update(input);
+        inc.update(input);
+        theText.update(input);
+        int size = texts.size();
+        if(!size)return;
+        if(dec.getclick()){
+            current--;
+            if(current < 0) current = size - 1;
+        }
+        else if(inc.getclick() || theText.getclick()){
+            current++;
+            if(current == size) current = 0;
+        }
+        theText.settext(texts[current]);
+        setPos(Box.x, Box.y);
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        setRenCol(rend, fg);
+        TEXTURE::drawRect(Box, rend, drawtype / 2);
+        dec.render(rend, drawtype);
+        inc.render(rend, drawtype);
+        theText.render(rend, drawtype);
+    }
+    //
+    void onFocus(UICommand* cmd = NULL){
+        UIelement::onFocus(cmd);
+        theText.onFocus(cmd);
+        dec.onFocus(cmd);
+        inc.onFocus(cmd);
+    }
+    void onClick(UICommand* cmd = NULL){
+        UIelement::onClick(cmd);
+        theText.onClick(cmd);
+        dec.onClick(cmd);
+        inc.onClick(cmd);
+    }
+    void onRevert(UICommand* cmd = NULL){
+        UIelement::onRevert(cmd);
+        theText.onRevert(cmd);
+        dec.onRevert(cmd);
+        inc.onRevert(cmd);
+    }
+    //
+    string& getText() override {
+        return texts[current];
+    }
+    //
+    TextSwitch(): UIelement(), current(0), Box(SDL_Rect({0, 0, 0, 0})), fg(SDL_Color({0, 0, 0, 255})),
+    bg(SDL_Color({255, 255, 255, 255})), theText(), inc(INC_HORI), dec(DEC_HORI) {}
+    void setBox(){
+        Box.w = Box.h = 0;
+        inc.setBoxDim(theText.getBox()->h, theText.getBox()->h);
+        dec.setBoxDim(theText.getBox()->h, theText.getBox()->h);
+        Box.w += 2 * inc.getBox()->w + theText.getBox()->w;
+        Box.h += theText.getBox()->h;
+    }
+    void push(const string& txt){
+        texts.push_back(txt);
+    }
+    void push(const char* txt = ""){
+        texts.push_back(txt);
     }
 };
 /*

@@ -8,7 +8,7 @@ int main(int argn, char** argc){
     // cout << " newfont\n";
     FONT newFont("../Fonts/ROCKBI.ttf", 15);
 
-    SDL_Color rfg = {0, 0, 0, 255}, rbg = {100, 155, 90, 255};
+    SDL_Color rfg = {0, 0, 255, 255}, rbg = {100, 155, 90, 255};
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {128, 128, 128, 128};
     //
     UIColor changeColor(nfg, rbg);
@@ -27,10 +27,10 @@ int main(int argn, char** argc){
     clicker.push(changeFont);
     RadioButton theRadiobutton;
     //
-    theRadiobutton.push(CheckBox(FLIPBOX));
-    theRadiobutton.push(CheckBox(FLIPBOX));
-    theRadiobutton.push(CheckBox(FLIPBOX));
-    theRadiobutton.push(CheckBox(FLIPBOX));
+    theRadiobutton.push(CheckBox());
+    theRadiobutton.push(CheckBox());
+    theRadiobutton.push(CheckBox());
+    theRadiobutton.push(CheckBox());
     //
     theRadiobutton.setCol1(rfg);
     theRadiobutton.setCol2(rbg);
@@ -41,6 +41,20 @@ int main(int argn, char** argc){
     theRadiobutton.onClick((&clicker));
 
     theRadiobutton.onRevert((&reverter));
+
+    clicker.push(changeFont);
+    CheckBox theCheckbox;
+    theCheckbox.setCol1(rfg);
+    theCheckbox.setCol2(rbg);
+    theCheckbox.setFont(revFont);
+
+    theCheckbox.onFocus((&changeColor));
+
+    theCheckbox.onClick((&clicker));
+
+    theCheckbox.onRevert((&reverter));
+
+    theCheckbox.setPos(win.getw() - 100, win.geth() - 300);
 
     TextInputHandler input;
 
@@ -57,10 +71,13 @@ int main(int argn, char** argc){
         SDL_Point mpos;
         SDL_GetMouseState(&mpos.x, &mpos.y);
         if(input.isMouseDown(SDL_BUTTON_RIGHT))theRadiobutton.setPos(mpos.x, mpos.y);
-        boxied.settext(input.getText() == "" ? to_string(theRadiobutton.getBox()->w) + " x " + to_string(theRadiobutton.getBox()->h) : input.getText());
+        boxied.settext(input.getText() == "" ? to_string(theRadiobutton.getBox()->w) + " x " + to_string(theRadiobutton.getBox()->h) + "(" + to_string(theRadiobutton.getCurrent())+ ")" : input.getText());
         boxied.draw(win.getren(), texture);
+
         theRadiobutton.update(input);
         theRadiobutton.render(win.getren(), 10);
+        //theCheckbox.update(input);
+        //theCheckbox.render(win.getren(), 10);
         win.pst();
         SDL_Delay(33);
     }
