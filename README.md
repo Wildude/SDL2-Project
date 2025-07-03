@@ -119,15 +119,26 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 
 ---
 ## 🎥 Screen records
+<p align="left">
+  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "500" alt = "InputBox test"></img></a> 
+  <a href="source_codes/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "500" alt = "InputBox test"></img></a> 
+  <a href="source_codes/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "500" alt = "Menu State test"></img></a> 
+  <a href="source_codes/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "500" alt = "CheckBox test"></img></a> 
+  <a href="source_codes/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "500" alt = "Difficulty state test"></img></a> 
+  <a href="source_codes/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "500" alt = "UITab test"></img></a> 
+  <a href="source_codes/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "500" alt = "UI test"></img></a> 
+</p>
 
 ---
 ## 📷 Screen shots
-
-![Bounding Box Test 7_1_2025 9_22_51 PM](https://github.com/user-attachments/assets/fa103798-97ee-4848-8762-4bc54e70ffe2)
-![GUI Test 7_1_2025 9_25_22 PM](https://github.com/user-attachments/assets/2e87dfa9-3cfb-48fd-b564-dcd5304de812)
-![GUI Test 7_1_2025 9_25_30 PM](https://github.com/user-attachments/assets/c825e84f-14d9-49a6-8cd7-0eaaacdbdf9c)
-![GUI Test 7_1_2025 9_25_49 PM](https://github.com/user-attachments/assets/a2886994-7498-467d-aaf6-eb56a8a32871)
-![UIContainer Test 7_1_2025 9_25_39 PM](https://github.com/user-attachments/assets/316ccf97-5a73-4cd9-87ba-1ce1d9560737)
+<p align="left">
+  <a href="source_codes/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "500" alt = "bounding box test"></img></a> 
+    <a href="source_codes/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "500" alt = "ImageUI test"></img></a> 
+    <a href="source_codes/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "500" alt = "UI test1"></img></a>
+    <a href="source_codes/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "500" alt = "UI Panel and Container test"></img></a> 
+  <a href="source_codes/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "500" alt = "UI Container test"></img></a>
+  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "500" alt = "InputBox test"></img></a> 
+</p>
 
 ---
 ## 👩‍🔬 New concepts
