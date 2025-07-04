@@ -9,6 +9,7 @@
 #include <conio.h>
 #include <map>
 #include <array>
+#include <regex>
 using namespace std;
 template <typename T>
 T clamp(T value, T min, T max) {
@@ -93,6 +94,16 @@ namespace strmap
 	const char* to_cc_str(int num)
 	{
 		return (const char*)to_c_str(num);
+	}
+	bool is_number(const char* str){
+		if(!str)return false;
+		for(int i = 0; i < strlen(str); i++){
+			if(str[i] < 48 || str[i] > 57)return false;
+		}
+		return true;
+	}
+	bool is_number(const string& str) {
+		return is_number(str.c_str());
 	}
 }
 template <class T>

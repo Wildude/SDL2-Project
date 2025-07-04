@@ -1093,6 +1093,7 @@ class UITab : public UIelement{
 class InputBox : public Label{
     multiCommand<UIelement>& multref;
     SDL_Point dims;
+    bool iswrite;
 public:
     InputBox() : Label(UIcmdset({NULL, new multiCommand<UIelement>(this), NULL})), 
     multref(*static_cast<multiCommand<UIelement>*>(UIcmds.click)), dims(SDL_Point({0, 0})){
@@ -1126,6 +1127,7 @@ public:
         inputSetter.setInputer(inputT);
         string thetext = getText();
         inputSetter.setStrRef(thetext);
+        iswrite = inputSetter.iswritingON();
         //cout << " checking click\n";
         //if(UIcmds.click == NULL)cout << " click okay\n";;
         Label::update(input);
@@ -1169,6 +1171,9 @@ public:
     }
     const SDL_Point& getDims() const {
         return dims;
+    }
+    bool isWritingON() const{
+        return iswrite;
     }
     ~InputBox(){
         delete multref.getcmd(0);
@@ -2053,7 +2058,120 @@ class Slider : public UIelement{
     }
 };
 class SpinBox : public UIelement{
-    
+    protected:
+    void setasType(){
+        if(type == VERT){
+            inc.setType(INC_VERT);
+            dec.setType(DEC_VERT);
+        }
+        else{
+            inc.setType(INC_HORI);
+            dec.setType(DEC_HORI);
+        }
+    }
+    void setBox(){
+        Box.w = Box.h = 0;
+        if(type == VERT){
+            inc.setBoxDim(thenum.getBox()->h / 2, thenum.getBox()->h / 2);
+            dec.setBoxDim(thenum.getBox()->h / 2, thenum.getBox()->h / 2);
+            Box.w += inc.getBox()->w + thenum.getBox()->w;
+        }
+        else{
+            inc.setBoxDim(thenum.getBox()->h, thenum.getBox()->h);
+            dec.setBoxDim(thenum.getBox()->h, thenum.getBox()->h);
+            Box.w += 2 * inc.getBox()->w + thenum.getBox()->w;
+        }
+        Box.h = thenum.getBox()->h;
+    }
+    short num;
+    InputBox thenum;
+    IncDecButton inc, dec;
+    orient type;
+    SDL_Rect Box;
+    SDL_Color fg, bg;
+    public:
+    //
+    void setPos(int x, int y){
+        setBox();
+        Box.x = x;
+        Box.y = y;
+        if(type == VERT){
+            inc.setPos(x, y);
+            dec.setPos(x, inc.getBox()->y + inc.getBox()->h);
+            thenum.setPos(inc.getBox()->x + inc.getBox()->w, y);
+        }
+        else{
+            dec.setPos(x, y);
+            thenum.setPos(dec.getBox()->x + dec.getBox()->w, y);
+            inc.setPos(thenum.getBox()->x + thenum.getBox()->w, y);
+        }
+    }
+    void setCol1(const SDL_Color& col) override {
+        fg = col;
+        thenum.setCol1(col);
+        inc.setCol1(col);
+        dec.setCol1(col);
+        setPos(Box.x, Box.y);
+    }
+    void setCol2(const SDL_Color& col) override {
+        bg = col;
+        thenum.setCol2(col);
+        inc.setCol2(col);
+        dec.setCol2(col);
+        setPos(Box.x, Box.y);
+    }
+    void setFont(const FONT& font) override {
+        thenum.setFont(font);
+        setPos(Box.x, Box.y);
+    }
+    FONT* getFont() override {
+        return thenum.getFont();
+    }
+    SDL_Rect* getBox(){
+        setBox();
+        return &Box;
+    }
+    SDL_Color* getCol1() override {
+        return &fg;
+    }
+    SDL_Color* getCol2() override {
+        return &bg;
+    }
+    void update(InputManager& input) override {
+        inc.update(input);
+        dec.update(input);
+        thenum.update(input);
+        if(!thenum.isWritingON()){
+            if(inc.getclick())num++;
+            else if(dec.getclick())num--;
+            thenum.settext(to_string(num));
+        }
+        else{
+            if(strmap::is_number(thenum.gettext())){
+                num = atoi(thenum.gettext());
+            }
+        }
+        setPos(Box.x, Box.y);
+        //
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        setRenCol(rend, bg);
+        SDL_RenderFillRect(rend, &Box);
+        setRenCol(rend, fg);
+        TEXTURE::drawRect(Box, rend, drawtype / 2);
+        inc.render(rend, drawtype);
+        dec.render(rend, drawtype);
+        thenum.render(rend, drawtype);
+    }
+    //
+
+    //
+    SpinBox(orient typei = VERT): UIelement(), thenum("0"), num(0), type(typei), Box(SDL_Rect({0, 0, 0, 0})), fg(SDL_Color({0, 0, 0, 255})), 
+    bg(SDL_Color({255, 255, 255, 255})){setasType();}
+    void setType(orient typei){
+        type = typei;
+        setasType();
+    }
 };
 class ColorPicker : public UIelement{
 

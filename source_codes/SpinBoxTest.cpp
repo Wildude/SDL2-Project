@@ -1,12 +1,12 @@
 // testing states and transitions between states:
 #include "../Headers/inclusions.hpp"
-WINDOW win("DropDown Test");
+WINDOW win("SpinBox Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
     // cout << " revfont\n";
-    FONT revFont("../Fonts/ROCKB.ttf", 15);
+    FONT revFont("../Fonts/ROCKB.ttf", 45);
     // cout << " newfont\n";
-    FONT newFont("../Fonts/ROCKBI.ttf", 15);
+    FONT newFont("../Fonts/ROCKBI.ttf", 45);
 
     SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 255, 255, 255};
     SDL_Color nfg = {0, 255, 0, 255}, nbg = {0, 0, 255, 255};
@@ -25,29 +25,23 @@ int main(int argn, char** argc){
     reverter.push(revertFont);
 
     clicker.push(changeFont);
-    Dropdown theDropdown;
+    SpinBox theSpinBox;
     //
-    theDropdown.push("640 x 480");
-    theDropdown.push("1024 x 768");
-    theDropdown.push("1152 x 960");
-    theDropdown.push("1378 x 850");
+    theSpinBox.setCol1(rfg);
+    theSpinBox.setCol2(rbg);
+    theSpinBox.setFont(revFont);
     //
-    theDropdown.setCol1(rfg);
-    theDropdown.setCol2(rbg);
-    theDropdown.setFont(revFont);
+    theSpinBox.onFocus((&changeColor));
 
-    theDropdown.onFocus((&changeColor));
+    theSpinBox.onClick((&clicker));
 
-    theDropdown.onClick((&clicker));
+    theSpinBox.onRevert((&reverter));
 
-    theDropdown.onRevert((&reverter));
-
-    clicker.push(changeFont);
     TextInputHandler input;
 
     win.crtB();
     SDL_Color clearcol = {255, 255, 255, 255};
-    theDropdown.setPos(win.getw()/8, win.getw()/8);
+    theSpinBox.setPos(win.getw()/8, win.getw()/8);
     //texture = texturei[0];
     TextBox boxied("Boxied");
     boxied.setfont(newFont);
@@ -57,11 +51,11 @@ int main(int argn, char** argc){
         input.update();
         SDL_Point mpos;
         SDL_GetMouseState(&mpos.x, &mpos.y);
-        if(input.isMouseDown(SDL_BUTTON_RIGHT))theDropdown.setPos(mpos.x, mpos.y);
-        boxied.settext(input.getText() == "" ? to_string(theDropdown.getBox()->w) + " x " + to_string(theDropdown.getBox()->h) : input.getText());
+        if(input.isMouseDown(SDL_BUTTON_RIGHT))theSpinBox.setPos(mpos.x, mpos.y);
+        boxied.settext(input.getText() == "" ? to_string(theSpinBox.getBox()->w) + " x " + to_string(theSpinBox.getBox()->h) : input.getText());
         boxied.draw(win.getren(), texture);
-        theDropdown.update(input);
-        theDropdown.render(win.getren(), 10);
+        theSpinBox.update(input);
+        theSpinBox.render(win.getren(), 10);
         win.pst();
         SDL_Delay(33);
     }
