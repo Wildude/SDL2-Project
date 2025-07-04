@@ -202,6 +202,7 @@ struct UIFont : public UICommand{
         cmd.execute();
     }
 };
+enum orient{VERT, HORI};
 class UIContainer : public UIelement{
     protected:
     vector<UIelement*> UIlist;
@@ -1463,7 +1464,7 @@ class IncDecButton : public Button {
     Orientation type;
     // abstract imps
     public:
-    void render(SDL_Renderer* rend, int drawtype = 2){
+    virtual void render(SDL_Renderer* rend, int drawtype = 2){
         switch (type){
             case INC_HORI:{
                 def:
@@ -1542,6 +1543,49 @@ class IncDecButton : public Button {
         type = typei;
     }
     inline Orientation getType() const {return type;}
+};
+class IncDecCheckbox : public IncDecButton{
+    protected:
+    bool clickstate;
+    orient type;
+    public:
+    //
+    void update(InputManager& input) override {
+        IncDecButton::update(input);
+        if(getclick()){
+            clickstate = !clickstate;
+        }
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        if(clickstate){
+            if(type == VERT){
+                IncDecButton::setType(INC_VERT);
+            }
+            else IncDecButton::setType(INC_HORI);
+        }
+        else if(type == VERT){
+            IncDecButton::setType(DEC_VERT);
+        }
+        else IncDecButton::setType(DEC_HORI);
+        IncDecButton::render(rend, drawtype);
+    }
+    //
+    IncDecCheckbox(orient typei = HORI) : IncDecButton(), clickstate(false), type(typei){}
+    inline void setType(orient typei){
+        type = typei;
+    }
+    inline bool getState() const {
+        return clickstate;
+    }
+    inline void setState(){
+        clickstate = true;
+    }
+    inline void clearState(){
+        clickstate = false;
+    }
+    inline void toggleState(){
+        clickstate = !clickstate;
+    }
 };
 class TextSwitch: public UIelement{
     protected:
@@ -1659,7 +1703,152 @@ class TextSwitch: public UIelement{
 🔹 3. Selection & Lists
 */
 class Dropdown : public UIelement {
+    protected:
+    void setBox(){
+        Box.w = Box.h = 0;
+        int width = largestwidth();
+        int height = largestheight();
+        width = width ? width : 70;
+        height = height ? height : 18;
+        updown.setBoxDim(height, height);
+        Box.w = width + height;
+        Box.h = height;
+        if(updown.getState()){
+            if(options.empty())Box.h += height;
+            else{
+                Box.h += height * options.size() - 1;
+            }
+        }
+    }
+    int largestheight(){
+        if(options.empty())return 0;
+        int height = 0;
+        for(Label& opt : options){
+            if(height < opt.getBox()->h)height = opt.getBox()->h;
+        }
+        return height;
+    }
+    int largestwidth(){
+        if(options.empty())return 0;
+        int width = 0;
+        for(Label& opt : options){
+            if(width < opt.getBox()->w)width = opt.getBox()->w;
+        }
+        return width;
+    }
+    vector<Label> options;
+    SDL_Rect Box;
+    SDL_Color fg, bg;
+    IncDecCheckbox updown;
+    public:
+    // abstract imps
+    virtual void setPos(int x , int y) override {
+        setBox();
+        Box.x = x;
+        Box.y = y;
+        int size = options.size();
+        if(!size)return;
+        options[0].setPos(x, y);
+        updown.setPos(Box.x + Box.w - updown.getBox()->w, y);
+        for(int i = 1; i < size; i++){
+            options[i].setPos(x, options[i - 1].getBox()->y + options[i - 1].getBox()->h);
+        }
+    }
+    virtual void setCol1(const SDL_Color& col){
+        fg = col;
+        int size = options.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++){
+            options[i].setCol1(col);
+        }
+        setPos(Box.x, Box.y);
+    }
+    virtual void setCol2(const SDL_Color& col){
+        bg = col;
+        int size = options.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++){
+            options[i].setCol2(col);
+        }
+        setPos(Box.x, Box.y);
+    }
+    virtual void setFont(const FONT& font){
+        int size = options.size();
+        if(!size)return;
+        for(int i = 0; i < size; i++){
+            options[i].setFont(font);
+        }
+        setPos(Box.x, Box.y);
+    }
+    virtual SDL_Rect* getBox(){
+        setBox();
+        return &Box;
+    }
+    virtual FONT* getFont(){
+        int size = options.size();
+        if(!size)return NULL;
+        return options[0].getFont();
+    }
+    virtual SDL_Color* getCol1(){
+        return &fg;
+    }
+    virtual SDL_Color* getCol2(){
+        return &bg;
+    }
+    void update(InputManager& input) override {
+        updown.update(input);
+        if(options.empty())return;
+        if(updown.getState()){
+            for(Label& opt : options){
+                opt.update(input);
+                if(opt.getclick()){
+                    swap(opt, options[0]);
+                    updown.clearState();
+                }
+            }
+        }
+        else{
+            options[0].update(input);
+            if(options[0].getclick()){
+                updown.setState();
+            }
+        }
+        setPos(Box.x, Box.y);
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        setRenCol(rend, bg);
+        SDL_RenderFillRect(rend, &Box);
+        setRenCol(rend, fg);
+        TEXTURE::drawRect(Box, rend, drawtype / 2);
+        if(updown.getState()){
+            if(!options.empty()){
+                for(Label& opt : options)
+                opt.render(rend, drawtype);
+            }
+            for(int line = updown.getBox()->h; line < Box.h; line += updown.getBox()->h){
+                DrawThickLine(rend, Box.x, Box.y + line, Box.x + Box.w, Box.y + line, drawtype / 2);
+            }
+        }
+        else if(!options.empty())options[0].render(rend, drawtype);
+        updown.render(rend, drawtype);
+    }
+    //
     // Dropdown implementation
+    Dropdown() : UIelement(), Box(SDL_Rect({0, 0, 0, 0})), fg(SDL_Color({0, 0, 0, 255})), 
+    bg(SDL_Color({255, 255, 255, 255})), updown(VERT){}
+    void push(const Label& opt){
+        options.push_back(opt);
+        setPos(Box.x, Box.y);
+    }
+    void push(const string& str){
+        options.push_back(Label(str.c_str()));
+        setPos(Box.x, Box.y);
+    }
+    void push(const char* str = ""){
+        options.push_back(Label(str));
+        setPos(Box.x, Box.y);
+    }
+
 };
 class ListBox : public Dropdown{
 
@@ -1745,7 +1934,7 @@ class Slider : public UIelement{
     SDL_Rect box;
     SDL_Color fg, bg;
     short portion;
-    enum orient{VERT, HORI}type;
+    orient type;
     public:
     Slider(bool focus = false, bool hover = false, bool click = false, bool revert = true)
         : UIelement(UIcmdset({NULL, new multiCommand<UIelement>(this)}), focus, hover, click, revert), 
