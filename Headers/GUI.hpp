@@ -1260,7 +1260,7 @@ class LabelArea : public Label{
     }
 };
 class InputArea : public LabelArea{
-
+    // 
 };
 class PasswordBox : public InputBox {
 
