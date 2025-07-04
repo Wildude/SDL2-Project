@@ -1716,7 +1716,7 @@ class Dropdown : public UIelement {
         if(updown.getState()){
             if(options.empty())Box.h += height;
             else{
-                Box.h += height * options.size() - 1;
+                Box.h += height * (options.size() - 1);
             }
         }
     }
@@ -1747,9 +1747,9 @@ class Dropdown : public UIelement {
         Box.x = x;
         Box.y = y;
         int size = options.size();
+        updown.setPos(Box.x + Box.w - updown.getBox()->w, y);
         if(!size)return;
         options[0].setPos(x, y);
-        updown.setPos(Box.x + Box.w - updown.getBox()->w, y);
         for(int i = 1; i < size; i++){
             options[i].setPos(x, options[i - 1].getBox()->y + options[i - 1].getBox()->h);
         }
@@ -1825,6 +1825,7 @@ class Dropdown : public UIelement {
                 for(Label& opt : options)
                 opt.render(rend, drawtype);
             }
+            setRenCol(rend, fg);
             for(int line = updown.getBox()->h; line < Box.h; line += updown.getBox()->h){
                 DrawThickLine(rend, Box.x, Box.y + line, Box.x + Box.w, Box.y + line, drawtype / 2);
             }
@@ -2052,7 +2053,7 @@ class Slider : public UIelement{
     }
 };
 class SpinBox : public UIelement{
-
+    
 };
 class ColorPicker : public UIelement{
 
