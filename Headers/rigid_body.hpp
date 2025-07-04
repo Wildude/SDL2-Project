@@ -10,6 +10,7 @@
  * Upper arm >>: (w/2, 2h/5)
  * Feet >>:
  */
+/*
 ofstream fileR("../Files/Data/Rigid_body.txt"), fileL("../Files/Data/Rigid_bodyL.txt");
 const char* body_list[15] = 
 {
@@ -61,3 +62,4 @@ class ragdoll
         // parse image, uv dimensions, coordinates and centers from file
     }
 };
+*/

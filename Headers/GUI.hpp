@@ -203,6 +203,7 @@ struct UIFont : public UICommand{
     }
 };
 enum orient{VERT, HORI};
+enum Alignment{LEFT, CENTER, RIGHT};
 class UIContainer : public UIelement{
     protected:
     vector<UIelement*> UIlist;
@@ -537,7 +538,7 @@ class Label : public UIelement {
         box.x = x;
         box.y = y;
     }
-    inline void setFont(const FONT& newfont){
+    void setFont(const FONT& newfont){
         // cout <<" setting label font\n";
         if(font.getfont() == newfont.getfont()){
             return;
@@ -572,7 +573,7 @@ class Label : public UIelement {
             texture = NULL;
         }
     }
-    inline void settext(const char* str = NULL){
+    void settext(const char* str = NULL){
         if(str == NULL){
             text.clear();
             delTex();
@@ -587,7 +588,7 @@ class Label : public UIelement {
         }
         delTex();
     }
-    inline void settext(const string& str) override {
+    void settext(const string& str) override {
         if(text == str){
             return;
         }
@@ -597,7 +598,7 @@ class Label : public UIelement {
         }
         delTex();
     }
-    void render(SDL_Renderer* renderer, int drawtype = 2) override {
+    virtual void render(SDL_Renderer* renderer, int drawtype = 2) override {
         checkfile();
         uilog << " Rendering label: \n";
         if(!texture){
@@ -626,25 +627,25 @@ class Label : public UIelement {
         SDL_RenderCopy(renderer, texture, NULL, &box);
         // Render the label text using the provided renderer
     }
-    string& getText(){
+    virtual inline string& getText(){
         return text;
     }
-    const char* gettext(){
+    virtual inline const char* gettext(){
         return text.c_str();
     }
-    string& gettextRef(){
+    virtual inline string& gettextRef(){
         return text;
     }
-    FONT* getFont() {
+    virtual inline FONT* getFont() {
         return &font;
     }
-    SDL_Color* getCol1() {
+    virtual inline SDL_Color* getCol1() {
         return &fg;
     }
-    SDL_Color* getCol2() {
+    virtual inline SDL_Color* getCol2() {
         return &bg;
     }
-    SDL_Rect* getBox(){
+    virtual inline SDL_Rect* getBox(){
         return &box;
     }
     protected:
@@ -1180,7 +1181,83 @@ public:
     }
 };
 class LabelArea : public Label{
+    protected:
+    void setBox(){
+        Box.w = Box.h = 0;
+        int size = lines.size();
+        if(!size){
+            Box.w = Label::getBox()->w;
+            Box.h = Label::getBox()->h;
+            return;
+        }
+        for(int i = 0; i < size; i++){
+            int w, h;
+            getFont()->TEXT_size(lines[i].c_str(), &w, &h);
+            if(Box.w < w)Box.w = w;
+            Box.h += h + linespacing;
+        }
+    }
+    vector<string> lines;
+    int linespacing;
+    SDL_Rect Box;
+    SDL_Color fg, bg;
+    public:
+    //
+    void setPos(int x, int y) override {
+        Box.x = x;
+        Box.y = y;
+        Label::setPos(x, y);
+    }
+    void setCol1(const SDL_Color& col) override {
+        fg = col;
+        Label::setCol1(col);
+    }
+    void setCol2(const SDL_Color& col) override {
+        bg = col;
+        Label::setCol2(col);
+    }
+    void setFont(const FONT& font) override {
+        Label::setFont(font);
+        setBox();
+    }
+    SDL_Rect* getBox() {
+        setBox();
+        return &Box;
+    }
+    void render(SDL_Renderer* rend, int drawtype = 2) override {
+        setRenCol(rend, bg);
+        SDL_RenderFillRect(rend, &Box);
+        setRenCol(rend, fg);
+        TEXTURE::drawRect(Box, rend, drawtype / 2);
+        int size = lines.size();
+        if(!size){
+            Label::render(rend, drawtype);
+            return;
+        }
+        settext(lines[0]);
+        Label::setPos(Box.x, Box.y);
+        Label::render(rend, drawtype);
+        int h = Label::getBox()->h + Label::getBox()->y;
+        for(int i = 1; i < size; i++){
+            settext(lines[i]);
+            Label::setPos(Box.x, h + linespacing);
+            Label::render(rend, drawtype);
+            h = Label::getBox()->h + Label::getBox()->y;
+        }
+    }
+    //
+    //
+    LabelArea() : Label(), linespacing(0), Box(SDL_Rect({0, 0, 0, 0})), 
+    fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})){}
 
+    void push(const string& str){
+        lines.push_back(str);
+        setBox();
+    }
+    void push(const char* str = ""){
+        lines.push_back(str);
+        setBox();
+    }
 };
 class InputArea : public LabelArea{
 
