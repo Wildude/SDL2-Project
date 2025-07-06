@@ -1,4 +1,7 @@
 // SDL2_gfx test program
+// compile command:
+// g++ -I../src/Include -L../src/Lib -o ../Executables/SDL2_gfxTest.exe SDL2_gfxTest.cpp -lSDL2_gfx -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+// make sure -lSDL2_gfx comes before all
 #include <SDL2/SDL.h>
 #include <SDL2_gfx/SDL2_gfxPrimitives.h>
 
