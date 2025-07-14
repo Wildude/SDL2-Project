@@ -19,7 +19,7 @@ int main(int argn, char** args)
     SDL_Color col = {200, 0, 0, 255};
     man.set_cenpos(win.getw()/2, win.geth()/2);
     Level level;
-    level.parseLevel("../Files/XML/Forest.tmx", win.getren());
+    level.parseLevel("../Files/XML/16 bit world.tmx", win.getren());
     while(event.type != SDL_QUIT){
         SDL_PollEvent(&event);
         int x, y;

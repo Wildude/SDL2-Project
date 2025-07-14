@@ -22,13 +22,13 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     vector<vector<vector<int>>> Layers;
     Level bit16;
-    bit16.parseLevel("../Files/XML/StageX.tmx", win.getren());
+    bit16.parseLevel("../Files/XML/16bit world.tmx", win.getren());
     // consider deleting doc by scoping out
-    bit16.display();
+    // bit16.display();
     //return 1;
     int mapWidth = bit16.getMapWidth();
     int mapHeight = bit16.getMapHeight();
-    float speed = 10;
+    float speed = 2;
     SDL_Event event;
     TEXTURE man;
     SDL_Surface* surf = SDL_CreateRGBSurface(0, 5, 8, 8, 0, 0, 0, 0);
@@ -82,23 +82,23 @@ int main(int argn, char** args)
         if(input.isKeyDown(SDL_SCANCODE_E))angle++;
         if(input.isKeyDown(SDL_SCANCODE_LEFT)){
             moved = true;
-            vel.getx() -= speed * physx::delta;
+            vel.getx() -= speed * 1;//physx::delta;
         }
         if(input.isKeyDown(SDL_SCANCODE_RIGHT)){
             moved = true;
-            vel.getx() += speed * physx::delta;
+            vel.getx() += speed * 1;//physx::delta;
         }
         if(input.isKeyDown(SDL_SCANCODE_UP)){
             moved = true;
-            vel.gety() += speed * physx::delta;
+            vel.gety() += speed * 1;//physx::delta;
         }
         if(input.isKeyDown(SDL_SCANCODE_DOWN)){
             moved = true;
-            vel.gety() -= speed * physx::delta;
+            vel.gety() -= speed * 1;//physx::delta;
         }
         if(!moved){
             framestarter = !framestarter ? SDL_GetTicks() : framestarter;
-            if(SDL_GetTicks() - framestarter > 100){
+            if(SDL_GetTicks() - framestarter > 10){
                 vel.getx() = 0;
                 vel.gety() = 0;
                 framestarter = SDL_GetTicks();
