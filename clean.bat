@@ -1,85 +1,82 @@
 @echo off
-REM Usage: clean.bat [project_dir] [objs|bin]
+REM Usage: clean.bat [objs|bin|test|sdl|bas|core]
 
 setlocal
 
-REM Set project directory (default to current directory if not provided)
-set TEST_DIR=tests
-set TEST_OBJ=%TEST_DIR%\obj
-set BIN_DIR=bin
-set DLLS_DIR=DLLS
+REM === Define directories ===
+set "TEST_DIR=tests"
+set "TEST_OBJ=%TEST_DIR%\obj"
+set "BIN_DIR=bin"
+set "DLLS_DIR=DLLS"
 
-set CORE_DIR=core
-set SDL_OBJ=%CORE_DIR%\SDL\obj
-set BAS_OBJ=%CORE_DIR%\BAS\obj
-REM List of directories to create
-set CORE_OBJ=%SDL_OBJ% %BAS_OBJ% %OGL_OBJ%
+set "CORE_DIR=core"
+set "SDL_OBJ=%CORE_DIR%\SDL\obj"
+set "BAS_OBJ=%CORE_DIR%\BAS\obj"
+set "OGL_OBJ=%CORE_DIR%\OGL\obj"
 
-REM Remove obj folders in core and tests
+REM List of directories to clean for "core"
+set "CORE_OBJ_FOLDERS=%SDL_OBJ% %BAS_OBJ%"
+
+REM === Conditional handling ===
 if "%~1"=="objs" (
     echo Removing obj folders in core and tests...
-    call :CleanFolders "%CORE_OBJ%"
-    rmdir /s /q "%TEST_OBJ%"
+    call :CleanFolders %CORE_OBJ_FOLDERS%
+    call :CleanFolders "%TEST_OBJ%"
     goto :EOF
 )
-REM Remove obj folders in core
+
 if "%~1"=="core" (
     echo Removing obj folders in core and tests...
-    call :CleanFolders "%CORE_OBJ%"
-    rmdir /s /q "%TEST_OBJ%"
+    call :CleanFolders %CORE_OBJ_FOLDERS%
     goto :EOF
 )
 
-REM Remove bin folder
 if "%~1"=="bin" (
     echo Removing bin folder...
-    rmdir /s /q "%CORE_DIR%\bin"
+    call :CleanFolders "%BIN_DIR%"
     goto :EOF
 )
 
-REM Remove test obj
 if "%~1"=="test" (
     echo Removing test obj folder...
-    rmdir /s /q "%TEST_OBJ%"
+    call :CleanFolders "%TEST_OBJ%"
     goto :EOF
 )
 
-REM Remove SDL obj
 if "%~1"=="sdl" (
     echo Removing SDL obj folder...
-    rmdir /s /q "%SDL_OBJ%"
+    call :CleanFolders "%SDL_OBJ%"
     goto :EOF
 )
 
-REM Remove BAS obj
 if "%~1"=="bas" (
     echo Removing BAS obj folder...
-    rmdir /s /q "%BAS_OBJ%"
+    call :CleanFolders "%BAS_OBJ%"
     goto :EOF
 )
 
-REM If no second argument, remove all
+REM === Default: no argument, remove everything ===
 if "%~1"=="" (
-    echo Removing obj folders in core and tests...
-    rmdir /s /q "%CORE_DIR%\core\obj"
-    rmdir /s /q "%CORE_DIR%\tests\obj"
-    echo Removing bin folder...
-    rmdir /s /q "%CORE_DIR%\bin"
+    echo Removing all folders...
+    call :CleanFolders %CORE_OBJ_FOLDERS%
+    call :CleanFolders "%TEST_OBJ%"
+    call :CleanFolders "%BIN_DIR%"
     goto :EOF
 )
 
-REM === Subroutine definition ===
+REM Invalid argument
+echo Invalid argument: %~1
+echo "Usage: clean.bat [objs|bin|test|sdl|bas|core]" 
+goto :EOF
+
+REM === Subroutine for cleaning folders ===
 :CleanFolders
-REM %* contains all arguments passed to the subroutine
 for %%D in (%*) do (
-    if exist "%%D" (
-        echo Removing folder %%D...
-        rmdir /s /q "%%D"
+    if exist "%%~D" (
+        echo Removing folder %%~D...
+        rmdir /s /q "%%~D"
     ) else (
-        echo Folder %%D does not exist, skipping.
+        echo Folder %%~D does not exist, skipping.
     )
 )
-
-echo Invalid argument: %~1
-echo Usage: clean.bat [objs|bin]
-endlocal
+exit /b
