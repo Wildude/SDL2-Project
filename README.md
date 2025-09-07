@@ -112,10 +112,9 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 </details>
 
 ## 😲❓ Recent changes
-- Added a docs and design folder for clean system design.
-- Added UI system
-- Added command system
-- Added scripting system
+- separated declaration and definition (implementation)
+- Added batch and makefiles to automate build tasks
+- These make compilation fast and efficient
 
 ---
 ## 🎥 Screen records
