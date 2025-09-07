@@ -1,0 +1,106 @@
+// testing states and transitions between states:
+#include <States.hpp>
+#include <TextBox.hpp>
+#include <window.hpp>
+#include <GUI.hpp>
+WINDOW win("Menu State Test");
+SDL_Texture* texture;
+int currentState = 0;
+std::string stater = "menu";
+void changeState(){
+    if(stater == "menu"){
+        stater = "difficulty";
+    }
+    else stater = "menu";
+}
+int main(int argn, char** argc){
+    // std::cout << " revfont\n";
+    FONT revFont("../Fonts/ROCKB.ttf", 15);
+    // std::cout << " newfont\n";
+    FONT newFont("../Fonts/ROCKBI.ttf", 15);
+    MenuState menust("Main Menu"), diffst("Difficulty Menu");
+    StateManager StMan;
+    StMan.pushState(&menust);
+    menust.push(UIContainer());
+    diffst.push(UIContainer());
+    SDL_Color rfg = {0, 0, 0, 255}, rbg = {255, 255, 255, 255};
+    SDL_Color nfg = {255, 0, 0, 255}, nbg = {0, 0, 255, 255};
+    std::vector<Label> menu;
+    std::vector<InputBox> diff;
+    std::vector<Label> options;
+    std::vector<Label> about;
+    std::vector<Label> exit;
+    // std::cout <<" adding play\n";
+    menu.push_back(Label("Play"));
+    menu.push_back(Label("Options"));
+    menu.push_back(Label("About"));
+    menu.push_back(Label("Exit"));
+    // diffculty labels
+    diff.push_back(InputBox("Easy"));
+    diff.push_back(InputBox("Medium"));
+    diff.push_back(InputBox("Hard"));
+    //
+    UIColor changeColor(nbg, nfg);
+    // std::cout << " change font\n";
+    UIFont changeFont(newFont);
+    UIColor revertCol(rfg, rbg);
+    // std::cout << " revert font\n";
+    UIFont revertFont(revFont);
+    // std::cout << " full reverter\n";
+    ChangeStateCommand<UIelement> state_change(StMan, &diffst);
+    multiCommand<UIelement> reverter, state_changer, inputer;
+    ChangeStringCmd<UIelement> stringchange(NULL, NULL, NULL);
+    reverter.push(revertCol);
+    reverter.push(revertFont);
+    state_changer.push(changeFont);
+    state_changer.push(state_change);
+    inputer.push(changeFont);
+    inputer.push(stringchange);
+    for(UIelement& ui : menu){
+        menust.getUICs()[0].push(ui);
+    }
+    for(UIelement& ui : diff){
+        diffst.getUICs()[0].push(ui);
+    }   
+    // std::cout << " setting font\n";
+    menust.getUICs()[0].setFont(revFont);
+    diffst.getUICs()[0].setFont(revFont);
+
+    menust.getUICs()[0].onFocus((&changeColor));
+    diffst.getUICs()[0].onFocus((&changeColor));
+
+    menust.getUICs()[0].onClick((&changeFont));
+    std::cout << " Calling OnClick for at least once\n";
+    diffst.getUICs()[0].onClick((&changeFont));
+
+    menust.getUICs()[0].onRevert((&reverter));
+    diffst.getUICs()[0].onRevert((&reverter));
+    diffst.getUICs()[0].getList()[0]->onClick((&inputer));
+
+    TextInputHandler input;
+    stringchange.setInputer(input);
+    stringchange.textTo = &diff[0].gettextRef();
+    bool oldclick = false;
+    WINDOW win("GUI Test");
+    menust.getUICs()[0].setPos(win.getw()/2, win.geth()/2);
+    diffst.getUICs()[0].setPos(win.getw()/2, win.geth()/2);
+    win.crtB();
+    win.pstcol(255, 255, 255, 255);
+    //texture = texturei[0];
+    doCommand<UIelement> dochange(changeState);
+    multiCommand<UIelement> changestater;
+    changestater.push(&changeColor);
+    changestater.push(&dochange);
+    menust.getUICs()[0].getList()[0]->onClick((&state_changer));
+    while(!input.shouldQuit()){
+        win.clr();
+        if(StMan.getCurrent() == &diffst && input.isKeyDown(SDL_SCANCODE_ESCAPE))StMan.popState();
+        input.update();
+        //UIcons[currentState].render(win.getren(), texture);
+        StMan.update(input);
+        StMan.render(win.getren());
+        win.pst();
+        SDL_Delay(33);
+    }
+    return 0;
+}
