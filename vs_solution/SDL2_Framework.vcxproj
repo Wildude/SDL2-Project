@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{C3D4E5F6-A7B8-9012-CDEF-345678901234}</ProjectGuid>
+    <RootNamespace>SDL2_Framework</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\Executables\</OutDir>
+    <IntDir>$(SolutionDir)..\build\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\Executables\</OutDir>
+    <IntDir>$(SolutionDir)..\build\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\core\BAS\include;$(SolutionDir)..\core\SDL\include;$(SolutionDir)..\src\include;$(SolutionDir)..\src\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\src\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2_Core.lib;SDL2_BAS.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;SDL2_gfx.lib;lua.lib;z.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\core\BAS\include;$(SolutionDir)..\core\SDL\include;$(SolutionDir)..\src\include;$(SolutionDir)..\src\include\SDL2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\src\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2_Core.lib;SDL2_BAS.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_net.lib;SDL2_gfx.lib;lua.lib;z.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <!-- SDL Framework Source Files -->
+    <ClCompile Include="..\core\SDL\src\*.cpp" />
+    <ClCompile Include="..\core\BAS\src\*.cpp" />
+    <!-- Test/Demo Source Files -->
+    <ClCompile Include="..\tests\src\bounding_box_test.cpp" />
+    <ClCompile Include="..\tests\src\CheckBoxTest.cpp" />
+    <ClCompile Include="..\tests\src\DropDownTest.cpp" />
+    <ClCompile Include="..\tests\src\ImageTest.cpp" />
+    <ClCompile Include="..\tests\src\InputBoxTest.cpp" />
+    <ClCompile Include="..\tests\src\LabelAreaTest.cpp" />
+    <ClCompile Include="..\tests\src\NetworkTrial.cpp" />
+    <ClCompile Include="..\tests\src\NetworkTrial2.cpp" />
+    <ClCompile Include="..\tests\src\projecter_gpt.cpp" />
+    <ClCompile Include="..\tests\src\RadioButtonTest.cpp" />
+    <ClCompile Include="..\tests\src\script_test_template.cpp" />
+    <ClCompile Include="..\tests\src\script_test.cpp" />
+    <ClCompile Include="..\tests\src\script_test2.cpp" />
+    <ClCompile Include="..\tests\src\script_test3.cpp" />
+    <ClCompile Include="..\tests\src\script_test4.cpp" />
+    <ClCompile Include="..\tests\src\script_test5.cpp" />
+    <ClCompile Include="..\tests\src\script_test6.cpp" />
+    <ClCompile Include="..\tests\src\script_test7.cpp" />
+    <ClCompile Include="..\tests\src\script_test8.cpp" />
+    <ClCompile Include="..\tests\src\script_test9.cpp" />
+    <ClCompile Include="..\tests\src\SDL2_gfxTest.cpp" />
+    <ClCompile Include="..\tests\src\SliderTest.cpp" />
+    <ClCompile Include="..\tests\src\SpinBoxTest.cpp" />
+    <ClCompile Include="..\tests\src\State_test.cpp" />
+    <ClCompile Include="..\tests\src\State_test2.cpp" />
+    <ClCompile Include="..\tests\src\TextEditingTrial.cpp" />
+    <ClCompile Include="..\tests\src\TextSwitchTest.cpp" />
+    <ClCompile Include="..\tests\src\Texture_mapper.cpp" />
+    <ClCompile Include="..\tests\src\Tilemaptest.cpp" />
+    <ClCompile Include="..\tests\src\Tilemaptest2.cpp" />
+    <ClCompile Include="..\tests\src\UI_test.cpp" />
+    <ClCompile Include="..\tests\src\UI_test2.cpp" />
+    <ClCompile Include="..\tests\src\UIPC_test.cpp" />
+    <ClCompile Include="..\tests\src\UItabTest.cpp" />
+    <ClCompile Include="..\tests\src\video_test.cpp" />
+    <ClCompile Include="..\tests\src\video_test2.cpp" />
+    <ClCompile Include="..\tests\src\xmltest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Framework Headers -->
+    <ClInclude Include="..\core\BAS\include\*.hpp" />
+    <ClInclude Include="..\core\BAS\include\*.inf" />
+    <ClInclude Include="..\core\SDL\include\*.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
