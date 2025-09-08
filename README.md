@@ -31,10 +31,10 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 </details>
 <!-- Executables Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables">Executables/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test.exe">UI_test.exe</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test2.exe">UI_test2.exe</a> <br>
-  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Executables/UI_test3.exe">UI_test3.exe</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin">bin/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test.exe">UI_test.exe</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test2.exe">UI_test2.exe</a> <br>
+  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test3.exe">UI_test3.exe</a> <br>
 </details>
 <!-- Fonts Files -->
 <details>
@@ -65,19 +65,17 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/fire">fire/</a>
   <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Images/Weapons/fire/fire.png">fire.png</a> <br>
 </details>
-<!-- Headers Files -->
+<!-- core Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers">Headers/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/Basic.hpp">Basic.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/BSDLF.hpp">BSDLF.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/SDL2_namespace.hpp">SDL2_namespace.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/vector2D.hpp">vector2D.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/command.hpp">command.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/GUI.hpp">GUI.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/physics.hpp">physics.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/rigid_body.hpp">rigid_body.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/Tilemap.hpp">Tilemap.hpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/Headers/scriptProcessor.hpp">scriptProcessor.hpp</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/core">core/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - 
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/BAS">BAS/</a> <br>  
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/BAS/include">include/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/BAS/src">src/</a> <br>
+&nbsp &nbsp &nbsp &nbsp - 
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL">SDL/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/include">include/</a>
+  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/src">src/</a> <br>
 </details>
 <!-- Sample_codes Files -->
 <details>
@@ -86,10 +84,10 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 </details>
 <!-- Source_codes Files -->
 <details>
-<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes">source_codes/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test.cpp">UI_test.cpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test2.cpp">UI_test2.cpp</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/source_codes/UI_test3.cpp">UI_test3.cpp</a> <br>
+<summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/tests/src">tests/</a></strong></summary>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/tests/src/UI_test.cpp">UI_test.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/tests/src/UI_test2.cpp">UI_test2.cpp</a> <br>
+&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/tests/src/UI_test3.cpp">UI_test3.cpp</a> <br>
 </details>
 <!-- SRC Files -->
 <details>
@@ -119,39 +117,33 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🎥 Screen records
 <p align="left">
-  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "800" alt = "InputBox test"/></a> 
-  <a href="source_codes/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "400" alt = "InputBox test"/></a> 
-  <a href="source_codes/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "400" alt = "Menu State test"/></a> 
-  <a href="source_codes/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "400" alt = "CheckBox test"/></a> 
-  <a href="source_codes/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "400" alt = "Difficulty state test"/></a> 
-  <a href="source_codes/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "400" alt = "UITab test"/></a> 
-  <a href="source_codes/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "400" alt = "UI test"/></a> 
-  <a href="source_codes/TextSwitchTest.cpp"><img src = "screenshots/TextSwitchTest.gif" width = "400" alt = "Textswitch test"/></a> 
-  <a href="source_codes/DropDownTest.cpp"><img src = "screenshots/DropDownTest.gif" width = "400" alt = "Dropdown test"/></a> 
-  <a href="source_codes/SpinBoxTest.cpp"><img src = "screenshots/SpinBoxTest.gif" width = "400" alt = "Spinbox test"/></a> 
+  <a href="tests/src/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "800" alt = "InputBox test"/></a> 
+  <a href="tests/src/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "400" alt = "InputBox test"/></a> 
+  <a href="tests/src/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "400" alt = "Menu State test"/></a> 
+  <a href="tests/src/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "400" alt = "CheckBox test"/></a> 
+  <a href="tests/src/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "400" alt = "Difficulty state test"/></a> 
+  <a href="tests/src/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "400" alt = "UITab test"/></a> 
+  <a href="tests/src/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "400" alt = "UI test"/></a> 
+  <a href="tests/src/TextSwitchTest.cpp"><img src = "screenshots/TextSwitchTest.gif" width = "400" alt = "Textswitch test"/></a> 
+  <a href="tests/src/DropDownTest.cpp"><img src = "screenshots/DropDownTest.gif" width = "400" alt = "Dropdown test"/></a> 
+  <a href="tests/src/SpinBoxTest.cpp"><img src = "screenshots/SpinBoxTest.gif" width = "400" alt = "Spinbox test"/></a> 
 </p>
 
 ---
 ## 📷 Screen shots
 <p align="left">
-  <a href="source_codes/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "400" alt = "bounding box test"/></a> 
-    <a href="source_codes/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "400" alt = "ImageUI test"/></a> 
-    <a href="source_codes/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "400" alt = "UI test1"/></a>
-    <a href="source_codes/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "400" alt = "UI Panel and Container test"/></a> 
-  <a href="source_codes/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "400" alt = "UI Container test"/></a>
-  <a href="source_codes/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "400" alt = "InputBox test"/></a> 
-  <a href="source_codes/LabelAreaTest.cpp"><img src = "screenshots/LabelArea Test 7_4_2025 6_18_39 PM.png" width = "400" alt = "Labelarea test"/></a> 
+  <a href="tests/src/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "400" alt = "bounding box test"/></a> 
+    <a href="tests/src/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "400" alt = "ImageUI test"/></a> 
+    <a href="tests/src/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "400" alt = "UI test1"/></a>
+    <a href="tests/src/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "400" alt = "UI Panel and Container test"/></a> 
+  <a href="tests/src/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "400" alt = "UI Container test"/></a>
+  <a href="tests/src/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "400" alt = "InputBox test"/></a> 
+  <a href="tests/src/LabelAreaTest.cpp"><img src = "screenshots/LabelArea Test 7_4_2025 6_18_39 PM.png" width = "400" alt = "Labelarea test"/></a> 
 </p>
 
 ---
 ## 👩‍🔬 New concepts
-### Rescaling images
-![image](https://github.com/user-attachments/assets/189e9e9b-c481-4f18-a270-fda506be3a0b)
-- This speeds up image generation process since drawing is not required.
-- The above image is an illustration of this concept.
-- Initially the large images (The man, The leather jeans and shoes) were downloaded separately from the internet.
-- They were then rescaled into a desirable size and stiched to each other via the app <a href ="https://graphicsgale.com/us/">GraphicsGale</a>.
-- Then each parts of the now stiched man were partitioned and rescaled again to fit parts of the human body (according to the design needed by <a href = "Headers/rigid_body.hpp">rigid_body.hpp</a>
+- project in renovation
 ---
 ## 🤔 How to use?
 ### Windows
