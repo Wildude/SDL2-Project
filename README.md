@@ -74,8 +74,8 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
   &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/BAS/src">src/</a> <br>
 &nbsp &nbsp &nbsp &nbsp - 
   <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL">SDL/</a> <br>
-  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/include">include/</a>
-  <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/src">src/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/include">include/</a> <br>
+  &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/core/SDL/src">src/</a> <br>
 </details>
 <!-- Sample_codes Files -->
 <details>
