@@ -23,7 +23,7 @@ set TEST_DIR=tests
 set TEST_OBJ=%TEST_DIR%\obj
 set BIN_DIR=bin
 set DLLS_DIR=DLLS
-
+set BAT_DIR=batch
 REM Create directories if they don't exist
 for %%d in ("%TEST_OBJ%" "%BIN_DIR%") do (
     if not exist "%%d" (
@@ -37,6 +37,10 @@ for %%f in ("%DLLS_DIR%\*.dll") do (
     echo Copying %%f to %BIN_DIR%
     copy /Y "%%f" "%BIN_DIR%" >nul
 )
+echo Copying %BAT_DIR%\runbuild.bat to %BIN_DIR%
+copy /Y "%BAT_DIR%\runbuild.bat" "%BIN_DIR%" >nul
+
+
 
 REM Call make
 echo Running make...

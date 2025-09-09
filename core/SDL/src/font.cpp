@@ -159,7 +159,7 @@ TTF_Font* FONT::setfont(const char* fontpath )
     delfont();
     fontdata = TTF_OpenFont(fontpath, ptsize);
     if(!fontdata){
-        std::cout <<" font loading error: "<<SDL_GetError()<<std::endl; 
+        std::cout <<" font loading error: "<<TTF_GetError()<<std::endl; 
         font_file << " font loading error: " << SDL_GetError() << std::endl;
         
         return NULL;

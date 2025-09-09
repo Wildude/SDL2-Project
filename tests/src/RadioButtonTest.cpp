@@ -7,9 +7,10 @@ WINDOW win("RadioButton Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
     // std::cout << " revfont\n";
+
     FONT revFont("../Fonts/ROCKB.ttf", 15);
     // std::cout << " newfont\n";
-    FONT newFont("../Fonts/ROCKBI.ttf", 15);
+    FONT newFont("../Fonts/nyala.ttf", 15);
 
     SDL_Color rfg = {0, 0, 255, 255}, rbg = {100, 155, 90, 255};
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {128, 128, 128, 128};
@@ -65,8 +66,7 @@ int main(int argn, char** argc){
     SDL_Color clearcol = {255, 255, 255, 255};
     theRadiobutton.setPos(win.getw()/8, win.getw()/8);
     //texture = texturei[0];
-    TextBox boxied("Boxied");
-    boxied.setfont(newFont);
+    TextBox boxied("Boxied", newFont);
     boxied.setboxpos(0, 0);
     while(!input.shouldQuit()){
         win.clr(clearcol);
@@ -74,7 +74,7 @@ int main(int argn, char** argc){
         SDL_Point mpos;
         SDL_GetMouseState(&mpos.x, &mpos.y);
         if(input.isMouseDown(SDL_BUTTON_RIGHT))theRadiobutton.setPos(mpos.x, mpos.y);
-        boxied.settext(input.getText() == "" ? std::to_string(theRadiobutton.getBox()->w) + " x " + std::to_string(theRadiobutton.getBox()->h) + "(" + std::to_string(theRadiobutton.getCurrent())+ ")" : input.getText());
+        boxied.settext(input.getText() == "" ? "Current: " + std::to_string(theRadiobutton.getCurrent()): input.getText());
         boxied.draw(win.getren(), texture);
 
         theRadiobutton.update(input);

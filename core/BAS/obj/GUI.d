@@ -30,7 +30,9 @@ core/BAS/obj/GUI.o: core/BAS/src/GUI.cpp core/BAS/include/GUI.hpp \
  core/BAS/include/../../SDL/include/textInputHandler.hpp \
  core/BAS/include/../../SDL/include/inputManager.hpp \
  src/include/SDL2/SDL.h core/BAS/include/command.hpp \
- core/BAS/include/gameobject.hpp core/SDL/include/renderer.hpp
+ core/BAS/include/gameobject.hpp core/SDL/include/renderer.hpp \
+ src/include/SDL2_gfx/SDL2_gfxPrimitives.h \
+ src/include/SDL2_gfx/../SDL2/SDL.h
 
 core/BAS/include/GUI.hpp:
 
@@ -153,3 +155,7 @@ core/BAS/include/command.hpp:
 core/BAS/include/gameobject.hpp:
 
 core/SDL/include/renderer.hpp:
+
+src/include/SDL2_gfx/SDL2_gfxPrimitives.h:
+
+src/include/SDL2_gfx/../SDL2/SDL.h:

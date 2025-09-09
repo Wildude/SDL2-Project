@@ -3,6 +3,7 @@
 #include <renderer.hpp>
 #include <fstream>
 #include <vector>
+#include <SDL2_gfx/SDL2_gfxPrimitives.h>
 std::ofstream uilog("../Files/Data/GUI.log");
 // UIelement
 // abstract imps
@@ -21,7 +22,7 @@ std::ofstream uilog("../Files/Data/GUI.log");
     return isfocus;
 }
 /* virtual*/ bool UIelement::isClicked(InputManager& input){
-    isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT);
+    isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT, 10);
     return isclick;
 }
 /* virtual*/ bool UIelement::isCurrent(InputManager& input) {
@@ -50,6 +51,7 @@ std::ofstream uilog("../Files/Data/GUI.log");
     }
     else if(click)
     {
+        std::cout << " clicked\n";
         isrevert = false;
         if(UIcmds.click){
             if(UIcmds.click->getref() != this){
@@ -1325,10 +1327,10 @@ void CheckBox::render(SDL_Renderer* rend, int drawtype) {
             {
                 setRenCol(rend, bg);
                 int avgbox = (Box.w + Box.h) / 2;
-                DrawThickLine(rend, Box.x + Box.w / 4, Box.y + Box.h / 4, 
-                    Box.x + Box.w / 4, Box.y + (int)((float)Box.h * 0.75), drawtype);
-                DrawThickLine(rend, Box.x + Box.w / 4, Box.y + (int)((float)Box.h * 0.75), 
-                Box.x + Box.w, Box.y, drawtype);
+                thickLineRGBA(rend, Box.x + Box.w / 4, Box.y + Box.h / 4, 
+                    Box.x + Box.w / 4, Box.y + (int)((float)Box.h * 0.75), drawtype, fg.r, fg.g, fg.b, fg.a);
+                thickLineRGBA(rend, Box.x + Box.w / 4, Box.y + (int)((float)Box.h * 0.75), 
+                Box.x + Box.w, Box.y, drawtype, fg.r, fg.g, fg.b, fg.a);
             }
             return;
         }
@@ -1429,8 +1431,8 @@ void RadioButton::update(InputManager& input) {
     //setPos(Box.x, Box.y);
     int size = checkboxes.size();
     if(!size)return;
+    for(CheckBox& cbox: getList())cbox.update(input);
     for(int i = 0; i < size; i++){
-        checkboxes[i].update(input);
         if(i == current){
             if(!checkboxes[i].getState())checkboxes[i].setState();
         }
@@ -1442,6 +1444,7 @@ void RadioButton::update(InputManager& input) {
             current = i;
         }
     }
+    
 }
 void RadioButton::render(SDL_Renderer* rend, int drawtype) {
     int size = checkboxes.size();
@@ -1503,9 +1506,9 @@ void IncDecButton::render(SDL_Renderer* rend, int drawtype){
                 fillTriangle(rend, p0, p1, p2);
             }
             setRenCol(rend, fg);
-            DrawThickLine(rend, Box.x, Box.y, Box.x, Box.y + Box.h, drawtype / 2);
-            DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h / 2, drawtype / 2);
-            DrawThickLine(rend, Box.x + Box.w, Box.y + Box.h / 2, Box.x, Box.y, drawtype / 2);
+            thickLineRGBA(rend, Box.x, Box.y, Box.x, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h / 2, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x + Box.w, Box.y + Box.h / 2, Box.x, Box.y, drawtype/2, fg.r, fg.g, fg.b, fg.a);
             break;
         }
         case DEC_HORI:{
@@ -1519,9 +1522,9 @@ void IncDecButton::render(SDL_Renderer* rend, int drawtype){
                 fillTriangle(rend, p0, p1, p2);
             }
             setRenCol(rend, fg);
-            DrawThickLine(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y, drawtype / 2);
-            DrawThickLine(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
-            DrawThickLine(rend, Box.x + Box.w, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+            thickLineRGBA(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x, Box.y + Box.h / 2, Box.x + Box.w, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x + Box.w, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
             break;
         }
         case INC_VERT:{
@@ -1535,9 +1538,9 @@ void IncDecButton::render(SDL_Renderer* rend, int drawtype){
                 fillTriangle(rend, p0, p1, p2);
             }
             setRenCol(rend, fg);
-            DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
-            DrawThickLine(rend, Box.x, Box.y + Box.h, Box.x + Box.w / 2, Box.y, drawtype / 2);
-            DrawThickLine(rend, Box.x + Box.w / 2, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2);
+            thickLineRGBA(rend, Box.x, Box.y + Box.h, Box.x + Box.w, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x, Box.y + Box.h, Box.x + Box.w / 2, Box.y, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x + Box.w / 2, Box.y, Box.x + Box.w, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
             break;
         }
         case DEC_VERT:{
@@ -1551,9 +1554,9 @@ void IncDecButton::render(SDL_Renderer* rend, int drawtype){
                 fillTriangle(rend, p0, p1, p2);
             }
             setRenCol(rend, fg);
-            DrawThickLine(rend, Box.x, Box.y, Box.x + Box.w, Box.y, drawtype / 2);
-            DrawThickLine(rend, Box.x, Box.y, Box.x + Box.w / 2, Box.y + Box.h, drawtype / 2);
-            DrawThickLine(rend, Box.x + Box.w / 2, Box.y + Box.h, Box.x + Box.w, Box.y, drawtype / 2);
+            thickLineRGBA(rend, Box.x, Box.y, Box.x + Box.w, Box.y, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x, Box.y, Box.x + Box.w / 2, Box.y + Box.h, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
+            thickLineRGBA(rend, Box.x + Box.w / 2, Box.y + Box.h, Box.x + Box.w, Box.y, drawtype / 2, fg.r, fg.g, fg.b, fg.a);
             break;
         }
         default: {
