@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="60" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="1">
+ <tileset firstgid="1" source="../Files/XML/Background.tsx"/>
+ <tileset firstgid="121" source="../Files/XML/Tiles.tsx"/>
+ <tileset firstgid="265" source="../Files/XML/Tree-Assets.tsx"/>
+ <tileset firstgid="385" source="../Files/XML/Buildings.tsx"/>
+ <tileset firstgid="529" source="../Files/XML/Interior-01.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJztzdVSQlEARuFz7AYDW1GxRewWUbFQLGyxW+z28V3vsGfcN//Fd7lmuY7jpCEdGchEFrKRg1zkIR8FKEQRPHAttK7h14tilKAUZfChHBWoRBWqUYNa1KHeUus1/PrRgEY0IYBmtKAVbWhHBzrRhSC6LbV+w28IPehFH/oxgEEMYRgjGMUYxjGBSUttyPAbxhQimMYMZhHFHOaxgEUsIYZlrFhqw4bfOFaxhnVsYBMJbGEbO9jFHvZxgENLbdzwm8QRjnGCU5zhHBe4xBWucYNb3OHeUps0/KbwgEc84RkveMUb3vGBT3zhGz/4tdSmDL8JEREREREREREREREREREREZF/9Af8DThG
+  </data>
+ </layer>
+ <layer id="4" name="Tile Layer 4" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJzt1MEJwCAQBEBTel7pwwJsKM2EvCLhxKdwzsDCoa/lxFKAXZzHF3K6ku22Bmd9x2x92+Q+W99ov70MffuOO+y3DeZIhr51MEcy/F2z9/z2inL/AgAAAAAAAMAaD5vzFCE=
+  </data>
+ </layer>
+ <layer id="2" name="Tile Layer 2" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJztzz0SREAAROGZG7CZn9A6HLJdAgFu5Xp6qkiUcKow876ql3cbA+DtGmtMe1Fn717m30+f/qo/NaglwL/OFNHXg/s874X8NdG3VH0C/njI9DFXhSoj+OtU+vlVdSR/Ea7Rc0+3eg4AAAAAAAAAAAAAnmIDX6ckcQ==
+  </data>
+ </layer>
+ <layer id="5" name="Tile Layer 5" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJztz7ENwkAQRFH7oAUKoFoaJAZiIDYOPRkGWaRIe+9JI91m94cBoKbT+F51684emrd6qzZ/9231ngu1/+q9ZNfs1knvPXtkz6K9h/Z5T9krm4v2Hle9Y94t22X79u9fAgAAAAAAANCLBQrjHzY=
+  </data>
+ </layer>
+ <layer id="6" name="Tile Layer 6" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAAAzwYqMAAB
+  </data>
+ </layer>
+ <layer id="3" name="Margins" width="60" height="45">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAAAzwYqMAAB
+  </data>
+ </layer>
+</map>

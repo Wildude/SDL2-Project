@@ -1,0 +1,43 @@
+ ================================= 
+ Dimension = (3,13.5)
+ Position = (21.1119,418.33)
+ Velocity = (0,0)
+ Acceleration = (0,0)
+ Angular_velocity = 0
+ Angular_acceleration = 0
+ mass = 0
+ angle = 125.217
+ Center_of_mass = (1.5,2.295)
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: -125.217
+ src_pos(x, y): 0,0
+ src_dim(w, h): 3,3
+ dst_pos(x, y): 19.6119,416.035
+ dst_dim(w, h): 3,13
+ center(x, y): 1.5,2.295
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
+ ================================= 
+ Dimension = (3,13.5)
+ Position = (42.3134,418.169)
+ Velocity = (0,0)
+ Acceleration = (0,0)
+ Angular_velocity = 0
+ Angular_acceleration = 0
+ mass = 0
+ angle = 125.217
+ Center_of_mass = (1.5,2.295)
+ Texture condition: alive
+ Surface condition: dead
+ Renderer condition: alive
+ angle: -125.217
+ src_pos(x, y): 0,0
+ src_dim(w, h): 3,3
+ dst_pos(x, y): 40.8134,415.874
+ dst_dim(w, h): 3,13
+ center(x, y): 1.5,2.295
+ col(r, g, b, a): 0,0,0,0
+ flipstate: 0
+ ================================= 
