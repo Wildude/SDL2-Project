@@ -148,6 +148,19 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ## 🤔 How to use?
 ### Windows
 open up executables folder and run the programs.
+in case there are no programs navigate to project root and run:
+```sh
+build
+```
+To rebuild, run:
+```sh
+clean help
+```
+or simply 
+```sh
+clean 
+```
+which cleans everything
 ### Linux
 🤷compile and run
 ### MacOS
