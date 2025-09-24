@@ -279,7 +279,7 @@ void UIContainer::render(SDL_Renderer* renderer, int drawtype ) /* override */ {
     setRenCol(renderer, bg);
     SDL_RenderFillRect(renderer, &box);
     setRenCol(renderer, fg);
-    TEXTURE::drawRect(box, renderer, drawtype / 2);
+    Texture2D::drawRect(box, renderer, drawtype / 2);
     checkfile();
     uilog << " Rendering UIelements:\n";
     for (UIelement* ui : UIlist) {
@@ -626,7 +626,7 @@ void Label::settext(const std::string& str) /* override */ {
             setRenCol(renderer, bg);
             SDL_RenderDrawRect(renderer, &box);
             setRenCol(renderer, fg);
-            TEXTURE::drawRect(box, renderer, drawtype / 2);
+            Texture2D::drawRect(box, renderer, drawtype / 2);
             return;
         }
         else if(!text.empty()){
@@ -948,7 +948,7 @@ void UITab::render(SDL_Renderer* rend, int drawtype) {
             setRenCol(rend, col);
             SDL_RenderFillRect(rend, &boxy);
             setRenCol(rend, fg);
-            TEXTURE::drawRect(boxy, rend, drawtype/2);
+            Texture2D::drawRect(boxy, rend, drawtype/2);
         }
         labelboxes[i].setPos(boxes[i].x, boxes[i].y);
         labelboxes[i].render(rend, drawtype);
@@ -1123,7 +1123,7 @@ void InputBox::render(SDL_Renderer* renderer, int drawtype){
             setRenCol(renderer, bg);
             SDL_RenderDrawRect(renderer, &box);
             setRenCol(renderer, fg);
-            TEXTURE::drawRect(box, renderer, drawtype / 2);
+            Texture2D::drawRect(box, renderer, drawtype / 2);
             return;
         }
         else if(!text.empty()){
@@ -1144,7 +1144,7 @@ void InputBox::render(SDL_Renderer* renderer, int drawtype){
     setRenCol(renderer, bg);
     SDL_RenderDrawRect(renderer, &box);
     setRenCol(renderer, fg);
-    TEXTURE::drawRect(box, renderer, drawtype / 2);
+    Texture2D::drawRect(box, renderer, drawtype / 2);
     // Render the label text using the provided renderer
 }
 const SDL_Point& InputBox::getDims() const {
@@ -1203,7 +1203,7 @@ void LabelArea::render(SDL_Renderer* rend, int drawtype) {
     setRenCol(rend, bg);
     SDL_RenderFillRect(rend, &Box);
     setRenCol(rend, fg);
-    TEXTURE::drawRect(Box, rend, drawtype / 2);
+    Texture2D::drawRect(Box, rend, drawtype / 2);
     int size = lines.size();
     if(!size){
         Label::render(rend, drawtype);
@@ -1291,12 +1291,12 @@ void CheckBox::render(SDL_Renderer* rend, int drawtype) {
                 SDL_RenderFillRect(rend, &Box);
             }
             setRenCol(rend, fg);
-            TEXTURE::drawRect(Box, rend, drawtype / 2);
+            Texture2D::drawRect(Box, rend, drawtype / 2);
             return;
         }
         case FLIPBOX:{
             setRenCol(rend, fg);
-            TEXTURE::drawRect(Box, rend, drawtype / 2);
+            Texture2D::drawRect(Box, rend, drawtype / 2);
             const SDL_Rect bBox = {Box.x + drawtype / 2, Box.y + drawtype / 2, Box.w - drawtype + 1, Box.h - drawtype + 1};
             if(clickstate){
                 const SDL_Rect tbox = {Box.x, Box.y,
@@ -1305,7 +1305,7 @@ void CheckBox::render(SDL_Renderer* rend, int drawtype) {
                 SDL_RenderFillRect(rend, &bBox);
                 SDL_RenderFillRect(rend, &tbox);
                 setRenCol(rend, fg);
-                TEXTURE::drawRect(tbox, rend, drawtype / 2);
+                Texture2D::drawRect(tbox, rend, drawtype / 2);
                 return;
             }
             else{
@@ -1316,13 +1316,13 @@ void CheckBox::render(SDL_Renderer* rend, int drawtype) {
                 SDL_RenderFillRect(rend, &bBox);
                 SDL_RenderFillRect(rend, &tbox);
                 setRenCol(rend, fg);
-                TEXTURE::drawRect(tbox, rend, drawtype / 2);
+                Texture2D::drawRect(tbox, rend, drawtype / 2);
                 return;
             }
         }
         case TICKBOX:{
             setRenCol(rend, fg);
-            TEXTURE::drawRect(Box, rend, drawtype / 2);
+            Texture2D::drawRect(Box, rend, drawtype / 2);
             if(clickstate)// draw tick;
             {
                 setRenCol(rend, bg);
@@ -1340,7 +1340,7 @@ void CheckBox::render(SDL_Renderer* rend, int drawtype) {
                 SDL_RenderFillRect(rend, &Box);
             }
             setRenCol(rend, fg);
-            TEXTURE::drawRect(Box, rend, drawtype / 2);
+            Texture2D::drawRect(Box, rend, drawtype / 2);
             return;
         }
     }
@@ -1666,7 +1666,7 @@ void TextSwitch::update(InputManager& input) {
 }
 void TextSwitch::render(SDL_Renderer* rend, int drawtype) {
     setRenCol(rend, fg);
-    TEXTURE::drawRect(Box, rend, drawtype / 2);
+    Texture2D::drawRect(Box, rend, drawtype / 2);
     dec.render(rend, drawtype);
     inc.render(rend, drawtype);
     theText.render(rend, drawtype);
@@ -1835,7 +1835,7 @@ void Dropdown::render(SDL_Renderer* rend, int drawtype) {
     setRenCol(rend, bg);
     SDL_RenderFillRect(rend, &Box);
     setRenCol(rend, fg);
-    TEXTURE::drawRect(Box, rend, drawtype / 2);
+    Texture2D::drawRect(Box, rend, drawtype / 2);
     if(updown.getState()){
         if(!options.empty()){
             for(Label& opt : options)
@@ -2051,7 +2051,7 @@ void Slider::render(SDL_Renderer* rend, int drawt) {
     SDL_RenderFillRect(rend, &boxportion);
     setRenCol(rend, fg);
     int drawtype = drawt <= 2 ? type == HORI ? box.h/2 : box.w/2 : drawt;
-    TEXTURE::drawRect(box, rend, drawtype);
+    Texture2D::drawRect(box, rend, drawtype);
 }
 
 void Slider::setCol1(const SDL_Color& col) {
@@ -2181,7 +2181,7 @@ void SpinBox::render(SDL_Renderer* rend, int drawtype) {
     setRenCol(rend, bg);
     SDL_RenderFillRect(rend, &Box);
     setRenCol(rend, fg);
-    TEXTURE::drawRect(Box, rend, drawtype / 2);
+    Texture2D::drawRect(Box, rend, drawtype / 2);
     inc.render(rend, drawtype);
     dec.render(rend, drawtype);
     thenum.render(rend, drawtype);
@@ -2310,7 +2310,7 @@ void ImageViewer::render(SDL_Renderer* rend, int drawtype) {
                 setRenCol(rend, bg);
                 SDL_RenderFillRect(rend, &box);
                 setRenCol(rend, fg);
-                TEXTURE::drawRect(box, rend);
+                Texture2D::drawRect(box, rend);
                 return;
             }
             else if(!imgname.empty()){
@@ -2322,7 +2322,7 @@ void ImageViewer::render(SDL_Renderer* rend, int drawtype) {
                 SDL_Rect newBox = {box.x - (font.getptsize() / 5), box.y - (font.getptsize() / 5), 
                     box.w + ((font.getptsize() / 5) * 2), box.h + ((font.getptsize() / 5) * 2)};
                 setRenCol(rend, fg);
-                TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
+                Texture2D::drawRect(newBox, rend, font.getptsize() / 5);
                 box.w = newBox.w;
                 box.h = newBox.h;
                 if(!texture)uilog << " no texture to draw to\n";
@@ -2338,7 +2338,7 @@ void ImageViewer::render(SDL_Renderer* rend, int drawtype) {
                 setRenCol(rend, bg);
                 SDL_RenderFillRect(rend, &newBox);
                 setRenCol(rend, fg);
-                TEXTURE::drawRect(newBox, rend, font.getptsize() / 5);
+                Texture2D::drawRect(newBox, rend, font.getptsize() / 5);
                 if(!texture)uilog << " no texture to draw to\n";
             }
         }

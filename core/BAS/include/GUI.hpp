@@ -1,7 +1,7 @@
 #pragma once
-#include "../../SDL/include/texture.hpp"
-#include "../../SDL/include/font.hpp"
-#include "../../SDL/include/textInputHandler.hpp"
+#include <texture2D.hpp>
+#include <font.hpp>
+#include <textInputHandler.hpp>
 #include <command.hpp>
 #include <gameobject.hpp>
 //#include <fstream>
