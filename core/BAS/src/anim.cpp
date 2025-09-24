@@ -4,7 +4,9 @@ LinearSprite::LinearSprite(){
     frameSize = 0;
     speed = 1;
 }
-LinearSprite::LinearSprite(const Texture2D& tex, int fsize): image(tex), frameSize(fsize), speed(1) {}
+LinearSprite::LinearSprite(const Texture2D& tex, int fsize): image(tex), frameSize(fsize), speed(1) {
+    image.set_srcdim(frameSize, image.getsrc().h);
+}
 void LinearSprite::Animate(float deltaT){
     if(!frameSize || !image.gettexture())return;
     int w, h;
