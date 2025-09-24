@@ -1,5 +1,4 @@
 #include <anim.hpp>
-#include <texture2D.hpp>
 //
 LinearSprite::LinearSprite(){
     frameSize = 0;

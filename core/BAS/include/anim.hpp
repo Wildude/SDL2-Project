@@ -3,7 +3,7 @@
 * Sprite animations are processed here:
 */
 
-class Texture2D;
+#include <texture2D.hpp>
 class SDL_Renderer;
 class LinearSprite{
     Texture2D image;
