@@ -17,6 +17,7 @@ class Texture2D
     // total = 
     public:
     Texture2D();
+    Texture2D(const Texture2D& t); // copy constructor
     void copy(const Texture2D& t, SDL_Renderer* rend);
     Texture2D(const char* filepath, SDL_Renderer* ren);
     const Texture2D& operator=(const Texture2D& t);

@@ -5,6 +5,9 @@ Texture2D::Texture2D(){
     // renderer = NULL;
     INIT();
 }
+Texture2D::Texture2D(const Texture2D& t){
+    *this = t;
+}
 void Texture2D::copy(const Texture2D& t, SDL_Renderer* rend){
     setpath(t.path);
     load(NULL, rend);
