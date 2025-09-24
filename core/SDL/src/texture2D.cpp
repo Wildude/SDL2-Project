@@ -1,15 +1,15 @@
-#include "../include/texture.hpp"
+#include <texture2D.hpp>
 #include <cstring>
 std::ofstream texture_file("texfile.log");
-TEXTURE::TEXTURE(){
+Texture2D::Texture2D(){
     // renderer = NULL;
     INIT();
 }
-void TEXTURE::copy(const TEXTURE& t, SDL_Renderer* rend){
+void Texture2D::copy(const Texture2D& t, SDL_Renderer* rend){
     setpath(t.path);
     load(NULL, rend);
 }
-TEXTURE::TEXTURE(const char* filepath, SDL_Renderer* ren)
+Texture2D::Texture2D(const char* filepath, SDL_Renderer* ren)
 {
     //std::cout<<" contructor called for textures\n";
     texture = NULL;
@@ -18,7 +18,7 @@ TEXTURE::TEXTURE(const char* filepath, SDL_Renderer* ren)
     setpath(filepath);
     load(filepath, ren);
 }
-const TEXTURE& TEXTURE::operator=(const TEXTURE& t)
+const Texture2D& Texture2D::operator=(const Texture2D& t)
 {
     //std::cout<<" assignment called for font\n";
     if(this != &t){
@@ -33,30 +33,30 @@ const TEXTURE& TEXTURE::operator=(const TEXTURE& t)
         return *this;
     }
 }
-TEXTURE::TEXTURE(SDL_Surface* surf, SDL_Renderer* rend){
+Texture2D::Texture2D(SDL_Surface* surf, SDL_Renderer* rend){
     texture = NULL;
     // renderer = NULL;
     INIT();
     surfcpy(surf, rend);
 }
-SDL_Renderer* TEXTURE::crtren(SDL_Window* win , int index , Uint32 flag )
+SDL_Renderer* Texture2D::crtren(SDL_Window* win , int index , Uint32 flag )
 {
     // renderer = crtren(win, index, flag);
     return NULL; //renderer;
 }
-SDL_Renderer* TEXTURE::getren() const
+SDL_Renderer* Texture2D::getren() const
 {
     return NULL;// renderer;
 }
-void TEXTURE::setangle(double angle_)
+void Texture2D::setangle(double angle_)
 {
     //angle = angle_;
 }
-double TEXTURE::getangle()
+double Texture2D::getangle()
 {
     return -1.99999999999999F;// angle;
 }
-void TEXTURE::displayf(std::ofstream& out)
+void Texture2D::displayf(std::ofstream& out)
 {
     out<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
     //out<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
@@ -68,7 +68,7 @@ void TEXTURE::displayf(std::ofstream& out)
     out<<" center(x, y): "<<center.x<<','<<center.y<<std::endl;
     //out<<" flipstate: "<<flip<<std::endl;
 }
-void TEXTURE::display(std::ostream& os )
+void Texture2D::display(std::ostream& os )
 {
     os<<" Texture condition: "<<(texture ? "alive\n": "dead\n");
     //os<<" Renderer condition: "<<(renderer ?  "alive\n": "dead\n");
@@ -80,24 +80,24 @@ void TEXTURE::display(std::ostream& os )
     os<<" center(x, y): "<<center.x<<','<<center.y<<std::endl;
     // os<<" flipstate: "<<flip<<std::endl;
 }
-const SDL_FPoint& TEXTURE::getcenter()
+const SDL_FPoint& Texture2D::getcenter()
 {
     return center;
 }
-SDL_Texture* TEXTURE::gettexture()
+SDL_Texture* Texture2D::gettexture()
 {
     return texture;
 }
-TEXTURE::~TEXTURE()
+Texture2D::~Texture2D()
 {
     if(texture)SDL_DestroyTexture(texture);
     if(path)delete[] path;
 }
-void TEXTURE::setflip(const SDL_RendererFlip& flag_)
+void Texture2D::setflip(const SDL_RendererFlip& flag_)
 {
     // flip = flag_;
 }
-const char* TEXTURE::setpath(const char* fpath)
+const char* Texture2D::setpath(const char* fpath)
 {
     //std::cout<<" setting path: "<<filepath<<std::endl;
     if(fpath){
@@ -112,53 +112,53 @@ const char* TEXTURE::setpath(const char* fpath)
         delTex();
     }
 }
-const char* TEXTURE::getpath()
+const char* Texture2D::getpath()
 {
     return path;
 }
-int TEXTURE::INIT()
+int Texture2D::INIT()
 {
     return (SDL_WasInit(SDL_INIT_VIDEO) ? SDL_WasInit(SDL_INIT_VIDEO) : SDL_Init(SDL_INIT_VIDEO));
 }
-const SDL_Rect& TEXTURE::set_srcpos(int x , int y )
+const SDL_Rect& Texture2D::set_srcpos(int x , int y )
 {
     src.x = x;
     src.y = y;
     return src;
 }
-const SDL_Rect& TEXTURE::set_srcdim(int w, int h)
+const SDL_Rect& Texture2D::set_srcdim(int w, int h)
 {
     src.w = w;
     src.h = h;
     return src;
 }
-const SDL_FRect& TEXTURE::set_dstpos(float x , float y )
+const SDL_FRect& Texture2D::set_dstpos(float x , float y )
 {
     dst.x = x;
     dst.y = y;
     return dst;
 }
-SDL_FPoint TEXTURE::get_cenpos(){ // no optimization
+SDL_FPoint Texture2D::get_cenpos(){ // no optimization
     SDL_FPoint point = {dst.x + center.x, dst.y + center.y};
     return point;
 }
-const SDL_FRect& TEXTURE::set_cenpos(float x , float y )
+const SDL_FRect& Texture2D::set_cenpos(float x , float y )
 {
     return set_dstpos(x - center.x, y - center.y);
 }
-const SDL_FRect& TEXTURE::set_dstdim(int w , int h )
+const SDL_FRect& Texture2D::set_dstdim(int w , int h )
 {
     dst.w = (w ? w : dst.w);
     dst.h = (h ? h : dst.h);
     return dst;
 }
-void TEXTURE::magnify(float w , float h ){
+void Texture2D::magnify(float w , float h ){
     h = (h <= 0 ? w : h);
     dst.w *= w;
     dst.h *= h;
     setcenter(center.x * w, center.y * h);
 }
-const SDL_Rect& TEXTURE::set_src(int w, int h, float x , float y )
+const SDL_Rect& Texture2D::set_src(int w, int h, float x , float y )
 {
     src.w = w;
     src.h = h;
@@ -166,7 +166,7 @@ const SDL_Rect& TEXTURE::set_src(int w, int h, float x , float y )
     if(y > -1)src.y = y;
     return src;
 }
-const SDL_FRect& TEXTURE::set_dst(int w, int h, float x , float y )
+const SDL_FRect& Texture2D::set_dst(int w, int h, float x , float y )
 {
     dst.w = w;
     dst.h = h;
@@ -174,80 +174,80 @@ const SDL_FRect& TEXTURE::set_dst(int w, int h, float x , float y )
     if(y > -1)dst.y = y;
     return dst;
 }
-const SDL_Rect& TEXTURE::set_src(const SDL_Rect& src_)
+const SDL_Rect& Texture2D::set_src(const SDL_Rect& src_)
 {
     src = src_;
     return src;
 }
-const SDL_FRect& TEXTURE::set_dst(const SDL_FRect& dst_)
+const SDL_FRect& Texture2D::set_dst(const SDL_FRect& dst_)
 {
     dst = dst_;
     return dst;
 }
-SDL_FRect& TEXTURE::getdst() // const
+SDL_FRect& Texture2D::getdst() // const
 {
     return dst;
 }
-SDL_Rect& TEXTURE::getsrc() // const
+SDL_Rect& Texture2D::getsrc() // const
 {
     return src;
 }
-const SDL_FRect& TEXTURE::getdst() const
+const SDL_FRect& Texture2D::getdst() const
 {
     return dst;
 }
-const SDL_Rect& TEXTURE::getsrc() const
+const SDL_Rect& Texture2D::getsrc() const
 {
     return src;
 }
-SDL_Rect TEXTURE::retquery() // no optimization
+SDL_Rect Texture2D::retquery() // no optimization
 {
     SDL_Rect ret;
     queryR(&ret);
     return ret;
 }
-const SDL_FPoint& TEXTURE::setcenter(float x, float y)
+const SDL_FPoint& Texture2D::setcenter(float x, float y)
 {
     center.x = x;
     center.y = y;
     return center;
 }
-const SDL_FPoint& TEXTURE::setcenter()
+const SDL_FPoint& Texture2D::setcenter()
 {
     return setcenter(dst.w/2, dst.h/2);
 }
-int TEXTURE::query(int* w , int * h )
+int Texture2D::query(int* w , int * h )
 {
     return SDL_QueryTexture(texture, NULL, NULL, (w ? w : &src.w), (h ? h : &src.h));
 }
-int TEXTURE::queryR(SDL_Rect* src_ )
+int Texture2D::queryR(SDL_Rect* src_ )
 {
     setcenter();
     return query((src_ ? &(src_->w) : &src.w), (src_ ? &(src_->h) : &src.h));
 }
-void TEXTURE::delTex(){
+void Texture2D::delTex(){
     if(texture){
         SDL_DestroyTexture(texture);
         texture = NULL;
     }
 }
-SDL_Texture* TEXTURE::load(const char* filepath, SDL_Renderer* rend)
+SDL_Texture* Texture2D::load(const char* filepath, SDL_Renderer* rend)
 {
     delTex();
     texture = IMG_LoadTexture((rend), filepath ? filepath : path);
     if(!texture)texture_file << " Error loading texture: " << SDL_GetError() << std::endl;
     return texture;
 }
-SDL_Texture* TEXTURE::surfcpy(SDL_Surface*& surf, SDL_Renderer* rend)
+SDL_Texture* Texture2D::surfcpy(SDL_Surface*& surf, SDL_Renderer* rend)
 {
     texture = SDL_CreateTextureFromSurface((rend), surf);
     return texture;
 }
-int TEXTURE::rencpy(SDL_Renderer* rend, SDL_FRect* dst_ , SDL_Rect* src_ , SDL_RendererFlip flag , SDL_FPoint* center_ , double angle )
+int Texture2D::rencpy(SDL_Renderer* rend, SDL_FRect* dst_ , SDL_Rect* src_ , SDL_RendererFlip flag , SDL_FPoint* center_ , double angle )
 {
     return SDL_RenderCopyExF(rend, texture, (src_ ? src_ : &src), (dst_ ? dst_ : &dst), angle, (center_ ? center_ : &center), flag);
 }
-int TEXTURE::queryF()
+int Texture2D::queryF()
 {
     if(query() < 0){return -2;}
     set_srcpos();
@@ -256,16 +256,16 @@ int TEXTURE::queryF()
     setcenter();
     return 1;
 }
-int TEXTURE::queryC(){
+int Texture2D::queryC(){
     if(queryR() < 0){return -2;}
     set_dstdim();
     setcenter();
     return 1;
 }
-int TEXTURE::queryN(){
+int Texture2D::queryN(){
     return SDL_QueryTexture(texture, NULL, NULL, NULL, NULL);
 }
-int TEXTURE::drawRect(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
+int Texture2D::drawRect(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
     if(ptsize <= 1){
         SDL_RenderDrawRect(rend, &rect);
     }
@@ -279,7 +279,7 @@ int TEXTURE::drawRect(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
         SDL_RenderFillRect(rend, &lines[i]);
     }
 }
-int TEXTURE::drawRectP(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
+int Texture2D::drawRectP(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
     if(ptsize == 1){
         SDL_RenderDrawRect(rend, &rect);
     }
@@ -294,27 +294,27 @@ int TEXTURE::drawRectP(const SDL_Rect& rect, SDL_Renderer* rend, int ptsize ){
     }
 }
 // don't use
-int TEXTURE::drawPX(SDL_Renderer* rend, SDL_FRect* rect , float scale ){
+int Texture2D::drawPX(SDL_Renderer* rend, SDL_FRect* rect , float scale ){
     SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - (bool)(dst.x/(rect->w * scale)) * (rect->w * scale) , dst.y - (int)(dst.y/(rect->h * scale)) * (rect->h * scale), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
     return drawC(rend, drawRect);
 }
-int TEXTURE::drawOF(SDL_Renderer* rend, SDL_FRect* rect , float scale , double angle ){
+int Texture2D::drawOF(SDL_Renderer* rend, SDL_FRect* rect , float scale , double angle ){
     SDL_FPoint c = {getcenter().x * scale, getcenter().y * scale};
     SDL_FRect* drawRect = (rect ? new SDL_FRect({dst.x - rect->x - (c.x - getcenter().x), dst.y - rect->y - (c.y - getcenter().y), dst.w * scale, dst.h * scale}) : new SDL_FRect({dst.x, dst.y, dst.w * scale, dst.h * scale}));
     return drawC(rend, drawRect, angle);
 }
-int TEXTURE::drawC(SDL_Renderer* rend, SDL_FRect* rect , double angle , SDL_RendererFlip flip )
+int Texture2D::drawC(SDL_Renderer* rend, SDL_FRect* rect , double angle , SDL_RendererFlip flip )
 {
     if(rencpy(rend, rect, NULL, flip, NULL, angle) < 0)return -3;
     return 1;
 }
-int TEXTURE::drawO(SDL_Renderer* rend, SDL_FRect* rect , SDL_RendererFlip flip )
+int Texture2D::drawO(SDL_Renderer* rend, SDL_FRect* rect , SDL_RendererFlip flip )
 {
     if(rencpy(rend, rect, NULL, flip, &center, 0) < 0)return -3;
     SDL_RenderPresent(rend);
     return 1;
 }
-int TEXTURE::drawI(const char* filepath, SDL_Renderer* rend, bool clrer , SDL_FRect* rect , SDL_RendererFlip flip )
+int Texture2D::drawI(const char* filepath, SDL_Renderer* rend, bool clrer , SDL_FRect* rect , SDL_RendererFlip flip )
 {
     if(!load(filepath, rend)){return -1;}
     if(queryR() < 0){return -2;}
@@ -327,7 +327,7 @@ int TEXTURE::drawI(const char* filepath, SDL_Renderer* rend, bool clrer , SDL_FR
     if(clrer)if(SDL_RenderClear(rend) < 0) return -4;
     return 1;
 }
-int TEXTURE::draw(SDL_Renderer* rend, SDL_FRect* rect , bool clrer , SDL_RendererFlip flip )
+int Texture2D::draw(SDL_Renderer* rend, SDL_FRect* rect , bool clrer , SDL_RendererFlip flip )
 {
     if(queryR() < 0){return -1;}
     set_srcpos();
@@ -339,6 +339,6 @@ int TEXTURE::draw(SDL_Renderer* rend, SDL_FRect* rect , bool clrer , SDL_Rendere
     if(clrer)if(SDL_RenderClear((rend)) < 0) return -3;
     return 1;
 }
-int TEXTURE::drawRect(SDL_Rect rect){
+int Texture2D::drawRect(SDL_Rect rect){
 
 }

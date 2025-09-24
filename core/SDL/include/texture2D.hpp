@@ -4,7 +4,7 @@
 #include <fstream>
 //#include <cstring>
 //std::ofstream texture_file("texfile.log");
-class TEXTURE
+class Texture2D
 {
     SDL_Texture* texture = NULL; // 4 bytes (pointer)
     // SDL_Renderer* renderer; // 4 bytes (pointer) // x
@@ -16,11 +16,11 @@ class TEXTURE
     // double angle = 0; // 8 bytes
     // total = 
     public:
-    TEXTURE();
-    void copy(const TEXTURE& t, SDL_Renderer* rend);
-    TEXTURE(const char* filepath, SDL_Renderer* ren);
-    const TEXTURE& operator=(const TEXTURE& t);
-    TEXTURE(SDL_Surface* surf, SDL_Renderer* rend);
+    Texture2D();
+    void copy(const Texture2D& t, SDL_Renderer* rend);
+    Texture2D(const char* filepath, SDL_Renderer* ren);
+    const Texture2D& operator=(const Texture2D& t);
+    Texture2D(SDL_Surface* surf, SDL_Renderer* rend);
     SDL_Renderer* crtren(SDL_Window* win = NULL, int index = -1, Uint32 flag = SDL_RENDERER_ACCELERATED);
     SDL_Renderer* getren() const;
     void setangle(double angle_);
@@ -29,7 +29,7 @@ class TEXTURE
     void display(std::ostream& os = std::cout);
     const SDL_FPoint& getcenter();
     SDL_Texture* gettexture();
-    ~TEXTURE();
+    ~Texture2D();
     void setflip(const SDL_RendererFlip& flag_);
     const char* setpath(const char* fpath);
     const char* getpath();
