@@ -345,3 +345,117 @@ int Texture2D::draw(SDL_Renderer* rend, SDL_FRect* rect , bool clrer , SDL_Rende
 int Texture2D::drawRect(SDL_Rect rect){
 
 }
+//
+//
+SDLImage::SDLImage() : texture(NULL), w(0), h(0) {}
+SDLImage::SDLImage(const char* path, SDL_Renderer* rend){
+    texture = IMG_LoadTexture(rend, path);
+    if(!texture){
+        std::cout << " IMGLoad error: " << IMG_GetError() << std::endl;
+        w = 0; h = 0;
+        return;
+    }
+    queryF();
+}
+SDLImage::SDLImage(SDL_Texture* tex): texture(tex){
+    if(texture)queryF();
+    else {
+        w = 0;
+        h = 0;
+    }
+}
+SDLImage::SDLImage(const SDLImage& other): texture(other.texture), w(other.w), h(other.h) {}
+SDLImage& SDLImage::operator=(const SDLImage& other){
+    if(this != &other){
+        texture = other.texture;
+        w = other.w;
+        h = other.h;
+    }
+    return *this;
+}
+void SDLImage::load(const char* path, SDL_Renderer* rend){
+    delTex();
+    texture = IMG_LoadTexture(rend, path);
+    if(!texture){
+        std::cout << " IMGLoad error: " << IMG_GetError() << std::endl;
+        w = 0; h = 0;
+        return;
+    }
+    queryF();
+}
+void SDLImage::load(SDL_Texture* tex){
+    delTex();
+    texture = tex;
+    queryF();
+}
+SDL_Texture* SDLImage::gettex() const {
+    return texture;
+}
+int SDLImage::query(int& wd, int& hd) const {
+    return SDL_QueryTexture(texture, NULL, NULL, &wd, &hd);
+}
+int SDLImage::queryF(){
+    return SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+}
+void SDLImage::draw(const SDL_Rect& dst, const SDL_Rect& src, SDL_Renderer* rend){
+    SDL_RenderCopy(rend, texture, &src, &dst);
+}
+void SDLImage::drawSRC(const SDL_Rect& src, SDL_Renderer* rend){
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &src, &dst);
+}
+void SDLImage::drawDST(const SDL_Rect& dst, SDL_Renderer* rend){
+    SDL_RenderCopy(rend, texture, NULL, &dst);
+}
+void SDLImage::drawSRCpos(const SDL_Point& src, SDL_Renderer* rend){
+    SDL_Rect srcrect = {src.x, src.y, w, h};
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &srcrect, &dst);
+}
+void SDLImage::drawDSTpos(const SDL_Point& dst, SDL_Renderer* rend){
+    SDL_Rect dstrect = {dst.x, dst.y, w, h};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+void SDLImage::drawSRCdim(const SDL_Point& src, SDL_Renderer* rend){
+    SDL_Rect srcrect = {0, 0, src.x, src.y};
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &srcrect, &dst);
+}
+void SDLImage::drawDSTdim(const SDL_Point& dst, SDL_Renderer* rend){
+    SDL_Rect dstrect = {0, 0, dst.x, dst.y};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+void SDLImage::drawSRCp(int x, int y, SDL_Renderer* rend){
+    SDL_Rect srcrect = {x, y, w, h};
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &srcrect, &dst);
+}
+void SDLImage::drawDSTp(int x, int y, SDL_Renderer* rend){
+    SDL_Rect dstrect = {x, y, w, h};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+void SDLImage::drawSRCd(int x, int y, SDL_Renderer* rend){
+    SDL_Rect srcrect = {0, 0, x, y};
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &srcrect, &dst);
+}
+void SDLImage::drawDSTd(int x, int y, SDL_Renderer* rend){
+    SDL_Rect dstrect = {0, 0, x, y};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+void SDLImage::drawSRCpd(int x, int y, int wd, int hd, SDL_Renderer* rend){
+    SDL_Rect srcrect = {x, y, wd, hd};
+    SDL_Rect dst = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, &srcrect, &dst);
+}
+void SDLImage::drawDSTpd(int x, int y, int wd, int hd, SDL_Renderer* rend){
+    SDL_Rect dstrect = {x, y, wd, hd};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+void SDLImage::draw(SDL_Renderer* rend){
+    SDL_Rect dstrect = {0, 0, w, h};
+    SDL_RenderCopy(rend, texture, NULL, &dstrect);
+}
+SDLImage::~SDLImage(){
+    delTex();
+}

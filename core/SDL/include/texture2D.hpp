@@ -73,3 +73,41 @@ class Texture2D
     int draw(SDL_Renderer* rend, SDL_FRect* rect = NULL, bool clrer = 1, SDL_RendererFlip flip = SDL_FLIP_NONE);
     int drawRect(SDL_Rect rect);
 };
+// total = 60 bytes (without optional members)
+class SDLImage{
+    SDL_Texture* texture;
+    int w, h;
+    inline void delTex(){
+        if(texture){
+            SDL_DestroyTexture(texture);
+            texture = NULL;
+        }
+    }
+    public:
+    SDLImage();
+    SDLImage(const char*, SDL_Renderer*);
+    SDLImage(SDL_Texture*);
+    SDLImage(const SDLImage&);
+    SDLImage& operator=(const SDLImage&);
+    void load(const char*, SDL_Renderer*);
+    void load(SDL_Texture*);
+    SDL_Texture* gettex() const;
+    int query(int&, int&) const;
+    int queryF();
+    void draw(const SDL_Rect&, const SDL_Rect&, SDL_Renderer*);
+    void drawSRC(const SDL_Rect&, SDL_Renderer*);
+    void drawDST(const SDL_Rect&, SDL_Renderer*);
+    void drawSRCpos(const SDL_Point&, SDL_Renderer*);
+    void drawDSTpos(const SDL_Point&, SDL_Renderer*);
+    void drawSRCdim(const SDL_Point&, SDL_Renderer*);
+    void drawDSTdim(const SDL_Point&, SDL_Renderer*);
+    void drawSRCp(int, int, SDL_Renderer*);
+    void drawDSTp(int, int, SDL_Renderer*);
+    void drawSRCd(int, int, SDL_Renderer*);
+    void drawDSTd(int, int, SDL_Renderer*);
+    void drawSRCpd(int, int, int, int, SDL_Renderer*);
+    void drawDSTpd(int, int, int, int, SDL_Renderer*);
+    void draw(SDL_Renderer*);
+    ~SDLImage();
+    friend class LinearSprite;
+};
