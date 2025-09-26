@@ -9,12 +9,17 @@ LinearSprite::LinearSprite(const Texture2D& tex, int fsize): image(tex), frameSi
 }
 void LinearSprite::Animate(float deltaT){
     if(!frameSize || !image.gettexture())return;
+    static float counter = 0;
     int w, h;
     if(image.query(&w, &h) < 0)return;
     SDL_Rect src = image.getsrc();
     src.h = h;
     src.w = frameSize;
-    src.x += (speed * deltaT);
+    counter += speed * deltaT;
+    if((int)counter >= 1){
+        src.x += frameSize;
+        counter = 0;
+    }
     if(src.x >= w)src.x = 0;
     image.set_src(src);
 }
@@ -24,4 +29,7 @@ void LinearSprite::draw(SDL_Renderer* rend){
 }
 void LinearSprite::setSpeed(float s){
     speed = s > 0 ? s : 1; 
+}
+Texture2D& LinearSprite::getImage(){
+    return image;
 }

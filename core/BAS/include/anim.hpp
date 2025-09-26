@@ -16,4 +16,5 @@ class LinearSprite{
     void Animate(float); // animate with deltaT
     void setSpeed(float); // set animation speed
     void draw(SDL_Renderer*);
+    Texture2D& getImage();
 };

@@ -26,7 +26,9 @@ tests/obj/AnimationTest.o: tests/src/AnimationTest.cpp \
  src/include/SDL2/SDL_system.h src/include/SDL2/SDL_timer.h \
  src/include/SDL2/SDL_version.h src/include/SDL2/SDL_locale.h \
  src/include/SDL2/SDL_misc.h core/SDL/include/window.hpp \
- src/include/SDL2/SDL.h core/SDL/include/inputManager.hpp
+ src/include/SDL2/SDL.h core/SDL/include/inputManager.hpp \
+ core/SDL/include/textbox.hpp core/SDL/include/font.hpp \
+ src/include/SDL2/SDL_ttf.h
 
 core/BAS/include/anim.hpp:
 
@@ -139,3 +141,9 @@ core/SDL/include/window.hpp:
 src/include/SDL2/SDL.h:
 
 core/SDL/include/inputManager.hpp:
+
+core/SDL/include/textbox.hpp:
+
+core/SDL/include/font.hpp:
+
+src/include/SDL2/SDL_ttf.h:
