@@ -138,7 +138,7 @@ void TextBox::draw(SDL_Renderer* rend, SDL_Texture*& board, short drawtype )
         // was on font_file <<
         return;
     }
-    if(!board)SDL_DestroyTexture(board);
+    //if(!board)SDL_DestroyTexture(board);
     board = SDL_CreateTextureFromSurface(rend, surf);
     if(!board){
         textbox_file << " Texture creation error: " << SDL_GetError() << std::endl;
