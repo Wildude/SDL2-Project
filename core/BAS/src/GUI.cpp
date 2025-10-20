@@ -17,63 +17,73 @@ std::ofstream uilog("../Files/Data/GUI.log");
 //virtual SDL_Color* getCol2() = 0;
 //virtual void render(SDL_Renderer*, int) = 0; // Pure virtual function for rendering the UI element
 // repeated imps
+/* virtual */ bool UIelement::focusCheck(const InputManager& input){
+    return isHovered(input) || isCurrent(input);
+}
 /* virtual*/ bool UIelement::isFocused(InputManager& input){
     isfocus = isHovered(input) || isCurrent(input);
     return isfocus;
 }
 /* virtual*/ bool UIelement::isClicked(InputManager& input){
-    isclick = isFocused(input) && input.isMouseReady(SDL_BUTTON_LEFT, 10);
+    isclick = isHovered(input) && input.isMousePressed(SDL_BUTTON_LEFT);
     return isclick;
 }
-/* virtual*/ bool UIelement::isCurrent(InputManager& input) {
+/* virtual*/ bool UIelement::isCurrent(const InputManager& input) {
     return false;
 }
 /* virtual*/ void UIelement::update(InputManager& input){
-    static bool oldclick = false;
-    bool click = isClicked(input);
-    bool revert = true;
-    if(isfocus){
-        if(!oldclick){
-            // std::cout << " clicked\n";
-            revert = false;
-        }
-        oldclick = click;
-    }
-    else revert = true;
-    if(revert){
-        if(!isrevert){
-            if(UIcmds.revert){
-                if(UIcmds.revert->getref() != this)UIcmds.revert->setref(*this);
-                UIcmds.revert->execute();
-            }
-        }
-        isrevert = true;
-    }
-    else if(click)
-    {
-        std::cout << " clicked\n";
+    isClicked(input);
+    if(isclick){
         isrevert = false;
         if(UIcmds.click){
-            if(UIcmds.click->getref() != this){
-                UIcmds.click->setref(*this);
-            }
             UIcmds.click->execute();
+            statechanged = true;
         }
     }
-    else if(UIcmds.focus){
+    else if(focusCheck(input))
+    {
         isrevert = false;
-        if(UIcmds.focus->getref() != this)UIcmds.focus->setref(*this);
-        UIcmds.focus->execute();
+        if(!isfocus){
+            isfocus = true;
+            if(UIcmds.focus){
+                UIcmds.focus->execute();
+                statechanged = true;
+            }
+        }
+        else statechanged = false;
+    }
+    else {
+        if(!isrevert){
+            isfocus = false;
+            isrevert = true;
+            if(UIcmds.revert){
+                UIcmds.revert->execute();
+                statechanged = true;
+            }
+        }
+        else statechanged = false;
     }
 };
 /* virtual*/ void UIelement::onFocus(UICommand* focus ){
     UIcmds.focus = focus;
+    if(focus){
+        //std::cout << " setting focus command reference\n";
+        focus->setref(this);
+    }
 }
 /* virtual*/ void UIelement::onClick(UICommand* click ){
     UIcmds.click = click;
+    if(click){
+        //std::cout << " setting click command reference\n";
+        click->setref(this);
+    }
 }
 /* virtual*/ void UIelement::onRevert(UICommand* revert ){
     UIcmds.revert = revert;
+    if(revert){
+        //std::cout << " setting revert command reference\n";
+        revert->setref(this);
+    }
 }
 void UIelement::clearCMD(){
     UIcmds.focus = NULL;
@@ -101,6 +111,9 @@ bool UIelement::getclick() const {
 }
 bool UIelement::getrevert() const {
     return isrevert;
+}
+bool UIelement::getstateChanged() const {
+    return statechanged;
 }
 UICommand* UIelement::getFocusCmd() const {
     return UIcmds.focus;
@@ -151,6 +164,7 @@ UIMultiCommand::UIMultiCommand(std::vector<UICommand*>& cmds): UIMultiCommand(){
     commands = cmds;
 }
 void UIMultiCommand::setref(UIelement& ref) /* override */ {
+    std::cout << " setting UIMultiCommand reference\n";
     UICommand::setref(ref);
     int size = commands.size();
     for(int i = 0; i < size; i++){
@@ -168,7 +182,7 @@ UICommand*& UIMultiCommand::getcmd(int index ){
     return commands[index];
 }
 void UIMultiCommand::execute() /* override */ {
-    // std::cout << " executing multicommand\n";
+    //std::cout << " executing multicommand\n";
     if(!UICommand::ref){
             // std::cout << " no reference\n";
         return;
@@ -196,10 +210,15 @@ void UIColor::setNew(const SDL_Color& bnew, const SDL_Color& fnew){
 void UIColor::setref(UIelement& tref) /* override */ {
     //std::cout << " setting UI color references\n";
     ref = &tref;
-    cmd.setRef(*ref->getCol1(), *ref->getCol2());
+    cmd.setRef(ref->getCol2(), ref->getCol1());
 }
 void UIColor::execute() /* override */{
     //std::cout << " executing UI color\n";
+    // important to check color references in case they weren't set
+    if(!cmd.bg || !cmd.fg){
+        //std::cout << " references reset\n";
+        cmd.setRef(ref->getCol2(), ref->getCol1());
+    }
     if(!ref){
         //std::cout << " no UI reference\n";
         return;
@@ -218,7 +237,7 @@ void UIFont::setNew(const FONT& font){
 void UIFont::setref(UIelement& tref){
     //std::cout << " setting UI Font references\n";
     ref = &tref;
-    cmd.setRef(*ref->getFont());
+    cmd.setRef(ref->getFont());
 }
 const UIelement* UIFont::getref() const /* override */ {
     //std::cout << " UI font change get ref called\n";
@@ -226,6 +245,11 @@ const UIelement* UIFont::getref() const /* override */ {
 }
 void UIFont::execute(){
     //std::cout << " executing UI font\n";
+    // important to check font reference in case it wasn't set
+    if(!cmd.fontRef){
+        //std::cout << " reference reset\n";
+        cmd.setRef(ref->getFont());
+    }
     if(!ref){
         //std::cout << " no UI reference\n";
         return;
@@ -261,19 +285,27 @@ const UIContainer& UIContainer::operator=(const UIContainer& UIC){
     return *this;
 }
 void UIContainer::update(InputManager& input) /* override */ {
-    for(UIelement* ui : UIlist)
-    ui->update(input);
+    for(int i = 0; i < UIlist.size(); i++){
+        UIlist[i]->update(input);
+        if(UIlist[i]->getstateChanged()){
+            //std::cout << " UIContainer detected state change in element " << i << std::endl;
+        }
+    }
 }
 UIContainer::UIContainer(std::vector<UIelement*>& UIs): UIContainer(){
     for (UIelement* UI : UIs){
         UIlist.push_back(UI);
     }
+    setPos(box.x, box.y);
+    setbox();
 }
 void UIContainer::push(UIelement& ui){
     push(&ui);
 }
 void UIContainer::push(UIelement* ui){
     UIlist.push_back(ui);
+    setPos(box.x, box.y);
+    setbox();
 }
 void UIContainer::render(SDL_Renderer* renderer, int drawtype ) /* override */ {
     setRenCol(renderer, bg);
@@ -296,13 +328,14 @@ FONT* UIContainer::getFont(){
     return (UIlist.size() ? UIlist[0]->getFont() : NULL);
 }
 SDL_Rect* UIContainer::getBox(){
-    setbox();
     return &box;
 }
 void UIContainer::apply(){
     applyFont();
     applyCol1();
     applyCol2();
+    setPos(box.x, box.y);
+    setbox();
 }
 void UIContainer::applyFont(){
     int size = UIlist.size();
@@ -310,6 +343,8 @@ void UIContainer::applyFont(){
     for(int i = 1; i < size - 1; i++){
         UIlist[i]->setFont(*UIlist[0]->getFont());
     }
+    setPos(box.x, box.y);
+    setbox();
 }
 void UIContainer::applyCol1(){
     int size = UIlist.size();
@@ -331,6 +366,8 @@ void UIContainer::setFont(const FONT& font) /* override */ {
     for(UIelement* ui : UIlist){
         ui->setFont(font);
     }
+    setPos(box.x, box.y);
+    setbox();
 }
 void UIContainer::setCol1(const SDL_Color& col) /* override */ {
     fg = col;
@@ -352,22 +389,37 @@ void UIContainer::onClick(UICommand* cmd ) /* override */ {
     UIelement::onClick(cmd);
     int size = UIlist.size();
     if(!size)return;
-    for(int i = 0; i < size; i++)
-    if(!UIlist[i]->getClickCmd())UIlist[i]->onClick(cmd);
+    for(int i = 0; i < size; i++){
+        //std::cout << " checking click cmd for element " << i << std::endl;
+        if(!UIlist[i]->getClickCmd()){
+            //std::cout << " setting click cmd for element " << i << std::endl;   
+            UIlist[i]->onClick(cmd);
+        }
+    }
 }
 void UIContainer::onFocus(UICommand* cmd ) /* override */ {
     UIelement::onFocus(cmd);
     int size = UIlist.size();
     if(!size)return;
-    for(int i = 0; i < size; i++)
-    if(!UIlist[i]->getFocusCmd())UIlist[i]->onFocus(cmd);
+    for(int i = 0; i < size; i++){
+        //std::cout << " checking focus cmd for element " << i << std::endl;
+        if(!UIlist[i]->getFocusCmd()){
+            //std::cout << " setting focus cmd for element " << i << std::endl;
+            UIlist[i]->onFocus(cmd);
+        }
+    }
 }
 void UIContainer::onRevert(UICommand* cmd ) /* override */ {
     UIelement::onRevert(cmd);
     int size = UIlist.size();
     if(!size)return;
-    for(int i = 0; i < size; i++)
-    if(!UIlist[i]->getRevertCmd())UIlist[i]->onRevert(cmd);
+    for(int i = 0; i < size; i++){
+        //std::cout << " checking revert cmd for element " << i << std::endl;
+        if(!UIlist[i]->getRevertCmd()){
+            //std::cout << " setting revert cmd for element " << i << std::endl;
+            UIlist[i]->onRevert(cmd);
+        }
+    }
 }
 //
 /* virtual*/ void UIContainer::setPos(int x, int y) /* override */ {
@@ -544,7 +596,7 @@ Label::Label(const UIcmdset& cmd , const SDL_Color& fcolor
 
     }
 Label::Label(const char* str): Label(){
-    settext(str);
+    text = str;
 }
 Label::Label(int x, int y): Label(){
     setPos(x, y);
@@ -615,6 +667,14 @@ void Label::settext(const std::string& str) /* override */ {
         font.TEXT_size(text.c_str(), &box.w, &box.h);
     }
     delTex();
+}
+/* virtual */ void Label::update(InputManager& input) /* override */ {
+    UIelement::update(input);
+    if(statechanged){
+        //std::cout << " Label state changed, updating texture\n";
+        delTex();
+    }
+    // Additional update logic for the label can be added here
 }
 /* virtual*/ void Label::render(SDL_Renderer* renderer, int drawtype ) /* override */ {
     checkfile();
@@ -1392,25 +1452,29 @@ void CheckBox::clearState() {
 void CheckBox::toogleState() {
     clickstate = !clickstate;
 }
-
+void CheckBox::executeClick() {
+    UIcmds.click->execute();
+}
+void CheckBox::executeFocus() {
+    UIcmds.focus->execute();
+}
+void CheckBox::executeRevert() {
+    UIcmds.revert->execute();
+}
+// RadioButton
 void RadioButton::setPos(int x , int y) {
     Box.x = x;
     Box.y = y;
-    int size = checkboxes.size();
     if(!size)return;
-    checkboxes[0].setPos(x, y);
-    for(int i = 1; i < size; i++)
-    checkboxes[i].setPos(x, checkboxes[i - 1].getBox()->y + checkboxes[i - 1].getBox()->h);
+    flyweight.setPos(x, y);
 }
 void RadioButton::setCol1(const SDL_Color& col){
     fg = col;
-    for(auto& cbox: checkboxes)
-    cbox.setCol1(col);
+    flyweight.setCol1(col);
 }
 void RadioButton::setCol2(const SDL_Color& col){
     bg = col;
-    for(auto& cbox: checkboxes)
-    cbox.setCol2(col);
+    flyweight.setCol2(col);
 }
 void RadioButton::setFont(const FONT& font){}
 SDL_Rect* RadioButton::getBox(){
@@ -1428,70 +1492,71 @@ SDL_Color* RadioButton::getCol2(){
 }
 void RadioButton::update(InputManager& input) {
     UIelement::update(input);
-    //setPos(Box.x, Box.y);
-    int size = checkboxes.size();
     if(!size)return;
-    for(CheckBox& cbox: getList())cbox.update(input);
-    for(int i = 0; i < size; i++){
-        if(i == current){
-            if(!checkboxes[i].getState())checkboxes[i].setState();
-        }
-        if(checkboxes[i].getState()){
-            std::cout << " sth pressed\n";
-            if(current >= 0){
-                checkboxes[current].clearState();
-            }
-            current = i;
-        }
+    int dy = flyweight.getBox()->h * size;
+    if(input.getMouseX() < Box.x || input.getMouseX() > Box.x + flyweight.getBox()->w){
+        fcurrent = -1;
+        return;
     }
-    
+    else {
+        int dyi = input.getMouseY() - Box.y;
+        if(dyi < 0 || dyi > dy){
+            fcurrent = -1;
+            return;
+        }
+        fcurrent = dyi / flyweight.getBox()->h;
+        if(input.isMousePressed(SDL_BUTTON_LEFT))current = current == fcurrent ? -1 : fcurrent;
+    }
 }
 void RadioButton::render(SDL_Renderer* rend, int drawtype) {
-    int size = checkboxes.size();
     if(!size)return;
-    for(auto& cbox: checkboxes)
-    cbox.render(rend, drawtype);
+    int height = flyweight.getBox()->h;
+    for(int i = 0; i < size; i++){
+        flyweight.setPos(Box.x, Box.y + i * height);
+        if(i == current){
+            flyweight.setState();
+        }
+        else if(i != fcurrent){
+            if(!flyweight.isrevert)flyweight.executeRevert();
+            flyweight.clearState();
+        }
+        else{
+            flyweight.executeFocus();
+            flyweight.clearState();
+        }
+        flyweight.render(rend, drawtype);
+    }
 }
-//
 void RadioButton::onFocus(UICommand* cmd) {
     UIelement::onFocus(cmd);
-    for(auto& cbox: checkboxes)
-    cbox.onFocus(cmd);
+    flyweight.onFocus(cmd);
 }
 void RadioButton::onClick(UICommand* cmd) {
     UIelement::onClick(cmd);
-    for(auto& cbox: checkboxes)
-    cbox.onClick(cmd);
+    flyweight.onClick(cmd);
 }
 void RadioButton::onRevert(UICommand* cmd) {
     UIelement::onRevert(cmd);
-    for(auto& cbox: checkboxes)
-    cbox.onRevert(cmd);
+    flyweight.onRevert(cmd);
 }
-RadioButton::RadioButton() : UIelement(), current(-1), Box(SDL_Rect({0, 0, 0, 0})), 
+RadioButton::RadioButton() : UIelement(), flyweight(), size(0), current(-1), fcurrent(-1), Box(SDL_Rect({0, 0, 0, 0})), 
 fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})){}
 
-void RadioButton::push(const CheckBox& cbox){
-    checkboxes.push_back(cbox);
+void RadioButton::push(){
+    size++;
 }
 void RadioButton::setbox() {
-    Box.w = 0;
-    Box.h = 0;
-    int size = checkboxes.size();
     if(!size)return;
-    for(int i = 0; i < size; i++){
-        const SDL_Rect& cbox = *checkboxes[i].getBox();
-        if(Box.w < cbox.w)Box.w = cbox.w;
-        Box.h += cbox.h;
-    }
+    Box.w = flyweight.Box.w;
+    Box.h = flyweight.Box.h * size;
 }
 int RadioButton::getCurrent() const {
     return current;
 }
-std::vector<CheckBox>& RadioButton::getList(){
-    return checkboxes;
+int RadioButton::getFCurrent() const {
+    return fcurrent;
 }
-
+// IncDecButton
 void IncDecButton::render(SDL_Renderer* rend, int drawtype){
     switch (type){
         case INC_HORI:{

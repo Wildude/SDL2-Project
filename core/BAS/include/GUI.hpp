@@ -12,7 +12,7 @@ class UIelement : public GameObject
     public:
     typedef command<UIelement> UICommand;
     protected:
-    bool ishover, isfocus, isclick, isrevert;
+    bool ishover, isfocus, isclick, isrevert, statechanged;
     struct UIcmdset{
         UICommand* focus;
         UICommand* click;
@@ -32,9 +32,10 @@ class UIelement : public GameObject
     virtual SDL_Color* getCol2() = 0;
     virtual void render(SDL_Renderer*, int) = 0; // Pure virtual function for rendering the UI element
     // repeated imps
+    virtual bool focusCheck(const InputManager& input);
     virtual bool isFocused(InputManager& input);
     virtual bool isClicked(InputManager& input);    
-    virtual bool isCurrent(InputManager& input);
+    virtual bool isCurrent(const InputManager& input);
     virtual void update(InputManager& input);
     virtual void onFocus(UICommand* focus = NULL);
     virtual void onClick(UICommand* click = NULL);
@@ -49,6 +50,7 @@ class UIelement : public GameObject
     bool getfocus() const ;
     bool getclick() const ;
     bool getrevert() const ;
+    bool getstateChanged() const ;
     UICommand* getFocusCmd() const ;
     UICommand* getClickCmd() const ;
     UICommand* getRevertCmd() const;
@@ -183,6 +185,7 @@ class Label : public UIelement {
     /* inline */ void delTex();
     void settext(const char* str = NULL);
     void settext(const std::string& str) override ;
+    virtual void update(InputManager& input) override ;
     virtual void render(SDL_Renderer* renderer, int drawtype = 2) override ;
     virtual /* inline */ std::string& getText();
     virtual /* inline */ const char* gettext();
@@ -376,10 +379,17 @@ class CheckBox : public Button{ // maybe should inherit from Button later.
     /* inline */ void setState();
     /* inline */ void clearState();
     /* inline */ void toogleState();
+    private:
+    void executeFocus();
+    void executeClick();
+    void executeRevert();
+    friend class RadioButton;
 };
 class RadioButton : public UIelement{
-    std::vector<CheckBox> checkboxes;
+    CheckBox flyweight;
+    int size;
     int current;
+    int fcurrent;
     SDL_Rect Box;
     SDL_Color fg, bg;
     public:
@@ -399,10 +409,10 @@ class RadioButton : public UIelement{
     void onClick(UICommand* cmd = NULL) override ;
     void onRevert(UICommand* cmd = NULL) override ;
     RadioButton();
-    /* inline */ void push(const CheckBox& cbox);
+    /* inline */ void push();
     /* inline */ void setbox() ;
     /* inline */ int getCurrent() const ;
-    /* inline */ std::vector<CheckBox>& getList();
+    /* inline */ int getFCurrent() const ;
 };
 enum Orientation{INC_HORI, INC_VERT, DEC_HORI, DEC_VERT};
 class IncDecButton : public Button {

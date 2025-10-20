@@ -4,12 +4,12 @@
 #include <InputManager.hpp>
 int main(int argn, char** args){
     // std::cout << " revfont\n";
-    FONT revFont("../Fonts/ROCKB.ttf", 15);
+    FONT revFont("../Fonts/ROCKB.ttf", 50);
     // std::cout << " newfont\n";
-    FONT newFont("../Fonts/ROCKBI.ttf", 15);
+    FONT newFont("../Fonts/ROCKBI.ttf", 50);
     UIContainer Mcon;
     SDL_Color rfg = {255, 0, 0, 255}, rbg = {0, 255, 255, 255};
-    SDL_Color nfg = {255, 255, 0, 255}, nbg = {255, 0, 255, 255};
+    SDL_Color nfg = {0, 255, 0, 255}, nbg = {255, 0, 0, 255};
     std::vector<Label> menu;
     // std::cout <<" adding play\n";
     menu.push_back(Label("Play"));
@@ -19,7 +19,7 @@ int main(int argn, char** args){
     UIColor changeColor(nbg, nfg);
     // std::cout << " change font\n";
     UIFont changeFont(newFont);
-    UIColor revertCol(rfg, rbg);
+    UIColor revertCol(rbg, rfg);
     // std::cout << " revert font\n";
     UIFont revertFont(revFont);
     // std::cout << " full reverter\n";
@@ -27,7 +27,7 @@ int main(int argn, char** args){
     reverter.push(revertCol);
     reverter.push(revertFont);
     for(UIelement& ui : menu){
-        Mcon.push(ui);
+        Mcon.push(&ui);
     }
     // std::cout << " setting font\n";
     Mcon.setCol1(rfg);
@@ -37,7 +37,6 @@ int main(int argn, char** args){
     Mcon.onClick(&changeFont);
     Mcon.onRevert(&reverter);
     InputManager input;
-    SDL_Texture* texture;
     bool oldclick = false;
     int size = Mcon.getsize();
     WINDOW win("UIContainer Test");
@@ -49,7 +48,12 @@ int main(int argn, char** args){
         input.update();
         SDL_Point point;
         SDL_GetMouseState(&point.x, &point.y);
-        Mcon.update(input);
+        if(input.isMouseDown(SDL_BUTTON_RIGHT)){
+            Mcon.setPos(point.x, point.y);
+        }
+        for(UIelement* ui : UIlist)
+        ui->update(input);
+        //Mcon.update(input);
         Mcon.render(win.getren());
         //Mcon.render(win.getren(), texture);
         win.pst();

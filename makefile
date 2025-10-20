@@ -67,13 +67,17 @@ TEST_OBJS   := $(patsubst $(TEST_SRC)/%.cpp,$(TEST_OBJ)/%.o,$(TEST_SRCS))
 TEST_DEPS   := $(TEST_OBJS:.o=.d)
 TEST_BINS   := $(patsubst $(TEST_SRC)/%.cpp,$(BIN_DIR)/%,$(TEST_SRCS))
 
+TARGET := $(TEST_BINS)
+TARGET_MAIN := UI_test2
+
 .SECONDARY: $(SDL_OBJS) $(BAS_OBJS) $(TEST_OBJS)
 # Default target
 .PHONY: all
-all: $(BIN_DIR)/AnimationTest
+all: $(BIN_DIR)/$(TARGET_MAIN)
+#all: $(TARGET)
 
 # Default rule for building test binaries
-$(BIN_DIR)/AnimationTest: $(TEST_OBJ)/AnimationTest.o $(SDL_OBJS) $(BAS_OBJS) | $(BIN_DIR)
+$(BIN_DIR)/$(TARGET_MAIN): $(TEST_OBJ)/$(TARGET_MAIN).o $(SDL_OBJS) $(BAS_OBJS) | $(BIN_DIR)
 	@echo "Linking $@"
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
