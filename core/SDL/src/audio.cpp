@@ -1,7 +1,7 @@
 #include "../include/audio.hpp"
 #include <SDL2/SDL.h>
 #include <fstream>
-std::ofstream audio_file("aud.log");
+//std::ofstream audio_file("aud.log");
 AUDIO::AUDIO(int freq, Uint16 format, int channels, int chunksize){
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(freq, format, channels, chunksize);
@@ -18,7 +18,7 @@ AUDIO::AUDIO(const std::string& path){
 }
 void AUDIO::load(const char* path){
     chunk = Mix_LoadWAV(path);
-    if(!chunk)audio_file << SDL_GetError() << "\a\n";
+    if(!chunk)std::cout << SDL_GetError() << "\a\n";
 }
 void AUDIO::load(const std::string& path){
     load(path.c_str());
