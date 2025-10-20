@@ -4,19 +4,29 @@
 */
 
 #include <texture2D.hpp>
-class SDL_Renderer;
 class LinearSprite{
-    SDLImage image;
+    Texture2D image;
     int frameSize; // or frame width
+    int width; // total width
     float speed; // animation speed
     public:
     LinearSprite(); // Empty constructor
-    LinearSprite(const char*, SDL_Renderer*, int); // provide path, renderer and framesize
-    LinearSprite(const SDLImage&, int); // texture reference and framesize
+    LinearSprite(const Texture2D&, int); // texture reference and framesize
+    void flip();
+    void flip(SDL_RendererFlip);
     //LinearSprite(const char*, int); // provide path and framesize
-    void Animate(float, SDL_Renderer*); // animate with deltaT
-    void Animate(float, const SDL_Rect&, SDL_Renderer*); // animate with deltaT
+    void Animate(float); // animate with deltaT
+    float& getspeed();
+    float getspeed() const;
     void setSpeed(float); // set animation speed
     void draw(SDL_Renderer*);
-    SDLImage& getImage();
+    Texture2D& getImage();
+    void magnify(int mag);
+    void minify(int min);
+    void magnifyX(int magx);
+    void magnifyY(int magy);
+    void magnifyXY(int magx, int magy);
+    void minifyX(int minx);
+    void minifyY(int miny);
+    void minifyXY(int minx, int miny);
 };
