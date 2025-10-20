@@ -36,6 +36,7 @@ std::ofstream uilog("../Files/Data/GUI.log");
     if(isclick){
         isrevert = false;
         if(UIcmds.click){
+            //if(UIcmds.click->getref() != this)UIcmds.click->setref(this);
             UIcmds.click->execute();
             statechanged = true;
         }
@@ -46,6 +47,7 @@ std::ofstream uilog("../Files/Data/GUI.log");
         if(!isfocus){
             isfocus = true;
             if(UIcmds.focus){
+                //if(UIcmds.focus->getref() != this)UIcmds.focus->setref(this);
                 UIcmds.focus->execute();
                 statechanged = true;
             }
@@ -53,10 +55,12 @@ std::ofstream uilog("../Files/Data/GUI.log");
         else statechanged = false;
     }
     else {
+        //std::cout << " reverting\n";
         if(!isrevert){
             isfocus = false;
             isrevert = true;
             if(UIcmds.revert){
+                //if(UIcmds.revert->getref() != this)UIcmds.revert->setref(this);
                 UIcmds.revert->execute();
                 statechanged = true;
             }
@@ -181,6 +185,12 @@ void UIMultiCommand::push(UICommand* cmd){
 UICommand*& UIMultiCommand::getcmd(int index ){
     return commands[index];
 }
+UIMultiCommand* UIMultiCommand::clone() const /* override */ {
+    return new UIMultiCommand(*this);
+}
+UIMultiCommand::~UIMultiCommand(){
+    commands.clear();
+}
 void UIMultiCommand::execute() /* override */ {
     //std::cout << " executing multicommand\n";
     if(!UICommand::ref){
@@ -211,6 +221,9 @@ void UIColor::setref(UIelement& tref) /* override */ {
     //std::cout << " setting UI color references\n";
     ref = &tref;
     cmd.setRef(ref->getCol2(), ref->getCol1());
+}
+UIColor* UIColor::clone() const /* override */ {
+    return new UIColor(*this);
 }
 void UIColor::execute() /* override */{
     //std::cout << " executing UI color\n";
@@ -256,6 +269,9 @@ void UIFont::execute(){
     }
     cmd.execute();
 }
+UIFont* UIFont::clone() const /* override */ {
+    return new UIFont(*this);
+}
 //
 // UIContainer
 UIContainer::UIContainer(): box(SDL_Rect{0, 0, 0, 0}), UIelement(){
@@ -286,10 +302,10 @@ const UIContainer& UIContainer::operator=(const UIContainer& UIC){
 }
 void UIContainer::update(InputManager& input) /* override */ {
     for(int i = 0; i < UIlist.size(); i++){
+        UIcmds.click->setref(UIlist[i]);
+        UIcmds.focus->setref(UIlist[i]);
+        UIcmds.revert->setref(UIlist[i]);
         UIlist[i]->update(input);
-        if(UIlist[i]->getstateChanged()){
-            //std::cout << " UIContainer detected state change in element " << i << std::endl;
-        }
     }
 }
 UIContainer::UIContainer(std::vector<UIelement*>& UIs): UIContainer(){
@@ -393,7 +409,7 @@ void UIContainer::onClick(UICommand* cmd ) /* override */ {
         //std::cout << " checking click cmd for element " << i << std::endl;
         if(!UIlist[i]->getClickCmd()){
             //std::cout << " setting click cmd for element " << i << std::endl;   
-            UIlist[i]->onClick(cmd);
+            UIlist[i]->onClick(cmd->clone());
         }
     }
 }
@@ -405,7 +421,7 @@ void UIContainer::onFocus(UICommand* cmd ) /* override */ {
         //std::cout << " checking focus cmd for element " << i << std::endl;
         if(!UIlist[i]->getFocusCmd()){
             //std::cout << " setting focus cmd for element " << i << std::endl;
-            UIlist[i]->onFocus(cmd);
+            UIlist[i]->onFocus(cmd->clone());
         }
     }
 }
@@ -417,7 +433,7 @@ void UIContainer::onRevert(UICommand* cmd ) /* override */ {
         //std::cout << " checking revert cmd for element " << i << std::endl;
         if(!UIlist[i]->getRevertCmd()){
             //std::cout << " setting revert cmd for element " << i << std::endl;
-            UIlist[i]->onRevert(cmd);
+            UIlist[i]->onRevert(cmd->clone());
         }
     }
 }
@@ -567,6 +583,9 @@ void InputStringUIcmd::checktext(){
 }
 /* inline*/ void InputStringUIcmd::setStrRef(std::string& textto){
     cmd.setStrRef(textto);
+}
+InputStringUIcmd* InputStringUIcmd::clone() const /* override */ {
+    return new InputStringUIcmd(*this);
 }
 void InputStringUIcmd::execute() /* override */{
     // std::cout << " exec inbox\n";
@@ -1994,6 +2013,9 @@ void ChangeLevelUIcmd::setDecrease(SDL_Scancode deced ){
 }
 void ChangeLevelUIcmd::setQuit(SDL_Scancode quitC){
     quitCase = quitC;
+}
+ChangeLevelUIcmd* ChangeLevelUIcmd::clone() const {
+    return new ChangeLevelUIcmd(*this);
 }
 void ChangeLevelUIcmd::execute(){
     if(!inputHandler){

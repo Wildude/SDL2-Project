@@ -9,6 +9,13 @@ struct command{
     command(): ref(NULL){}
     command(T& uref): ref(&uref){}
     command(T* uref): ref(uref){}
+    command(const command& other): ref(other.ref){}
+    const command& operator=(const command& other){
+        if(this != &other){
+            ref = other.ref;
+        }
+        return *this;
+    }
     virtual void setref(T& uref){
         //std::cout << " setting Reference: " << &uref << "\n";
         ref = &uref;
@@ -29,6 +36,7 @@ struct command{
         //std::cout << " getting reference\n";
         return ref;
     }
+    virtual command<T>* clone() const = 0;
     virtual void execute() = 0; // Pure virtual function for executing the command
     virtual ~command() = default; // Virtual destructor for proper cleanup
 };
@@ -51,6 +59,9 @@ struct ChangeFontCommand : public command<T>{
     void setNew(const FONT& font){
         //std::cout << " setting new font\n";
         newFont = font;
+    }
+    ChangeFontCommand<T>* clone() const {
+        return new ChangeFontCommand<T>(*this);
     }
     void execute() override {
         if(!fontRef){
@@ -89,6 +100,9 @@ struct ChangeColorCommand : public command<T>{
         nb = bnew;
         nf = fnew;
     }
+    ChangeColorCommand<T>* clone() const {
+        return new ChangeColorCommand<T>(*this);
+    }
     void execute() override {
         if(!bg || !fg){
             //std::cout << " no color execution\n";
@@ -125,6 +139,9 @@ struct ChangeStringCommand : public command<T>{
     inline std::string& getNewStrRef(){
         return newstring;
     }
+    ChangeStringCommand<T>* clone() const {
+        return new ChangeStringCommand<T>(*this);
+    }   
     void execute(){
         // std::cout << " executing string change command\n";
         if(!command<T>::ref){
@@ -208,6 +225,9 @@ struct InputStringCommand : public command<T> {
     std::string& getNewStrRef(){
         return changestr.getNewStrRef();
     }
+    InputStringCommand<T>* clone() const {
+        return new InputStringCommand<T>(*this);
+    }
     void execute() override {
         // std::cout << " exec inbox\n";
         if(!inputHandler){
@@ -253,6 +273,9 @@ struct multiCommand : public command<T>{
     command<T>*& getcmd(int index = 0){
         return commands[index];
     }
+    multiCommand<T>* clone() const {
+        return new multiCommand<T>(*this);
+    }
     void execute() override {
         // std::cout << " executing multicommand\n";
         if(!command<T>::ref){
@@ -282,6 +305,9 @@ struct doCommand : public command<T>{
             cmd = cmd_;
         }
         return *this;
+    }
+    doCommand<T>* clone() const {
+        return new doCommand<T>(*this);
     }
     void execute() override {
         cmd();

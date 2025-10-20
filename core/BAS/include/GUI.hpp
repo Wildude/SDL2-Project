@@ -6,11 +6,51 @@
 #include <gameobject.hpp>
 //#include <fstream>
 #include <vector>
-typedef command<GameObject> GameCommand;
+//typedef command<GameObject> GameCommand;
+class UIelement;
+// Explicit specialization for UICommand
+template<>
+class command<UIelement> {
+    public:
+    UIelement* ref;
+    command<UIelement>(): ref(NULL){}
+    command<UIelement>(UIelement& uref): ref(&uref){}
+    command<UIelement>(UIelement* uref): ref(uref){}
+    command<UIelement>(const command<UIelement>& other): ref(other.ref){}
+    const command<UIelement>& operator=(const command<UIelement>& other){
+        if(this != &other){
+            ref = other.ref;
+        }
+        return *this;
+    }
+    virtual void setref(UIelement& uref){
+        //std::cout << " setting Reference: " << &uref << "\n";
+        ref = &uref;
+    }
+    virtual void setref(UIelement* uref = NULL){
+        //std::cout << " setting Reference: ";
+        //if(uref)
+            //std::cout << uref << "\n";
+        //else
+            //std::cout << "NULL\n";
+        ref = uref;
+    }
+    virtual const UIelement* getref() const {
+        //std::cout << " getting reference\n";
+        return ref;
+    }
+    virtual UIelement* getref(){
+        //std::cout << " getting reference\n";
+        return ref;
+    }
+    virtual command<UIelement>* clone() const = 0;
+    virtual void execute() = 0; // supposedly pure virtual function for executing the command
+    virtual ~command<UIelement>() = default; // Virtual destructor for proper cleanup
+};
+typedef command<UIelement> UICommand;
 class UIelement : public GameObject
 {
     public:
-    typedef command<UIelement> UICommand;
     protected:
     bool ishover, isfocus, isclick, isrevert, statechanged;
     struct UIcmdset{
@@ -54,6 +94,10 @@ class UIelement : public GameObject
     UICommand* getFocusCmd() const ;
     UICommand* getClickCmd() const ;
     UICommand* getRevertCmd() const;
+    //
+    //UICommand* getFocusCmd() ;
+    //UICommand* getClickCmd() ;
+    //UICommand* getRevertCmd() ;
     // constructors and such
     UIelement(const UIcmdset& cmd = UIcmdset{NULL, NULL, NULL}, 
         bool focus = false, bool hover = false, bool click = false, bool revert = true);
@@ -63,7 +107,6 @@ class UIelement : public GameObject
     ~UIelement();
     
 };
-typedef command<UIelement> UICommand;
 struct UIMultiCommand: UICommand{
     std::vector<UICommand*> commands;
     UIMultiCommand(UIelement* ref = NULL);
@@ -72,6 +115,8 @@ struct UIMultiCommand: UICommand{
     void push(UICommand& cmd);
     void push(UICommand* cmd);
     UICommand*& getcmd(int index = 0);
+    UIMultiCommand* clone() const override;
+    ~UIMultiCommand();
     void execute() override ;
 };
 struct UIColor : public UICommand{
@@ -81,6 +126,7 @@ struct UIColor : public UICommand{
     UIColor(const SDL_Color& nbg, const SDL_Color& nfg);
     void setNew(const SDL_Color& bnew, const SDL_Color& fnew);
     void setref(UIelement& tref) override;
+    UIColor* clone() const override;
     void execute() override;
     ~UIColor();
 };
@@ -92,6 +138,7 @@ struct UIFont : public UICommand{
     void setNew(const FONT& font);
     void setref(UIelement& tref);
     const UIelement* getref() const override ;
+    UIFont* clone() const override;
     void execute();
 };
 enum orient{VERT, HORI};
@@ -166,6 +213,7 @@ struct InputStringUIcmd : public UICommand {
     /* inline */ void setwriting(bool write);
     /* inline */ void setStrRef(std::string* textto = NULL);
     /* inline */ void setStrRef(std::string& textto);
+    InputStringUIcmd* clone() const override;
     void execute() override;
 };
 class Label : public UIelement {
@@ -542,6 +590,7 @@ struct ChangeLevelUIcmd : UICommand{
     void setIncrease(SDL_Scancode inced = SDL_SCANCODE_UP);
     void setDecrease(SDL_Scancode deced = SDL_SCANCODE_DOWN);
     void setQuit(SDL_Scancode quitC);
+    ChangeLevelUIcmd* clone() const override;
     void execute();
 };
 /*
