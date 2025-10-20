@@ -10,7 +10,6 @@ class FONT
     /* inline */ void delfont();
     int setpath(const char* fpath);            // std::cout << " different pathes editing\n";
     FONT(const FONT& f);    
-    FONT(const FONT& f, int style);    
     TTF_Font* getfont() const;
     int getptsize() const;
     const char* getpath() const;
