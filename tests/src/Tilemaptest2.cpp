@@ -2,7 +2,7 @@
 // uses multiple layers and tilesets
 #include <Tilemap.hpp>
 #include <window.hpp>
-#include <Texture.hpp>
+#include <texture2D.hpp>
 int main(int argn, char** args)
 {
     WINDOW win("Tilemaptest2");
@@ -10,7 +10,7 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     float speed = 10;
     SDL_Event event;
-    TEXTURE man;
+    Texture2D man;
     SDL_Surface* surf = SDL_CreateRGBSurface(0, 5, 8, 8, 0, 0, 0, 0);
     SDL_SetSurfaceColorMod(surf, 255, 0, 0);
     man.surfcpy(surf, win.getren());
@@ -30,7 +30,7 @@ int main(int argn, char** args)
         
         if(SDL_GetKeyboardState(NULL)[SDL_SCANCODE_ESCAPE])break;
         level.render(win.getren());
-        man.drawOF(win.getren());
+        man.drawOF(win.getren(), &man.getdst(), 1.0f, 0.0);
         //
         win.pst();
         win.clr();
