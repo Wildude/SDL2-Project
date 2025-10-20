@@ -1,4 +1,4 @@
-tests/obj/RadioButtonTest.o: tests/src/RadioButtonTest.cpp \
+tests/obj/DropDownTest.o: tests/src/DropDownTest.cpp \
  core/BAS/include/GUI.hpp core/SDL/include/texture2D.hpp \
  src/include/SDL2/SDL_image.h src/include/SDL2/SDL.h \
  src/include/SDL2/SDL_main.h src/include/SDL2/SDL_stdinc.h \

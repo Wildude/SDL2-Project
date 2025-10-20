@@ -1,5 +1,5 @@
 core/SDL/obj/inputManager.o: core/SDL/src/inputManager.cpp \
- core/SDL/src/../include/inputManager.hpp src/include/SDL2/SDL.h \
+ core/SDL/include/inputManager.hpp src/include/SDL2/SDL.h \
  src/include/SDL2/SDL_main.h src/include/SDL2/SDL_stdinc.h \
  src/include/SDL2/SDL_config.h src/include/SDL2/SDL_platform.h \
  src/include/SDL2/begin_code.h src/include/SDL2/close_code.h \
@@ -26,7 +26,7 @@ core/SDL/obj/inputManager.o: core/SDL/src/inputManager.cpp \
  src/include/SDL2/SDL_version.h src/include/SDL2/SDL_locale.h \
  src/include/SDL2/SDL_misc.h
 
-core/SDL/src/../include/inputManager.hpp:
+core/SDL/include/inputManager.hpp:
 
 src/include/SDL2/SDL.h:
 
