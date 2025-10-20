@@ -1,7 +1,7 @@
 // bounding box test
-#include <InputManager.hpp>
-#include <TextBox.hpp>
-#include <Texture.hpp>
+#include <inputManager.hpp>
+#include <textbox.hpp>
+#include <texture2D.hpp>
 #include <window.hpp>
 #include <Box.hpp>
 int main(int argn, char** args){
@@ -38,11 +38,11 @@ int main(int argn, char** args){
         // Render the bounding box
         SDL_RenderDrawRect(win.getren(), &bbox.getcontent());
         win.set_rencol(0, 0, 255, 255); // padding rect is blue
-        TEXTURE::drawRect(paddingbox, win.getren(), (int)bbox.padavg());
+        Texture2D::drawRect(paddingbox, win.getren(), (int)bbox.padavg());
         win.set_rencol(0, 255, 0, 255); // border rect is green
-        TEXTURE::drawRect(borderbox, win.getren(), (int)bbox.borderavg());
+        Texture2D::drawRect(borderbox, win.getren(), (int)bbox.borderavg());
         win.set_rencol(0, 0, 0, 255); // margin rect is black
-        TEXTURE::drawRect(marginBox, win.getren(), (int)bbox.marginavg());
+        Texture2D::drawRect(marginBox, win.getren(), (int)bbox.marginavg());
         // Wait for a while to see the result
         win.pst();
         SDL_Delay(16);
