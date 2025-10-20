@@ -26,80 +26,64 @@ void TextInputHandler::update() {
     else if(SDL_IsTextInputActive()) SDL_StopTextInput();
 
     // Reset transitional states
-    //keyPressed.fill(false);
+    keyPressed.fill(false);
     keyReleased.fill(false);
-    //mousePressed.fill(false);
+    mousePressed.fill(false);
     mouseReleased.fill(false);
-
+    mouseWheelY = 0;
     // Poll all events
     // Clear all events in this mode
     while (SDL_PollEvent(&e)) {
-        //cout << " still on text: "<< useText << endl;
-        if (e.type == SDL_QUIT) {
-            quit = true;
-        }
-        if (e.type == SDL_MOUSEBUTTONDOWN) {
-            //cout << " mouse button down\n";
-            //cout << " mouse: " << (int)e.button.button << endl;
-            mouseDown[e.button.button] = true;
-            mouseDelayCounters[e.button.button]++;
-            //mousePressed[e.button.button] = true;
-        } 
-        else if (e.type == SDL_MOUSEBUTTONUP) {
-            //cout << " mouse button up\n";
-            //cout << " mouse: " << (int)e.button.button << endl;
-            mouseDown[e.button.button] = false;
-            mouseReleased[e.button.button] = true;
-            mouseDelayCounters[e.button.button] = 0;
-        }
-        if (e.type == SDL_MOUSEMOTION) {
-            mouseXY.x = e.motion.x;
-            mouseXY.y = e.motion.y;
-        }
-        if (e.type == SDL_MOUSEWHEEL) {
-            mouseWheelY = e.wheel.y;
-        }
-        if (e.type == SDL_KEYUP) {
-            SDL_Scancode sc = e.key.keysym.scancode;
-            keyDown[sc] = false;
-            keyReleased[sc] = true;
-            keyDelayCounters[sc] = 0;
-        }
-        if(!useText){
-            textTo = NULL;
-            if (e.type == SDL_KEYDOWN && !e.key.repeat) {
-            SDL_Scancode sc = e.key.keysym.scancode;
-            keyDown[sc] = true;
-            //keyPressed[sc] = true;
-            } else if (e.type == SDL_KEYUP) {
-                SDL_Scancode sc = e.key.keysym.scancode;
-                keyDown[sc] = false;
-                keyReleased[sc] = true;
-                keyDelayCounters[sc] = 0;
-            }
-        }   
-        else{
-            if (e.type == SDL_TEXTINPUT) {
-                inputText += e.text.text;
-            } 
-            else if (e.type == SDL_KEYDOWN) {
-                if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty()) {
-                    inputText.pop_back();
-                } else if (
-                    e.key.keysym.sym == SDL_GetKeyFromScancode(quitCase) || 
-                    e.key.keysym.sym == SDLK_ESCAPE
-                ) {
-                    useText = false;
-                    SDL_StopTextInput();  // stop when exiting
+        switch (e.type) {
+            case SDL_QUIT:
+                quit = true;
+                break;
+            case SDL_TEXTINPUT:
+                if(!useText){
                     textTo = NULL;
+                    break;
                 }
-            }
-            if(textTo)*textTo = inputText; // Update the textTo content to the current inputText
+                inputText += e.text.text; 
+                break;
+            case SDL_KEYDOWN:
+                if (!e.key.repeat) {
+                    SDL_Scancode sc = e.key.keysym.scancode;
+                    keyDown[sc] = true;
+                    keyPressed[sc] = true;
+                    if (e.key.keysym.sym == SDLK_BACKSPACE && !inputText.empty() && useText)
+                        inputText.pop_back();
+                    else if (
+                        e.key.keysym.sym == SDL_GetKeyFromScancode(quitCase) || 
+                        e.key.keysym.sym == SDLK_ESCAPE
+                    ) {
+                        useText = false;
+                        SDL_StopTextInput();  // stop when exiting
+                        textTo = NULL;
+                    }
+                }
+                break;
+            case SDL_KEYUP:
+                keyDown[e.key.keysym.scancode] = false;
+                keyReleased[e.key.keysym.scancode] = true;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                mouseDown[e.button.button] = true;
+                mousePressed[e.button.button] = true;
+                break;
+            case SDL_MOUSEBUTTONUP:
+                mouseDown[e.button.button] = false;
+                mouseReleased[e.button.button] = true;
+                break;
+            case SDL_MOUSEMOTION:
+                mouseXY.x = e.motion.x;
+                mouseXY.y = e.motion.y;
+                break;
+            case SDL_MOUSEWHEEL:
+                mouseWheelY = e.wheel.y;
+                break;
         }
     }
-    // Update key repeat delay counters
     updateDelays();
-    mouseWheelY = 0; // Reset wheel each frame
 }
 const std::string& TextInputHandler::getText() const {
     return inputText;
