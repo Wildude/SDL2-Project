@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <tinyxml2.hpp>
-#include <texture.hpp>
+#include <texture2D.hpp>
 #include <map>
 //std::ofstream file("../Files/Data/logTileMap.log");
 struct Tileset
