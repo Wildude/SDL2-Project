@@ -19,18 +19,15 @@ int main(int argn, char** args)
     win.pstcol(255, 255, 255, 255);
     SDL_Color col = {200, 0, 0, 255};
     SDL_Point textpos = {win.getw()/4, win.geth()/4};
-    TextList list;
-    list.setpos(textpos.x, textpos.y);
-    list.add("", NULL, &col);
-    list.add();
+    TextBox list("Text Editing Trial", FONT("../Fonts/nyala.ttf", 16));
+    list.setboxpos(textpos.x, textpos.y);
     int quant = 3;
     TextInputHandler input;
     SDL_Point mousepos;
+    SDL_Texture* board = NULL;
+    SDL_Texture* board2 = NULL;
     while(!input.shouldQuit()){
         input.update();
-        bool moved = false, camscaled = false;
-        int x, y;
-        SDL_GetMouseState(&mousepos.x, &mousepos.y);
         if(input.isKeyDown(SDL_SCANCODE_ESCAPE))break;
         //
         if(input.isKeyDown(SDL_SCANCODE_UP))textpos.y -= 1;
@@ -44,13 +41,12 @@ int main(int argn, char** args)
         if(input.isMouseDown(SDL_BUTTON_RIGHT)){
             input.setTextUse(false);
         }
-        list.setpos(textpos.x, textpos.y);
-        list.edit(std::string(" text: " + input.getText()).c_str(), 0);
-        list.edit(std::string(" textinput?: " + (input.getTextState() ? std::string("true") : std::string("false"))).c_str(), 1);
-        list.draw(win.getren());
-        //
-        //
-        //
+        list.setboxpos(textpos.x, textpos.y);
+        list.settext(std::string(" text: " + input.getText()).c_str());
+        list.draw(win.getren(), board);
+        list.setboxpos(textpos.x, textpos.y + quant * 20);
+        list.settext(std::string(" textinput?: " + (input.getTextState() ? std::string("true") : std::string("false"))).c_str());
+        list.draw(win.getren(), board2);
         win.pst();
         win.clr();
         SDL_Delay(16);
