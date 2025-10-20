@@ -10,10 +10,15 @@ struct command{
     command(T& uref): ref(&uref){}
     command(T* uref): ref(uref){}
     virtual void setref(T& uref){
-        //std::cout << " setting reference\n";
+        //std::cout << " setting Reference: " << &uref << "\n";
         ref = &uref;
     }
     virtual void setref(T* uref = NULL){
+        //std::cout << " setting Reference: ";
+        //if(uref)
+            //std::cout << uref << "\n";
+        //else
+            //std::cout << "NULL\n";
         ref = uref;
     }
     virtual const T* getref() const {
@@ -32,11 +37,16 @@ struct ChangeFontCommand : public command<T>{
     FONT* fontRef;
     FONT newFont;
     ChangeFontCommand() : command<T>(), fontRef(NULL) {}
-    ChangeFontCommand(FONT& font) : command<T>(), fontRef(&font) {}
+    ChangeFontCommand(FONT* font) : command<T>(), fontRef(&font) {}
     ChangeFontCommand(const FONT& nFont): newFont(nFont), fontRef(NULL){}
     void setRef(FONT& font){
         //std::cout << " setting font references\n";
         fontRef = &font;
+    }
+    void setRef(FONT* font){
+        //std::cout << " setting font references\n";
+        //std::cout << " fpath: " << font->getpath() << std::endl;
+        fontRef = font;
     }
     void setNew(const FONT& font){
         //std::cout << " setting new font\n";
@@ -47,7 +57,7 @@ struct ChangeFontCommand : public command<T>{
             // std::cout << " no font execution\n";
             return;
         }
-        // std::cout << " executing font change\n";
+        //std::cout << " executing font change\n";
         *fontRef = newFont; // Change the font to the new value
     } 
     const T* getref() const override {
@@ -60,12 +70,19 @@ struct ChangeColorCommand : public command<T>{
     SDL_Color* bg, *fg;
     SDL_Color nb, nf;
     ChangeColorCommand() : bg(NULL), fg(NULL), command<T>(){}
-    ChangeColorCommand(SDL_Color& bref, SDL_Color& fref) : bg(&bref), fg(&fref){}
+    ChangeColorCommand(SDL_Color* bref, SDL_Color* fref) : bg(bref), fg(fref){}
     ChangeColorCommand(const SDL_Color& nbg, const SDL_Color& nfg): nb(nbg), nf(nfg), bg(NULL), fg(NULL){}
     void setRef(SDL_Color& bref, SDL_Color& fref){
         //std::cout << " setting color references\n";
         bg = &bref;
         fg = &fref;
+    }
+    void setRef(SDL_Color* bref, SDL_Color* fref){
+        //std::cout << " setting color references\n";
+        //std::cout << " bpath: " << (int)bref->r << "," << (int)bref->g << "," << (int)bref->b << "," << (int)bref->a << std::endl;
+        //std::cout << " fpath: " << (int)fref->r << "," << (int)fref->g << "," << (int)fref->b << "," << (int)fref->a << std::endl;
+        bg = bref;
+        fg = fref;
     }
     void setNew(const SDL_Color& bnew, const SDL_Color& fnew){
         //std::cout << " setting new colors\n";
@@ -74,10 +91,10 @@ struct ChangeColorCommand : public command<T>{
     }
     void execute() override {
         if(!bg || !fg){
-            // std::cout << " no color execution\n";
+            //std::cout << " no color execution\n";
             return;
         }
-        // std::cout << " executing color change\n";
+        //std::cout << " executing color change\n";
         *bg = nb;
         *fg = nf;
     }
