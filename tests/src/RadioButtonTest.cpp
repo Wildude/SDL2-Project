@@ -6,62 +6,36 @@
 WINDOW win("RadioButton Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
-    // std::cout << " revfont\n";
-
-    FONT revFont("../Fonts/ROCKB.ttf", 15);
-    // std::cout << " newfont\n";
     FONT newFont("../Fonts/nyala.ttf", 15);
-
     SDL_Color rfg = {0, 0, 255, 255}, rbg = {100, 155, 90, 255};
     SDL_Color nfg = {255, 0, 0, 255}, nbg = {128, 128, 128, 128};
     //
-    UIColor changeColor(nfg, rbg);
+    UIColor changeColor(nfg, nbg);
     // std::cout << " change font\n";
-    UIFont changeFont(newFont);
     UIColor revertCol(rfg, rbg);
     // std::cout << " revert font\n";
-    UIFont revertFont(revFont);
     // std::cout << " full reverter\n";
-    // multicommands
-    multiCommand<UIelement> reverter, clicker;
+    // multicommand
+    CheckBox cbox;
+    cbox.setPos(400, 20);
+    cbox.onFocus(&changeColor);
+    cbox.onRevert(&revertCol);
 
-    reverter.push(revertCol);
-    reverter.push(revertFont);
-
-    clicker.push(changeFont);
     RadioButton theRadiobutton;
     //
-    theRadiobutton.push(CheckBox());
-    theRadiobutton.push(CheckBox());
-    theRadiobutton.push(CheckBox());
-    theRadiobutton.push(CheckBox());
+    theRadiobutton.push();
+    theRadiobutton.push();
+    theRadiobutton.push();
+    theRadiobutton.push();
     //
     theRadiobutton.setCol1(rfg);
     theRadiobutton.setCol2(rbg);
-    theRadiobutton.setFont(revFont);
 
     theRadiobutton.onFocus((&changeColor));
-
-    theRadiobutton.onClick((&clicker));
-
-    theRadiobutton.onRevert((&reverter));
-
-    clicker.push(changeFont);
-    CheckBox theCheckbox;
-    theCheckbox.setCol1(rfg);
-    theCheckbox.setCol2(rbg);
-    theCheckbox.setFont(revFont);
-
-    theCheckbox.onFocus((&changeColor));
-
-    theCheckbox.onClick((&clicker));
-
-    theCheckbox.onRevert((&reverter));
-
-    theCheckbox.setPos(win.getw() - 100, win.geth() - 300);
+    theRadiobutton.onRevert((&revertCol));
 
     TextInputHandler input;
-
+    
     win.crtB();
     SDL_Color clearcol = {255, 255, 255, 255};
     theRadiobutton.setPos(win.getw()/8, win.getw()/8);
@@ -76,12 +50,18 @@ int main(int argn, char** argc){
         if(input.isMouseDown(SDL_BUTTON_RIGHT))theRadiobutton.setPos(mpos.x, mpos.y);
         boxied.settext(input.getText() == "" ? "Current: " + std::to_string(theRadiobutton.getCurrent()): input.getText());
         boxied.draw(win.getren(), texture);
-
+        boxied.setboxpos(boxied.getBox().x, boxied.getBox().y + boxied.getBox().h);
+        boxied.settext(input.getText() == "" ? "Fcurrent: " + std::to_string(theRadiobutton.getFCurrent()): input.getText());
+        boxied.draw(win.getren(), texture);
+        boxied.setboxpos(boxied.getBox().x, boxied.getBox().y - boxied.getBox().h);
         theRadiobutton.update(input);
         theRadiobutton.render(win.getren(), 10);
+        cbox.update(input);
+        cbox.render(win.getren(), 10);
         //theCheckbox.update(input);
         //theCheckbox.render(win.getren(), 10);
         win.pst();
+        win.clr();
         SDL_Delay(33);
     }
     return 0;
