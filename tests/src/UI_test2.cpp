@@ -2,6 +2,16 @@
 #include <TextBox.hpp>
 #include <window.hpp>
 #include <InputManager.hpp>
+template <class T>
+int simpleSearch(const std::vector<T>& vec, const T& target){
+    int size = vec.size();
+    for(int i = 0; i < size; i++){
+        if(vec[i] == target){
+            return i;
+        }
+    }
+    return -1;
+}
 int main(int argn, char** args){
     // std::cout << " revfont\n";
     FONT revFont("../Fonts/ROCKB.ttf", 50);
@@ -33,8 +43,8 @@ int main(int argn, char** args){
     Mcon.setCol1(rfg);
     Mcon.setCol2(rbg);
     Mcon.setFont(revFont);
-    Mcon.onFocus(&changeColor);
-    Mcon.onClick(&changeFont);
+    Mcon.onFocus(&changeFont);
+    Mcon.onClick(&changeColor);
     Mcon.onRevert(&reverter);
     InputManager input;
     bool oldclick = false;
@@ -43,7 +53,13 @@ int main(int argn, char** args){
     Mcon.setPos(win.getw()/2, win.geth()/2);
     win.crtB();
     win.pstcol(255, 255, 255, 255);
-    std::vector<UIelement*>& UIlist = Mcon.getList();
+    std::vector<UIelement*> UIlist = Mcon.getList();
+    std::vector<uintptr_t> ptrlist;
+    for(UIelement* ui : UIlist){
+        ptrlist.push_back((uintptr_t)ui);
+    }
+    TextBox tbox("list: ", FONT("../Fonts/ROCKB.ttf", 20));
+    SDL_Texture* board = NULL;
     while(!input.shouldQuit()){
         input.update();
         SDL_Point point;
@@ -51,9 +67,27 @@ int main(int argn, char** args){
         if(input.isMouseDown(SDL_BUTTON_RIGHT)){
             Mcon.setPos(point.x, point.y);
         }
-        for(UIelement* ui : UIlist)
-        ui->update(input);
-        //Mcon.update(input);
+        tbox.setboxpos(10, 10);
+        tbox.settext("list of pointers: ");
+        tbox.draw(win.getren(), board, 2);
+        for(int i = 0; i < size; i++){
+            tbox.setboxpos(10, 10 + tbox.getBox().h * (i + 1));
+            std::string ptrstr = "Pointer " + std::to_string(i) + ": " + std::to_string(ptrlist[i]);
+            tbox.settext(ptrstr);
+            tbox.draw(win.getren(), board, 2);
+        }
+        int w = 50 + tbox.getBox().w;
+        tbox.setboxpos(w, 10);
+        tbox.settext("ChangeFont points at " + std::to_string(simpleSearch(ptrlist, (uintptr_t)changeFont.getref())));
+        tbox.draw(win.getren(), board, 2);
+        tbox.setboxpos(w, 10 + tbox.getBox().h);
+        tbox.settext("ChangeColor points at " + std::to_string(simpleSearch(ptrlist, (uintptr_t)changeColor.getref())));
+        tbox.draw(win.getren(), board, 2);
+        tbox.setboxpos(w, 10 + tbox.getBox().h * 2);
+        tbox.settext("Reverter points at " + std::to_string(simpleSearch(ptrlist, (uintptr_t)reverter.getref())));
+        tbox.draw(win.getren(), board, 2);
+        //
+        Mcon.update(input);
         Mcon.render(win.getren());
         //Mcon.render(win.getren(), texture);
         win.pst();
