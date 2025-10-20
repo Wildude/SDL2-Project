@@ -1,31 +1,26 @@
 #include "../include/font.hpp"
 #include <cstring>
 #include <fstream>
-std::ofstream font_file("fontfile.log");
+//std::ofstream font_file("fontfile.log");
 #define DEF_FONT "../Fonts/nyala.ttf"
 #define CHANGE_DEF_FONT(FONT_X) DEF_FONT = FONT_X
 //static const string DEFONT = "../Fonts/nyala.ttf";    
 FONT::FONT(){
-    // std::cout<<" constructor called for font\n";
+    //std::cout<<" constructor called for font\n";
     INIT();
     ptsize = 12;
 }
 const FONT& FONT::operator=(const FONT& f)
 {
-    // std::cout<<" assignment called for font\n";
+    //std::cout<<" assignment called for font\n";
     if(this == &f)return *this;
+    //std::cout << " setting path\n";
     int result = setpath(f.path);
-    if(result == 0 && ptsize != f.ptsize){
-        // std::cout << "\n pt assigned";
-        ptsize = f.ptsize;
-        setfont(path);
-    }
-    else if(result == 1){
-        ptsize = f.ptsize;
-        setfont(path);
-    }
-    // std::cout<<"\n ptsize: " << ptsize << std::endl;
-    // std::cout<<" path: " << (path ? path : "NULL") << std::endl;
+    //std::cout << " setting ptsize\n";
+    ptsize = f.ptsize;
+    //std::cout << " setting font\n";
+    setfont(path);
+    //std::cout << " returning\n";
     return *this;
 }
 void FONT::delpath(){
@@ -42,17 +37,17 @@ int FONT::setpath(const char* fpath){
     // std::cout << " setting path: \n";
     if(fpath){
         if(path && strcmp(fpath, path) == 0){
-            // std::cout << " same pathes, quiting\n";
+            //std::cout << " same pathes, quiting\n";
             return 0;
         }
-        // std::cout << " different pathes editing\n";
+        //std::cout << " different pathes editing\n";
         if(path)delete[] path;
         path = new char[strlen(fpath) + 1];
         strcpy(path, fpath);       
         return 1;
     }
     else{
-        // std::cout << " new path empty, deleting path\n";
+        //std::cout << " new path empty, deleting path\n";
         if(path)delete[] path;
         path = NULL;
         delfont();
@@ -62,11 +57,6 @@ int FONT::setpath(const char* fpath){
 FONT::FONT(const FONT& f)
 {
     *this = f;
-}
-FONT::FONT(const FONT& f, int style)
-{
-    *this = f;
-    setStyle(style);
 }
 TTF_Font* FONT::getfont() const
 {
@@ -98,23 +88,23 @@ int FONT::INIT()
     return (TTF_WasInit() ? TTF_WasInit() : TTF_Init());
 }
 bool FONT::checkpath(){
-    font_file << " checking font path: ";
+    std::cout << " checking font path: ";
     if(!path){
-        font_file << "fontpath is NULL\n";
+        std::cout << "fontpath is NULL\n";
         delfont();
         return false;
     }
-    font_file << " good\n";
+    std::cout << " good\n";
     return true;
 }
 bool FONT::checkfont(){
-    font_file << " checking font: ";
+    std::cout << " checking font: ";
     if(!fontdata){
-        font_file << "fontdata is NULL\n";
+        std::cout << "fontdata is NULL\n";
         delpath();
         return false;
     }
-    font_file << " good\n";
+    std::cout << " good\n";
     return true;
 }
 void FONT::display() const{
@@ -149,7 +139,8 @@ TTF_STYLE_STRIKETHROUGH	    Strike line
 */
 FONT::~FONT()
 {
-    font_file.close();
+    //std::cout<<" destructor called for font\n";
+    //font_file.close();
     TTF_CloseFont(fontdata);
     delete[] path;
 }
@@ -157,10 +148,14 @@ TTF_Font* FONT::setfont(const char* fontpath )
 {
     // std::cout<<" setting font: "<<fontpath<<" with ptsize: "<< ptsize <<std::endl;
     delfont();
+    if(!fontpath){
+        fontpath = DEF_FONT;
+        return NULL;
+    }
     fontdata = TTF_OpenFont(fontpath, ptsize);
     if(!fontdata){
         std::cout <<" font loading error: "<<TTF_GetError()<<std::endl; 
-        font_file << " font loading error: " << SDL_GetError() << std::endl;
+        std::cout << " font loading error: " << SDL_GetError() << std::endl;
         
         return NULL;
     }
