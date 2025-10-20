@@ -7,28 +7,41 @@ int main(int argn, char** args){
     WINDOW win("Animation test1");
     win.crtB();
     win.pstcol(255, 255, 0, 255);
-    std::string path = "../Images/Sprites/skullGuy.png"; // path to atlas
-    Texture2D rando("../Images/Weapons/AK 47/AK_47.png", win.getren());
-    rando.queryF();
-    SDLImage atlas(path.c_str(), win.getren());
-    atlas.queryF();
-    LinearSprite anim1(atlas, 170); // frame width = 170
+    std::string path = "../00 - Character/Mortal - Run - Sheet.png";
+    Texture2D atlas(path.c_str(), win.getren());
+    atlas.set_dstpos(40, 40);
+    LinearSprite anim1(atlas, 64); // frame width = 64 x 2
+    anim1.magnify(4);
     InputManager input;
-    float deltaT = 0.01;
+    float deltaT = 1;
     SDL_Texture* board;
-    TextBox tbox("../Fonts/nyala.ttf", 25);
-    SDL_Rect dst = {40, 40, 170, 200};
     while(!input.shouldQuit()){
         input.update();
+        bool animated = false;
         if(input.isMouseDown(SDL_BUTTON_LEFT)){
-            int x, y;
-            SDL_GetMouseState(&dst.x, &dst.y);
+            SDL_GetMouseState(&anim1.getImage().getdst().x, &anim1.getImage().getdst().y);
         }
-        if(input.isKeyReady(SDL_SCANCODE_UP, 5))deltaT *= 10;
-        if(input.isKeyReady(SDL_SCANCODE_DOWN, 5))deltaT /= 10;
-        anim1.Animate(deltaT, dst, win.getren());
-        //atlas.drawC(win.getren());
-        //rando.drawC(win.getren());
+        if(input.isKeyDown(SDL_SCANCODE_UP)){
+            animated = true;
+            anim1.getImage().getdst().y--;
+        }
+        if(input.isKeyDown(SDL_SCANCODE_DOWN)){
+            animated = true;
+            anim1.getImage().getdst().y++;
+        }
+
+        if(input.isKeyDown(SDL_SCANCODE_RIGHT)){
+            animated = true;
+            anim1.flip(SDL_FLIP_NONE);
+            anim1.getImage().getdst().x++;
+        }
+        if(input.isKeyDown(SDL_SCANCODE_LEFT)){
+            animated = true;
+            anim1.flip(SDL_FLIP_HORIZONTAL);
+            anim1.getImage().getdst().x--;
+        }
+        if(animated)anim1.Animate(deltaT);
+        anim1.draw(win.getren());
         win.pst();
         win.clr();
         SDL_Delay(16);

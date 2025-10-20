@@ -1,6 +1,6 @@
 // testing states and transitions between states:
 #include <States.hpp>
-#include <texture.hpp>
+#include <texture2D.hpp>
 #include <window.hpp>
 WINDOW win("Menu State Test");
 SDL_Texture* texture;
