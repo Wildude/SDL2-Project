@@ -36,7 +36,10 @@ std::ofstream uilog("../Files/Data/GUI.log");
     if(isclick){
         isrevert = false;
         if(UIcmds.click){
-            //if(UIcmds.click->getref() != this)UIcmds.click->setref(this);
+            system("cls");
+            std::cout << " click executing\n";
+            std::cout << " switching from pointer " << UIcmds.click->getref() << " to " << this << "\n";
+            if(UIcmds.click->getref() != this)UIcmds.click->setref(this);
             UIcmds.click->execute();
             statechanged = true;
         }
@@ -44,10 +47,14 @@ std::ofstream uilog("../Files/Data/GUI.log");
     else if(focusCheck(input))
     {
         isrevert = false;
+        
         if(!isfocus){
+            system("cls");
+            std::cout << " focusing\n";
             isfocus = true;
             if(UIcmds.focus){
-                //if(UIcmds.focus->getref() != this)UIcmds.focus->setref(this);
+                std::cout << " switching from pointer " << UIcmds.focus->getref() << " to " << this << "\n";
+                if(UIcmds.focus->getref() != this)UIcmds.focus->setref(this);
                 UIcmds.focus->execute();
                 statechanged = true;
             }
@@ -55,12 +62,14 @@ std::ofstream uilog("../Files/Data/GUI.log");
         else statechanged = false;
     }
     else {
-        //std::cout << " reverting\n";
         if(!isrevert){
+            system("cls");
+            std::cout << " reverting\n";
             isfocus = false;
             isrevert = true;
+            std::cout << " switching from pointer " << UIcmds.revert->getref() << " to " << this << "\n";
             if(UIcmds.revert){
-                //if(UIcmds.revert->getref() != this)UIcmds.revert->setref(this);
+                if(UIcmds.revert->getref() != this)UIcmds.revert->setref(this);
                 UIcmds.revert->execute();
                 statechanged = true;
             }
@@ -72,21 +81,21 @@ std::ofstream uilog("../Files/Data/GUI.log");
     UIcmds.focus = focus;
     if(focus){
         //std::cout << " setting focus command reference\n";
-        focus->setref(this);
+        //focus->setref(this);
     }
 }
 /* virtual*/ void UIelement::onClick(UICommand* click ){
     UIcmds.click = click;
     if(click){
         //std::cout << " setting click command reference\n";
-        click->setref(this);
+        //click->setref(this);
     }
 }
 /* virtual*/ void UIelement::onRevert(UICommand* revert ){
     UIcmds.revert = revert;
     if(revert){
         //std::cout << " setting revert command reference\n";
-        revert->setref(this);
+        //revert->setref(this);
     }
 }
 void UIelement::clearCMD(){
@@ -168,7 +177,7 @@ UIMultiCommand::UIMultiCommand(std::vector<UICommand*>& cmds): UIMultiCommand(){
     commands = cmds;
 }
 void UIMultiCommand::setref(UIelement& ref) /* override */ {
-    std::cout << " setting UIMultiCommand reference\n";
+    //std::cout << " setting UIMultiCommand reference\n";
     UICommand::setref(ref);
     int size = commands.size();
     for(int i = 0; i < size; i++){
@@ -218,13 +227,14 @@ void UIColor::setNew(const SDL_Color& bnew, const SDL_Color& fnew){
     cmd.setNew(bnew, fnew);
 }
 void UIColor::setref(UIelement& tref) /* override */ {
-    //std::cout << " setting UI color references\n";
-    ref = &tref;
+    std::cout << " setting UI color references\n";
+    UICommand::setref(tref);
     cmd.setRef(ref->getCol2(), ref->getCol1());
 }
 UIColor* UIColor::clone() const /* override */ {
     return new UIColor(*this);
 }
+
 void UIColor::execute() /* override */{
     //std::cout << " executing UI color\n";
     // important to check color references in case they weren't set
@@ -1359,7 +1369,9 @@ void Button::setBoxDim(int w, int h){
 void CheckBox::update(InputManager& input) {
     //std::cout << " updating\n";
     Button::update(input);
-    if(getclick())clickstate = !clickstate;
+    if(getclick()){
+        clickstate = !clickstate;
+    }
 }
 void CheckBox::render(SDL_Renderer* rend, int drawtype) {
     //std::cout << " rendering\n";
@@ -1472,9 +1484,11 @@ void CheckBox::toogleState() {
     clickstate = !clickstate;
 }
 void CheckBox::executeClick() {
+    UIcmds.click->setref(this);
     UIcmds.click->execute();
 }
 void CheckBox::executeFocus() {
+    UIcmds.focus->setref(this);
     UIcmds.focus->execute();
 }
 void CheckBox::executeRevert() {
@@ -1485,19 +1499,24 @@ void RadioButton::setPos(int x , int y) {
     Box.x = x;
     Box.y = y;
     if(!size)return;
-    flyweight.setPos(x, y);
+    for(CheckBox& cb: cboxes){
+        cb.setPos(x, y);
+        y += cb.getBox()->h;
+    }
 }
 void RadioButton::setCol1(const SDL_Color& col){
     fg = col;
-    flyweight.setCol1(col);
+    for(CheckBox& cb: cboxes){
+        cb.setCol1(col);
+        std::cout << " col: " << (int)cb.getCol1()->r << ", " << (int)cb.getCol1()->g << ", " << (int)cb.getCol1()->b << ", " << (int)cb.getCol1()->a << std::endl;
+    }
 }
 void RadioButton::setCol2(const SDL_Color& col){
     bg = col;
-    flyweight.setCol2(col);
+    for(CheckBox& cb: cboxes)cb.setCol2(col);
 }
 void RadioButton::setFont(const FONT& font){}
 SDL_Rect* RadioButton::getBox(){
-    setbox();
     return &Box;
 }
 FONT* RadioButton::getFont(){
@@ -1512,62 +1531,49 @@ SDL_Color* RadioButton::getCol2(){
 void RadioButton::update(InputManager& input) {
     UIelement::update(input);
     if(!size)return;
-    int dy = flyweight.getBox()->h * size;
-    if(input.getMouseX() < Box.x || input.getMouseX() > Box.x + flyweight.getBox()->w){
-        fcurrent = -1;
-        return;
-    }
-    else {
-        int dyi = input.getMouseY() - Box.y;
-        if(dyi < 0 || dyi > dy){
-            fcurrent = -1;
-            return;
+    for(int i = 0; i < size; i++){
+        cboxes.at(i).Button::update(input);
+        if(cboxes.at(i).getclick()){
+            if(current != i){
+                if(current >= 0 && current < size){
+                    cboxes.at(current).clearState();
+                }
+                cboxes.at(i).setState();
+                current = i;
+            }
         }
-        fcurrent = dyi / flyweight.getBox()->h;
-        if(input.isMousePressed(SDL_BUTTON_LEFT))current = current == fcurrent ? -1 : fcurrent;
     }
 }
 void RadioButton::render(SDL_Renderer* rend, int drawtype) {
     if(!size)return;
-    int height = flyweight.getBox()->h;
-    for(int i = 0; i < size; i++){
-        flyweight.setPos(Box.x, Box.y + i * height);
-        if(i == current){
-            flyweight.setState();
-        }
-        else if(i != fcurrent){
-            if(!flyweight.isrevert)flyweight.executeRevert();
-            flyweight.clearState();
-        }
-        else{
-            flyweight.executeFocus();
-            flyweight.clearState();
-        }
-        flyweight.render(rend, drawtype);
-    }
+    for(CheckBox& cb: cboxes)cb.render(rend, drawtype);
 }
 void RadioButton::onFocus(UICommand* cmd) {
     UIelement::onFocus(cmd);
-    flyweight.onFocus(cmd);
+    for(CheckBox& cb: cboxes)cb.onFocus(cmd);
 }
 void RadioButton::onClick(UICommand* cmd) {
     UIelement::onClick(cmd);
-    flyweight.onClick(cmd);
+    for(CheckBox& cb: cboxes)cb.onClick(cmd);
 }
 void RadioButton::onRevert(UICommand* cmd) {
     UIelement::onRevert(cmd);
-    flyweight.onRevert(cmd);
+    for(CheckBox& cb: cboxes)cb.onRevert(cmd);
 }
-RadioButton::RadioButton() : UIelement(), flyweight(), size(0), current(-1), fcurrent(-1), Box(SDL_Rect({0, 0, 0, 0})), 
+RadioButton::RadioButton() : UIelement(), size(0), current(-1), fcurrent(-1), Box(SDL_Rect({0, 0, 0, 0})), 
 fg(SDL_Color({0, 0, 0, 255})), bg(SDL_Color({255, 255, 255, 255})){}
 
 void RadioButton::push(){
+    cboxes.push_back(CheckBox(size ? cboxes.at(0).type : CLASSIC));
     size++;
+    cboxes.back().setCol1(fg);
+    cboxes.back().setCol2(bg);
+    Box.w = std::max(Box.w, cboxes.back().getBox()->w);
+    Box.h += cboxes.back().getBox()->h;
+    cboxes.back().setPos(Box.x, Box.y + Box.h);
 }
 void RadioButton::setbox() {
     if(!size)return;
-    Box.w = flyweight.Box.w;
-    Box.h = flyweight.Box.h * size;
 }
 int RadioButton::getCurrent() const {
     return current;

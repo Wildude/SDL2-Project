@@ -43,6 +43,6 @@ copy /Y "%BAT_DIR%\runbuild.bat" "%BIN_DIR%" >nul
 
 
 REM Call make
-echo Running make...
-make %*
+echo Running mingw32-make...
+mingw32-make %*
 cd bin

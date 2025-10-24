@@ -34,6 +34,7 @@ class command<UIelement> {
         //else
             //std::cout << "NULL\n";
         ref = uref;
+        std::cout << " switcing ref to " << ref << "\n";
     }
     virtual const UIelement* getref() const {
         //std::cout << " getting reference\n";
@@ -434,12 +435,14 @@ class CheckBox : public Button{ // maybe should inherit from Button later.
     friend class RadioButton;
 };
 class RadioButton : public UIelement{
-    CheckBox flyweight;
+    std::vector<CheckBox> cboxes;
     int size;
     int current;
     int fcurrent;
     SDL_Rect Box;
     SDL_Color fg, bg;
+    private: 
+
     public:
     // abstract imps
     virtual void setPos(int x , int y) override ;

@@ -7,12 +7,12 @@ WINDOW win("RadioButton Test");
 SDL_Texture* texture;
 int main(int argn, char** argc){
     FONT newFont("../Fonts/nyala.ttf", 15);
-    SDL_Color rfg = {0, 0, 255, 255}, rbg = {100, 155, 90, 255};
-    SDL_Color nfg = {255, 0, 0, 255}, nbg = {128, 128, 128, 128};
+    SDL_Color rfg = {0, 0, 255, 255}, rbg = {255, 0, 0, 255};
+    SDL_Color nfg = {255, 255, 0, 255}, nbg = {0, 255, 255, 255};
     //
-    UIColor changeColor(nfg, nbg);
+    UIColor changeColor(nbg, nfg);
     // std::cout << " change font\n";
-    UIColor revertCol(rfg, rbg);
+    UIColor revertCol(rbg, rfg);
     // std::cout << " revert font\n";
     // std::cout << " full reverter\n";
     // multicommand
@@ -23,7 +23,9 @@ int main(int argn, char** argc){
 
     RadioButton theRadiobutton;
     //
+    std::cout   << " adding radiobutton boxes\n";
     theRadiobutton.push();
+    std::cout << " adding radiobutton boxes\n";
     theRadiobutton.push();
     theRadiobutton.push();
     theRadiobutton.push();

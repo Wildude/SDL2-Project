@@ -40,6 +40,9 @@ struct ChangeStateCommand : public command <T> {
         nextState = next;
         type = typedo;
     }
+    ChangeStateCommand* clone() const override {
+        return new ChangeStateCommand(manager, nextState, type);
+    }
     void setRef(StateManager* stman) {
         manager = stman;
     }
