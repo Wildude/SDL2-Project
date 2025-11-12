@@ -1,12 +1,11 @@
 #pragma once
 #include <uielement.hpp>
 struct UIcommand{
-    virtual UIcommand* clone() const;
+    virtual UIcommand* clone() const = 0;
     virtual void execute(UIelement* ref) = 0;
 };
 struct UIMultiCommand: UIcommand{
     std::vector<UIcommand*> commands;
-    UIMultiCommand(UIelement* ref = NULL);
     UIMultiCommand(std::vector<UIcommand*>& cmds);
     void push(UIcommand& cmd);
     void push(UIcommand* cmd);
@@ -18,8 +17,6 @@ struct UIMultiCommand: UIcommand{
 struct UIColor : public UIcommand{
     SDL_Color newbg, newfg;
     UIColor();
-    UIColor(UIelement* uref);
-    UIColor(UIelement& uref);
     UIColor(const SDL_Color& nbg, const SDL_Color& nfg);
     void setNew(const SDL_Color& bnew, const SDL_Color& fnew);
     UIColor* clone() const override;
@@ -27,10 +24,10 @@ struct UIColor : public UIcommand{
     ~UIColor();
 };
 struct UIFont : public UIcommand{
-    FONT newfont;
+    FONT* newfont;
     UIFont();
-    UIFont(UIelement& uref);
     UIFont(const FONT& font);
+    UIFont(FONT* font);
     void setNew(const FONT& font);
     UIFont* clone() const override;
     void execute(UIelement* ref);

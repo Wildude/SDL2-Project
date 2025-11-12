@@ -10,7 +10,7 @@ class UIslider : public UIelement {
     short portion;
     //bool isdragging;
     public:
-    UIslider(int minval, int maxval, int startval);
+    UIslider(short portion = 0);
     void setValue(int val);
     int getValue() const;
     virtual void setPos(int x, int y) override;
