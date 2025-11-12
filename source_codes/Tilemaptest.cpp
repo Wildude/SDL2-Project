@@ -24,7 +24,7 @@ int main(int argn, char** args)
     Level bit16;
     bit16.parseLevel("../Files/XML/StageX.tmx", win.getren());
     // consider deleting doc by scoping out
-    bit16.display();
+    //bit16.display();
     //return 1;
     int mapWidth = bit16.getMapWidth();
     int mapHeight = bit16.getMapHeight();
