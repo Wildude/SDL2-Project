@@ -1,5 +1,7 @@
 {
     "files.associations": {
+        "*.puml": "plantuml",
+        "*.uml": "plantuml",
         "ostream": "cpp",
         "iostream": "cpp",
         "entropy_common.c": "cpp",
@@ -46,6 +48,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "bitset": "cpp",
+        "ctime": "cpp",
+        "regex": "cpp"
     }
 }

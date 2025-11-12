@@ -1,0 +1,13 @@
+@startuml
+class GameEngine {
+  +start()
+  +update()
+  +shutdown()
+}
+
+class Renderer
+class PhysicsEngine
+
+GameEngine --> Renderer
+GameEngine --> PhysicsEngine
+@enduml
