@@ -129,6 +129,11 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - project in renovation
 ---
 ## 🤔 How to use?
+Notice: For the time being, it's presumed these packages are locally installed and are in pkg-config: SDL2, ffmpeg, lua, zlib
+install with 
+```sh
+sudo apt install sdl2 ffmpeg lua zlib sdl2-devel
+```
 open up executables folder and run the programs.
 in case there are no programs navigate to project root and run:
 ```sh
