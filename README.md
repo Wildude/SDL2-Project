@@ -1,4 +1,4 @@
-# <p align = "center"> SDL2-Project 🎮 </p>
+# <p align = "center"> SDL2-Project (for Linux 🐧) 🎮 </p>
 
 A modular C++ framework built on SDL2 for experimenting with game engine features including GUI systems, physics, vector math, Lua scripting, and multimedia handling. This project serves as a flexible foundation for developing 2D games or interactive applications.
 
@@ -32,9 +32,7 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 <!-- Executables Files -->
 <details>
 <summary><strong><a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin">bin/</a></strong></summary>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test.exe">UI_test.exe</a> <br>
-&nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test2.exe">UI_test2.exe</a> <br>
-  &nbsp &nbsp &nbsp &nbsp - <a href="https://github.com/Wildude/SDL2-Project/tree/Master/bin/UI_test3.exe">UI_test3.exe</a> <br>
+  None so far
 </details>
 <!-- Fonts Files -->
 <details>
@@ -117,28 +115,13 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 ---
 ## 🎥 Screen records
 <p align="left">
-  <a href="tests/src/InputBoxTest.cpp"><img src = "screenshots/UI_inputbox1.gif" width = "800" alt = "InputBox test"/></a> 
-  <a href="tests/src/SliderTest.cpp"><img src = "screenshots/UI_slider1.gif" width = "400" alt = "InputBox test"/></a> 
-  <a href="tests/src/State_test.cpp"><img src = "screenshots/UI_state1.gif" width = "400" alt = "Menu State test"/></a> 
-  <a href="tests/src/CheckBoxTest.cpp"><img src = "screenshots/UI_checkbox1.gif" width = "400" alt = "CheckBox test"/></a> 
-  <a href="tests/src/State_test2.cpp"><img src = "screenshots/UI_diffstate1.gif" width = "400" alt = "Difficulty state test"/></a> 
-  <a href="tests/src/UItabTest.cpp"><img src = "screenshots/UI_tab1.gif" width = "400" alt = "UITab test"/></a> 
-  <a href="tests/src/UI_test3.cpp"><img src = "screenshots/UI_test1.gif" width = "400" alt = "UI test"/></a> 
-  <a href="tests/src/TextSwitchTest.cpp"><img src = "screenshots/TextSwitchTest.gif" width = "400" alt = "Textswitch test"/></a> 
-  <a href="tests/src/DropDownTest.cpp"><img src = "screenshots/DropDownTest.gif" width = "400" alt = "Dropdown test"/></a> 
-  <a href="tests/src/SpinBoxTest.cpp"><img src = "screenshots/SpinBoxTest.gif" width = "400" alt = "Spinbox test"/></a> 
+  None so far
 </p>
 
 ---
 ## 📷 Screen shots
 <p align="left">
-  <a href="tests/src/bounding_box_test.cpp"><img src = "screenshots/Bounding Box Test 7_1_2025 9_22_51 PM.png" width = "400" alt = "bounding box test"/></a> 
-    <a href="tests/src/ImageTest.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_22 PM.png" width = "400" alt = "ImageUI test"/></a> 
-    <a href="tests/src/UI_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_30 PM.png" width = "400" alt = "UI test1"/></a>
-    <a href="tests/src/UIPC_test.cpp"><img src = "screenshots/GUI Test 7_1_2025 9_25_49 PM.png" width = "400" alt = "UI Panel and Container test"/></a> 
-  <a href="tests/src/UI_test2.cpp"><img src = "screenshots/UIContainer Test 7_1_2025 9_25_39 PM.png" width = "400" alt = "UI Container test"/></a>
-  <a href="tests/src/InputBoxTest.cpp"><img src = "screenshots/InputBox Test 7_3_2025 3_28_58 PM.png" width = "400" alt = "InputBox test"/></a> 
-  <a href="tests/src/LabelAreaTest.cpp"><img src = "screenshots/LabelArea Test 7_4_2025 6_18_39 PM.png" width = "400" alt = "Labelarea test"/></a> 
+  None so far
 </p>
 
 ---
@@ -146,22 +129,18 @@ A modular C++ framework built on SDL2 for experimenting with game engine feature
 - project in renovation
 ---
 ## 🤔 How to use?
-### Windows
 open up executables folder and run the programs.
 in case there are no programs navigate to project root and run:
 ```sh
-build
+bash build.sh
 ```
 To rebuild, run:
 ```sh
-clean help
+bash clean.sh help
 ```
 or simply 
 ```sh
-clean 
+bash clean.sh
 ```
 which cleans everything
-### Linux
-🤷compile and run
-### MacOS
-🤷‍♂️compile and run
+
