@@ -13,6 +13,10 @@ class UIlabelcontainer : public UIelement {
     std::vector<UIlabel*> labels;
     UIlabelContainerType contype;
     public:
+    UIlabelcontainer(UIlabelContainerType type = UILC_FIXED);
+    void setW(int w);
+    void setH(int h);
+    void setWH(int w, int h);
     void setType(UIlabelContainerType type);
     UIlabelContainerType getType() const;
     void push(UIlabel* label);

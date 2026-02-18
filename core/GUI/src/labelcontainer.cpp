@@ -1,6 +1,28 @@
 #include <labelcontainer.hpp>
 // UIlabelcontainer implementation
 
+// constructor
+UIlabelcontainer::UIlabelcontainer(UIlabelContainerType type) : contype(type) {
+    // initialize container type
+}
+
+
+// sets the width of the label container
+void UIlabelcontainer::setW(int w) {
+    box.content.w = w;
+}
+
+// sets the height of the label container
+void UIlabelcontainer::setH(int h) {
+    box.content.h = h;
+}
+
+// sets both width and height of the label container
+void UIlabelcontainer::setWH(int w, int h) {
+    box.content.w = w;
+    box.content.h = h;
+}
+
 // sets the type of the label container
 void UIlabelcontainer::setType(UIlabelContainerType type) {
     contype = type;
@@ -12,6 +34,20 @@ UIlabelContainerType UIlabelcontainer::getType() const {
 // pushes a label into the container
 void UIlabelcontainer::push(UIlabel* label) {
     labels.push_back(label);
+    // set the position of the new label accordingly
+    SDL_Point contentpos = {
+        box.content.x + box.margin + box.border + box.padding,
+        box.content.y + box.margin + box.border + box.padding
+    };
+    if(labels.size() == 1) {
+        label->setPos(contentpos.x, contentpos.y);
+    } else {
+        if (contype == UILC_VERTICAL) {
+            label->setPos(contentpos.x, labels.back()->getBox()->getBox().y + labels.back()->getBox()->getBox().h);
+        } else if (contype == UILC_HORIZONTAL) {
+            label->setPos(labels.back()->getBox()->getBox().x + labels.back()->getBox()->getBox().w, contentpos.y);
+        }
+    }
 }
 // pops a label from the container
 void UIlabelcontainer::pop(UIlabel* label) {
@@ -19,10 +55,10 @@ void UIlabelcontainer::pop(UIlabel* label) {
 }
 // sets the position of the label container and its labels
 void UIlabelcontainer::setPos(int x, int y) {
-    box.getContentBox().x = x;
-    box.getContentBox().y = y;
-    int offsetx = x;
-    int offsety = y;
+    box.content.x = x;
+    box.content.y = y;
+    int offsetx = x + box.margin + box.border + box.padding;
+    int offsety = y + box.margin + box.border + box.padding;
     for (auto& label : labels) {
         label->setPos(offsetx, offsety);
         if (contype == UILC_VERTICAL) {
@@ -41,12 +77,17 @@ FONT* UIlabelcontainer::getFont() {
 }
 // updates the label container and its labels
 void UIlabelcontainer::update(InputManager& input) {
+    UIelement::update(input);
+    if(labels.empty() || !isfocus) return;
     for (auto& label : labels) {
         label->update(input);
     }
 }
 // renders the label container and its labels
 void UIlabelcontainer::render(SDL_Renderer* rend, int drawtype) {
+    UIelement::render(rend, drawtype);
+    if(labels.empty()) return;
+    // scroll implementation later
     for (auto& label : labels) {
         label->render(rend, drawtype);
     }
@@ -91,8 +132,8 @@ void UIClabel::pop(const std::string& label) {
 }
 // sets the position of the label container and its labels
 void UIClabel::setPos(int x, int y) {
-    box.getContentBox().x = x;
-    box.getContentBox().y = y;
+    box.content.x = x;
+    box.content.y = y;
     int offsetx = x;
     int offsety = y;
     for (const auto& label : labels) {
