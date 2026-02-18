@@ -84,7 +84,7 @@ void TextList::draw(SDL_Renderer* rend, short drawtype ){
     }
     */
 }
-void TextList::drawi(int i, SDL_Renderer* rend, SDL_Texture*& board, short drawtype ){
+void TextList::drawi(int i, SDL_Renderer* rend, SDL_Texture* board, short drawtype ){
     boxes[i].draw(rend, board, drawtype);
     /*
     Lnode<TextBox>* head = boxes.peek();
