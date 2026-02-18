@@ -17,17 +17,16 @@ struct UIMultiCommand: UIcommand{
 struct UIColor : public UIcommand{
     SDL_Color newbg, newfg;
     UIColor();
-    UIColor(const SDL_Color& nbg, const SDL_Color& nfg);
+    UIColor(const SDL_Color& nfg, const SDL_Color& nbg);
     void setNew(const SDL_Color& bnew, const SDL_Color& fnew);
     UIColor* clone() const override;
     void execute(UIelement* ref) override;
     ~UIColor();
 };
 struct UIFont : public UIcommand{
-    FONT* newfont;
+    FONT newfont;
     UIFont();
     UIFont(const FONT& font);
-    UIFont(FONT* font);
     void setNew(const FONT& font);
     UIFont* clone() const override;
     void execute(UIelement* ref);
