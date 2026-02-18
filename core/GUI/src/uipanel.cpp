@@ -3,18 +3,18 @@
 
 // sets the width of the panel
 void UIpanel::setW(int w) {
-    box.getContentBox().w = w;
+    box.content.w = w;
     // don't forget to update box
 }
 // sets the height of the panel
 void UIpanel::setH(int h) {
-    box.getContentBox().h = h;
+    box.content.h = h;
     // don't forget to update box
 }
 // sets both width and height of the panel
 void UIpanel::setWH(int w, int h) {
-    box.getContentBox().w = w;
-    box.getContentBox().h = h;
+    box.content.w = w;
+    box.content.h = h;
     // don't forget to update box
 }
 // adds a UIelement to the panel
@@ -40,7 +40,7 @@ size_t UIpanel::getSize() const {
 }
 // sets the position of the panel and updates child elements
 void UIpanel::setPos(int x, int y) {
-    SDL_Rect& contentBox = box.getContentBox();
+    SDL_Rect& contentBox = box.content;
     contentBox.x = x;
     contentBox.y = y;
     // Update positions of child elements
@@ -71,12 +71,12 @@ void UIpanel::render(SDL_Renderer* rend, int drawtype) {
     // Render the panel itself (background, border, etc.) based on drawtype
     SDL_Rect panelBox = box.getBox();
     if(drawtype & 1) { // Draw background
-        SDL_SetRenderDrawColor(rend, box.getBackgroundColor().r, box.getBackgroundColor().g, box.getBackgroundColor().b, box.getBackgroundColor().a);
+        SDL_SetRenderDrawColor(rend, box.bgcol.r, box.bgcol.g, box.bgcol.b, box.bgcol.a);
         SDL_RenderFillRect(rend, &panelBox);
     }
     if(drawtype & 2) { // Draw border
-        SDL_SetRenderDrawColor(rend, box.getBorderColor().r, box.getBorderColor().g, box.getBorderColor().b, box.getBorderColor().a);
-        for(int i = 0; i < box.getBorderWidth(); ++i) {
+        SDL_SetRenderDrawColor(rend, box.bordercol.r, box.bordercol.g, box.bordercol.b, box.bordercol.a);
+        for(int i = 0; i < box.border; ++i) {
             SDL_Rect borderRect = {panelBox.x - i, panelBox.y - i, panelBox.w + 2 * i, panelBox.h + 2 * i};
             SDL_RenderDrawRect(rend, &borderRect);
         }

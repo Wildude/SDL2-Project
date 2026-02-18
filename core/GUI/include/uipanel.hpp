@@ -1,3 +1,4 @@
+#pragma once
 #include <uielement.hpp>
 class UIpanel : public UIelement {
     protected:
