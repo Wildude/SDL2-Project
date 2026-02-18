@@ -1,3 +1,4 @@
+#pragma once
 #include <uilabel.hpp>
 #include <textInputHandler.hpp>
 class UIinputbox : public UIelement {
