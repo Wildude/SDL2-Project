@@ -105,7 +105,7 @@ void TextBox::setboxpos(int x, int y)
     box.x = x;
     box.y = y;
 }
-void TextBox::draw(SDL_Renderer* rend, SDL_Texture*& board, short drawtype )
+void TextBox::draw(SDL_Renderer* rend, SDL_Texture* board, short drawtype )
 {
     checkfile();
     textbox_file << " drawing textbox\n";
