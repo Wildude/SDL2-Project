@@ -15,8 +15,8 @@ bool UIcheckbox::isChecked() const {
 }
 // sets the position of the checkbox
 void UIcheckbox::setPos(int x, int y) {
-    box.getContentBox().x = x;
-    box.getContentBox().y = y;
+    box.content.x = x;
+    box.content.y = y;
 }
 // gets the font of the checkbox
 FONT* UIcheckbox::getFont() {
