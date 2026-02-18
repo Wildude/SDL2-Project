@@ -51,3 +51,15 @@ class FONT
 SDL_Surface* renderText(TTF_Font* font, const char* text, const SDL_Color& fg, int drawtype = 1);
 SDL_Surface* renderText(TTF_Font* font, const char* text, const SDL_Color& fg, 
     const SDL_Color& bg, int drawtype = 2);
+//
+#define FNT_CAMBRIA "../Fonts/cambria.ttc"
+#define FNT_NYALA "../Fonts/nyala.ttf"
+#define FNT_PALA "../Fonts/pala.ttf"
+#define FNT_PALAB "../Fonts/palab.ttf"
+#define FNT_PALABI "../Fonts/palabi.ttf"
+#define FNT_PALAI "../Fonts/palai.ttf"
+#define FNT_ROCK "../Fonts/ROCK.ttf"
+#define FNT_ROCKB "../Fonts/ROCKB.ttf"
+#define FNT_ROCKBI "../Fonts/ROCKBI.ttf"
+#define FNT_ROCKEB "../Fonts/ROCKEB.ttf"
+#define FNT_ROCKI "../Fonts/ROCKI.ttf"
