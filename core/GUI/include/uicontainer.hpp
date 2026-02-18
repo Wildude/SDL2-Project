@@ -1,3 +1,4 @@
+#pragma once
 #include <uielement.hpp>
 enum UIContainerType {
     UIC_FIXED,
@@ -9,6 +10,10 @@ class UIcontainer : public UIelement {
     std::vector<UIelement*> elements;
     UIContainerType contype;
     public:
+    UIcontainer(): contype(UIC_VERTICAL) {
+        box.content.x = 0;
+        box.content.y = 0;
+    };
     void setType(UIContainerType type);
     UIContainerType getType() const;
     void setW(int w);
@@ -16,6 +21,9 @@ class UIcontainer : public UIelement {
     void setWH(int w, int h);
     virtual void push(UIelement* element);
     virtual void pop(UIelement* element);
+    inline void pop() {
+        elements.pop_back();
+    }
     virtual UIelement* getAt(int index);
     virtual size_t getSize() const;
     virtual void setPos(int x, int y) override;
