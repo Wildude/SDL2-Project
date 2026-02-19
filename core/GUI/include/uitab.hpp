@@ -1,15 +1,18 @@
+#pragma once
 #include <uicontainer.hpp>
+#include <labelcontainer.hpp>
 class UItab : public UIelement {
     protected:
-    //UIlabelpanel tablabels;
+    UIlabelcontainer tablabels;
     std::vector<UIcontainer*> tabpages;
     int currenttab;
+    FONT* font;
     //std::vector<std::string> tabnames;
     //std::vector<SDL_Rect> tabboxes;
     public:
     UItab();
-    void push(UIelement* page);
-    void pop(UIelement* page);
+    void push(UIcontainer* page);
+    void pop(UIcontainer* page);
     void setCurrent(int index);
     int getCurrent() const;
     UIelement* getCurrentTab();
