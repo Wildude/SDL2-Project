@@ -1,6 +1,6 @@
 core/BAS/obj/Tilemap.o: core/BAS/src/Tilemap.cpp \
  core/BAS/include/Tilemap.hpp core/BAS/include/tinyxml2.hpp \
- core/SDL/include/texture.hpp src/include/SDL2/SDL_image.h \
+ core/SDL/include/texture2D.hpp src/include/SDL2/SDL_image.h \
  src/include/SDL2/SDL.h src/include/SDL2/SDL_main.h \
  src/include/SDL2/SDL_stdinc.h src/include/SDL2/SDL_config.h \
  src/include/SDL2/SDL_platform.h src/include/SDL2/begin_code.h \
@@ -33,7 +33,7 @@ core/BAS/include/Tilemap.hpp:
 
 core/BAS/include/tinyxml2.hpp:
 
-core/SDL/include/texture.hpp:
+core/SDL/include/texture2D.hpp:
 
 src/include/SDL2/SDL_image.h:
 
