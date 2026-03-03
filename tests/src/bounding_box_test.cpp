@@ -3,7 +3,7 @@
 #include <textbox.hpp>
 #include <texture2D.hpp>
 #include <window.hpp>
-#include <Box.hpp>
+#include <box.hpp>
 int main(int argn, char** args){
     WINDOW win("Bounding Box Test");
     win.crtB();
