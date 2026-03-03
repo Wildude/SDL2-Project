@@ -1,3 +1,4 @@
+#pragma once
 #include <uibutton.hpp>
 enum UICheckboxType {
     UICB_DEFAULT,

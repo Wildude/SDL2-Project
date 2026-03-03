@@ -45,7 +45,7 @@ UIColor::UIColor()
     // Default constructor
 }
 
-UIColor::UIColor(const SDL_Color& nbg, const SDL_Color& nfg)
+UIColor::UIColor(const SDL_Color& nfg, const SDL_Color& nbg)
     : newbg(nbg), newfg(nfg) {
     // Parameterized constructor
 }
@@ -73,27 +73,17 @@ UIColor::~UIColor() {
 
 // UIFont implementations
 UIFont::UIFont()
-    : newfont(nullptr) {
+    : newfont(FONT()) {
     // Default constructor
 }
 
 UIFont::UIFont(const FONT& font)
-    : newfont(new FONT(font)) {
+    : newfont(font) {
     // Constructor from FONT
 }
-
-UIFont::UIFont(FONT* font)
-    : newfont(font) {
-    // Constructor from FONT pointer
-}
-
 // Set new font
 void UIFont::setNew(const FONT& font) {
-    if (newfont) {
-        // consider careful memory management
-        delete newfont;
-    }
-    newfont = new FONT(font);
+    newfont = font;
 }
 // Clone method
 UIFont* UIFont::clone() const {
@@ -101,10 +91,13 @@ UIFont* UIFont::clone() const {
 }
 // Execute method to change font of the UIelement
 void UIFont::execute(UIelement* ref) {
-    if (ref && newfont) {
+    if (ref) {
         // Assuming UIelement has a method to set its font
         // This is a placeholder; actual implementation may vary
-        // ref->setFont(*newfont);
+        FONT* theFont = ref->getFont();
+        if(theFont){
+            *theFont = newfont;
+        }
     }
 }
 

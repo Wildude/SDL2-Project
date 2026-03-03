@@ -32,7 +32,7 @@ class TextBox{
     void settext(const char* text_);
     void settext(const std::string& text_);
     void setboxpos(int x, int y);
-    void draw(SDL_Renderer* rend, SDL_Texture*& board, short drawtype = 2);
+    void draw(SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2);
     void printbox();
     const SDL_Rect& getBoxc() const;
     const FONT& getFontc() const;

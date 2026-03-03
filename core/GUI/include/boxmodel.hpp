@@ -1,26 +1,9 @@
 #pragma once
 #include <SDL2/SDL.h>
-class SimpleBox {
-    protected:
-    SDL_Rect content;
-    SDL_Color bordercol, bgcol;
-    int border, padding, margin;
-    public:
-    void setContentBox(const SDL_Rect& box);
-    SDL_Rect& getContentBox();
-    const SDL_Rect& getContentBox() const;
-    void setBorderColor(const SDL_Color& col);
-    SDL_Color& getBorderColor();
-    const SDL_Color& getBorderColor() const;
-    void setBackgroundColor(const SDL_Color& col);
-    SDL_Color& getBackgroundColor();
-    const SDL_Color& getBackgroundColor() const;
-    void setBorderWidth(int width);
-    int getBorderWidth();
-    void setPadding(int pad);
-    int getPadding();
-    void setMargin(int marg);
-    int getMargin();
+struct SimpleBox {
+    SDL_Rect content = {0, 0, 0, 0};
+    SDL_Color bordercol = {0, 0, 0, 0}, bgcol = {255, 255, 255, 255};
+    int border = 0, padding = 0, margin = 0;
     SDL_Rect getBox() const;
 };
 class DynamicBox {

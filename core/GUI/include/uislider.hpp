@@ -1,3 +1,4 @@
+#pragma once
 #include <uielement.hpp>
 enum UIsliderType {
     UISL_DEFAULT,
@@ -8,9 +9,12 @@ enum UIsliderType {
 class UIslider : public UIelement {
     protected:
     short portion;
+    UIsliderType type;
     //bool isdragging;
     public:
     UIslider(short portion = 0);
+    void setType(UIsliderType t);
+    UIsliderType getType() const;
     void setValue(int val);
     int getValue() const;
     virtual void setPos(int x, int y) override;

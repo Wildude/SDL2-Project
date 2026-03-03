@@ -12,10 +12,10 @@ set "DLLS_DIR=DLLS"
 set "CORE_DIR=core"
 set "SDL_OBJ=%CORE_DIR%\SDL\obj"
 set "BAS_OBJ=%CORE_DIR%\BAS\obj"
-set "OGL_OBJ=%CORE_DIR%\OGL\obj"
+set "GUI_OBJ=%CORE_DIR%\GUI\obj"
 
 REM List of directories to clean for "core"
-set "CORE_OBJ_FOLDERS=%SDL_OBJ% %BAS_OBJ%"
+set "CORE_OBJ_FOLDERS=%SDL_OBJ% %BAS_OBJ% %GUI_OBJ%"
 
 REM === Conditional handling ===
 if "%~1"=="objs" (
@@ -55,6 +55,12 @@ if "%~1"=="bas" (
     goto :EOF
 )
 
+if "%~1"=="gui" (
+    echo Removing GUI obj folder...
+    call :CleanFolders "%GUI_OBJ%"
+    goto :EOF
+)
+
 REM === Default: no argument, remove everything ===
 if "%~1"=="" (
     echo Removing all folders...
@@ -66,7 +72,7 @@ if "%~1"=="" (
 
 REM Invalid argument
 echo Invalid argument: %~1
-echo "Usage: clean.bat [objs|bin|test|sdl|bas|core]" 
+echo "Usage: clean.bat [objs|bin|test|sdl|bas|gui|core]" 
 goto :EOF
 
 REM === Subroutine for cleaning folders ===

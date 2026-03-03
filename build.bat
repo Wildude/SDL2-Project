@@ -8,8 +8,9 @@ REM Define directories
 set CORE_DIR=core
 set SDL_OBJ=%CORE_DIR%\SDL\obj
 set BAS_OBJ=%CORE_DIR%\BAS\obj
+set GUI_OBJ=%CORE_DIR%\GUI\obj
 REM List of directories to create
-set CORE_OBJ=%SDL_OBJ% %BAS_OBJ% %OGL_OBJ%
+set CORE_OBJ=%SDL_OBJ% %BAS_OBJ% %GUI_OBJ%
 
 REM Iterate over each directory and create it if it doesn't exist
 for %%d in (%CORE_OBJ%) do (
@@ -44,5 +45,5 @@ copy /Y "%BAT_DIR%\runbuild.bat" "%BIN_DIR%" >nul
 
 REM Call make
 echo Running mingw32-make...
-mingw32-make %*
+make %*
 cd bin

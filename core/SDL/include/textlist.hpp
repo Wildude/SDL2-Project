@@ -16,7 +16,7 @@ class TextList{
     void add(std::string txt);
     void add();
     void draw(SDL_Renderer* rend, short drawtype = 2);
-    void drawi(int i, SDL_Renderer* rend, SDL_Texture*& board, short drawtype = 2);
+    void drawi(int i, SDL_Renderer* rend, SDL_Texture* board, short drawtype = 2);
     void edit(const char* text, int i = 0);
     const std::vector<TextBox>& getBoxes();
     /*

@@ -1,11 +1,11 @@
+#pragma once
 #include <uibutton.hpp>
+#include <uilabel.hpp>
 class UItextswitch : public UIelement {
     protected:
     std::vector<std::string> options;
     int currentindex;
-    FONT* font;
-    SDL_Texture* atlas;
-    void setAtlas();
+    UIlabel atlas;
     UIbutton inc, dec;
     public:
     UItextswitch(FONT* fnt);

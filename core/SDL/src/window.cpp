@@ -66,8 +66,8 @@ int WINDOW::pstcol(SDL_Color* color )
 int WINDOW::pstcol(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     SDL_Color col = {r, g, b, a};
-    int ret = set_rencol(&col);
-    clr(col);
+    int ret = SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    clr();
     pst();
     return ret;
 }

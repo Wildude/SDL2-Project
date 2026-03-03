@@ -17,8 +17,8 @@ std::string UIinputbox::getText() const {
 }
 // sets the position of the input box
 void UIinputbox::setPos(int x, int y) {
-    box.getContentBox().x = x;
-    box.getContentBox().y = y;
+    box.content.x = x;
+    box.content.y = y;
 }
 // gets the font of the input box
 FONT* UIinputbox::getFont() {
@@ -31,7 +31,7 @@ void UIinputbox::update(InputManager& input) {
 // renders the input box
 void UIinputbox::render(SDL_Renderer* rend, int drawtype) {
     // Render the board texture
-    SDL_RenderCopy(rend, board, nullptr, &box.getContentBox());
+    SDL_RenderCopy(rend, board, nullptr, &box.content);
     // Render the text inside the input box
     // Placeholder implementation for text rendering
 }
